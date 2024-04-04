@@ -1,5 +1,8 @@
 'use strict';
+
 const { Model } = require('sequelize');
+const { WEB_DOMAIN } = require('../constants/domain.js');
+
 module.exports = (sequelize, DataTypes) => {
     class Url extends Model {
         static associate(models) {
@@ -48,6 +51,20 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: true,
                 type: DataTypes.BOOLEAN,
             },
+            short_url: {
+                type: DataTypes.VIRTUAL,
+                get() {
+                    return `${WEB_DOMAIN}${this.code}`;
+                },
+            },
+            createdAt: {
+                allowNull: false,
+                type: DataTypes.DATE,
+            },
+            updatedAt: {
+                allowNull: false,
+                type: DataTypes.DATE,
+            },
         },
         {
             sequelize,
@@ -55,6 +72,10 @@ module.exports = (sequelize, DataTypes) => {
             tableName: 'urls',
         }
     );
+
+    Url.addScope('public', {
+        attributes: ['short_url', 'url', 'code', 'visits'],
+    });
 
     return Url;
 };

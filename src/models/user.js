@@ -1,4 +1,5 @@
 'use strict';
+
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -53,6 +54,10 @@ module.exports = (sequelize, DataTypes) => {
             tableName: 'users',
         }
     );
+
+    User.addScope('public', {
+        attributes: ['id', 'first_name', 'last_name', 'email'],
+    });
 
     return User;
 };
