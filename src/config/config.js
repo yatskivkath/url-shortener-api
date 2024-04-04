@@ -1,3 +1,6 @@
+// config.js
+// Configuration file for the application
+
 require('dotenv').config();
 
 module.exports = {
@@ -60,5 +63,5 @@ module.exports = {
     isProdMode() {
         // Check if the environment is production
         return process.env.NODE_ENV === 'production';
-    }
+    },
 };
