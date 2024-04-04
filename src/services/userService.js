@@ -1,4 +1,5 @@
 // userService.js
+// Implementation of the User service
 
 const userRepository = require('../repositories/userRepository.js');
 const authenticateService = require('./authenticateService.js');
