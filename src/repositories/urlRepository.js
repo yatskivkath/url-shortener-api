@@ -36,7 +36,7 @@ async function getAllUrlsByUserId(userId, scope = 'defaultScope') {
         },
     });
 
-    return urls;
+    return urls ?? [];
 }
 
 async function updateUrl(url) {

@@ -32,7 +32,7 @@ async function findUserByEmail(email, scope = 'defaultScope') {
 async function getAllUsers(scope = 'defaultScope') {
     const users = await models.user.scope(scope).findAll();
 
-    return users;
+    return users ?? [];
 }
 
 module.exports = {
