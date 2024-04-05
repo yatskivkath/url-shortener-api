@@ -4,10 +4,14 @@
 const urlService = require('../services/urlService.js');
 
 async function createUrl(req, res) {
-    const { url } = req.body;
+    const { url, name } = req.body;
 
     try {
-        const newUrl = await urlService.createUrl(url);
+        const newUrl = await urlService.createUrl({
+            redirectUrl: url,
+            userId: req.session.userId,
+            name,
+        });
 
         res.status(201).json(newUrl);
     } catch (error) {

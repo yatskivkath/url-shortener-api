@@ -6,12 +6,13 @@ const { generateHash } = require('../utils/hashFunctions.js');
 const scopes = require('../constants/scopes.js');
 
 async function createUrl(url) {
-    const { redirectUrl, userId } = url;
+    const { redirectUrl, userId, name } = url;
 
     const newUrl = await urlRepository.saveUrl({
         code: generateHash(),
         url: redirectUrl,
-        user_id: userId,
+        userId,
+        name,
     });
 
     return newUrl;
