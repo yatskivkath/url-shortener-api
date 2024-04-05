@@ -2,12 +2,15 @@
 // Implementation of the Url repository
 
 const models = require('../models/index.js');
+const { URL_TYPES } = require('../constants/databaseConstants.js');
 
 async function saveUrl(url) {
     const newUrl = await models.url.create({
         code: url.code,
         url: url.url,
-        userId: url.userId,
+        user_id: url.userId,
+        name: url.name,
+        type: url.type ?? URL_TYPES.PERMANENT,
     });
 
     return newUrl;
