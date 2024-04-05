@@ -4,9 +4,11 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const RedisStore = require('connect-redis');
+const RedisStore = require('connect-redis').default;
 
 const redisClient = require('./redis/redisClient.js');
+const userRouter = require('./routes/userRouter.js');
+const urlRouter = require('./routes/urlRouter.js');
 
 // Initialize middlewares
 function initMiddlewares(app) {
@@ -38,21 +40,11 @@ function initControllers(app) {
         res.send('Works!');
     });
 
-    // app.use("/users", userRouter);
-    // app.use("/urls", urlRouter);
-}
-
-// Initialize error handling
-function initErrorHandling(app) {
-    app.use((err, req, res) => {
-        console.log(err);
-
-        res.status(500).send(err.message);
-    });
+    app.use('/users', userRouter);
+    app.use('/urls', urlRouter);
 }
 
 module.exports = function webContext(app) {
     initMiddlewares(app);
     initControllers(app);
-    initErrorHandling(app);
 };

@@ -2,7 +2,8 @@
 // Redis client configuration
 
 const { createClient } = require('redis');
-const config = require('../config/config.js');
+const env = process.env.NODE_ENV || 'development';
+const config = require('../config/config.js')[env];
 
 const redisClient = createClient({
     url: config.redis.url,

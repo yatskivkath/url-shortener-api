@@ -20,4 +20,4 @@ const generateHash = (len = DEFAULT_LENGTH) => {
     return result;
 };
 
-export { generateHash };
+module.exports = { generateHash };

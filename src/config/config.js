@@ -27,9 +27,7 @@ module.exports = {
 
         // Redis configuration for development environment
         redis: {
-            host: process.env.REDIS_HOST,
-            port: process.env.REDIS_PORT,
-            password: process.env.REDIS_PASSWORD,
+            url: process.env.REDIS_URL,
         },
     },
     production: {
@@ -47,9 +45,7 @@ module.exports = {
 
         // Redis configuration for production environment
         redis: {
-            host: 'localhost',
-            port: 6379,
-            password: 'your_prod_password',
+            url: process.env.REDIS_URL,
         },
     },
     isDevMode() {
