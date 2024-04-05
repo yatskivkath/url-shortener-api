@@ -36,7 +36,7 @@ async function getUrl(req, res) {
 }
 
 async function getAllUrlsByUserId(req, res) {
-    const { userId } = req.params;
+    const userId = req.session.userId;
 
     try {
         const urls = await urlService.getUrlsByUserPublic(userId);

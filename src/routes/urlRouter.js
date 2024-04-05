@@ -13,6 +13,6 @@ urlRouter.post('/', urlController.createUrl);
 
 urlRouter.get('/info/:code', urlController.getUrl);
 
-urlRouter.get('/user/:userId', urlController.getAllUrlsByUserId);
+urlRouter.get('/', urlController.getAllUrlsByUserId);
 
 module.exports = urlRouter;

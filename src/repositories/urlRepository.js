@@ -5,6 +5,7 @@ const models = require('../models/index.js');
 const { URL_TYPES } = require('../constants/databaseConstants.js');
 
 async function saveUrl(url) {
+    console.log(url);
     const newUrl = await models.url.create({
         code: url.code,
         url: url.url,
@@ -35,7 +36,7 @@ async function getAllUrls(scope = 'defaultScope') {
 async function getAllUrlsByUserId(userId, scope = 'defaultScope') {
     const urls = await models.url.scope(scope).findAll({
         where: {
-            userId,
+            user_id: userId,
         },
     });
 
