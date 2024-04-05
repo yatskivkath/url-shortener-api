@@ -9,8 +9,6 @@ module.exports = async function (req, res, next) {
     if (auth?.startsWith('Basic ')) {
         const [email, password] = auth.substring(6, auth.length).split(':');
 
-        console.log(email, password);
-
         const user = await userService.getUserByEmail(email);
         const hasAccess = await authenticateService.comparePasswords(
             password,
