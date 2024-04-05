@@ -6,7 +6,11 @@ const { WEB_DOMAIN } = require('../constants/domain.js');
 module.exports = (sequelize, DataTypes) => {
     class Url extends Model {
         static associate(models) {
-            Url.belongsTo(models.user);
+            Url.belongsTo(models.user, {
+                foreignKey: 'user_id',
+                onDelete: 'casscade',
+                onUpdate: 'casscade',
+            });
         }
     }
 
