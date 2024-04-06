@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
             short_url: {
                 type: DataTypes.VIRTUAL,
                 get() {
-                    return `${WEB_DOMAIN}${this.code}`;
+                    return `${WEB_DOMAIN}/${this.code}`;
                 },
             },
             createdAt: {
@@ -78,7 +78,14 @@ module.exports = (sequelize, DataTypes) => {
     );
 
     Url.addScope('publicScope', {
-        attributes: ['short_url', 'url', 'code', 'visits'],
+        attributes: [
+            'short_url',
+            'url',
+            'code',
+            'visits',
+            'type',
+            'expiration_date',
+        ],
     });
 
     return Url;

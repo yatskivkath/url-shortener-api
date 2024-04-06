@@ -11,6 +11,7 @@ async function saveUrl(url) {
         user_id: url.userId,
         name: url.name,
         type: url.type ?? URL_TYPES.PERMANENT,
+        expiration_date: url.expire,
     });
 
     return newUrl;
