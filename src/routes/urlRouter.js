@@ -99,6 +99,28 @@ urlRouter.get('/info/:code', urlController.getUrl);
  */
 urlRouter.get('/', urlController.getAllUrlsByUserId);
 
+/**
+ * @swagger
+ * '/urls/{id}':
+ *  get:
+ *     tags:
+ *     - Url
+ *     summary: Delete URL
+ *     parameters:
+ *     - name: id
+ *       in: path
+ *       description: The URL ID
+ *       required: true
+ *     responses:
+ *      200:
+ *        description: Fetched Successfully
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ *      500:
+ *        description: Server Error
+ */
 urlRouter.delete('/:id', urlController.deleteUrl);
 
 module.exports = urlRouter;
