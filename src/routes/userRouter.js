@@ -7,10 +7,10 @@ const authMiddleware = require('../middlewares/authMiddleware.js');
 
 const userRouter = express.Router();
 
+userRouter.post('/', userController.createUser);
+
 userRouter.use(authMiddleware);
 
 userRouter.get('/', userController.getAllUsers);
-
-userRouter.post('/', userController.createUser);
 
 module.exports = userRouter;
