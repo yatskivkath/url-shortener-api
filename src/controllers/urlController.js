@@ -1,12 +1,19 @@
 // urlController.js
 // Implementation of the Url controller
 
+const Joi = require('joi');
+
 const urlService = require('../services/urlService.js');
+const urlSchema = require('../validators/urlSchema.js');
 
 async function createUrl(req, res) {
-    const { url, name, code, expire, type, codeLength } = req.body;
-
     try {
+        const data = req.body;
+
+        urlSchema.validate(data);
+
+        const { url, name, code, expire, type, codeLength } = data;
+
         const newUrl = await urlService.createUrl({
             redirectUrl: url,
             userId: req.session.userId,
@@ -17,7 +24,10 @@ async function createUrl(req, res) {
             codeLength,
         });
 
-        res.status(201).json(newUrl);
+        res.status(201).json({
+            status: 'success',
+            data: newUrl,
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
