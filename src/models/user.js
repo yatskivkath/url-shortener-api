@@ -59,5 +59,9 @@ module.exports = (sequelize, DataTypes) => {
         attributes: ['id', 'first_name', 'last_name', 'email'],
     });
 
+    User.afterCreate(async (user) => {
+        delete user.dataValues.password;
+    });
+
     return User;
 };

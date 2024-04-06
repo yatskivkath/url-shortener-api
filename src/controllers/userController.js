@@ -2,19 +2,20 @@
 // Implementation of the User controller
 
 const userService = require('../services/userService.js');
+const userSchema = require('../validators/userSchema.js');
 
 async function createUser(req, res) {
-    const { email, password, firstName, lastName } = req.body;
-
     try {
-        const newUser = await userService.createUser({
-            email,
-            password,
-            firstName,
-            lastName,
-        });
+        const data = req.body;
 
-        res.status(201).json(newUser);
+        userSchema.validate(data);
+
+        const newUser = await userService.createUser(data);
+
+        res.status(201).json({
+            status: 'success',
+            data: newUser,
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
