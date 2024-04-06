@@ -13,7 +13,9 @@
     "format:write": "prettier --write .",
     "lint:check": "eslint .",
     "lint:fix": "eslint --fix .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "jest",
+    "test-cover": "jest --coverage"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

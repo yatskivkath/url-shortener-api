@@ -1,5 +1,7 @@
 node_modules
 
+test
+
 .eslintrc.json
 
 .prettierrc.json
