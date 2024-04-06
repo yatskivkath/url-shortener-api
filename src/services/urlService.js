@@ -10,7 +10,7 @@ async function createUrl(url) {
 
     const newUrl = await urlRepository.saveUrl({
         code: generateHash(),
-        url: redirectUrl,
+        redirectUrl,
         userId,
         name,
     });

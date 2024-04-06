@@ -5,10 +5,9 @@ const models = require('../models/index.js');
 const { URL_TYPES } = require('../constants/databaseConstants.js');
 
 async function saveUrl(url) {
-    console.log(url);
     const newUrl = await models.url.create({
         code: url.code,
-        url: url.url,
+        url: url.redirectUrl,
         user_id: url.userId,
         name: url.name,
         type: url.type ?? URL_TYPES.PERMANENT,
