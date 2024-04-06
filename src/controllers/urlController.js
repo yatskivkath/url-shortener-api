@@ -4,7 +4,7 @@
 const urlService = require('../services/urlService.js');
 
 async function createUrl(req, res) {
-    const { url, name, code, expire, type } = req.body;
+    const { url, name, code, expire, type, codeLength } = req.body;
 
     try {
         const newUrl = await urlService.createUrl({
@@ -14,6 +14,7 @@ async function createUrl(req, res) {
             code,
             expire,
             type,
+            codeLength,
         });
 
         res.status(201).json(newUrl);

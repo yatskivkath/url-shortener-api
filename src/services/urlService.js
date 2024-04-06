@@ -7,10 +7,10 @@ const scopes = require('../constants/scopes.js');
 const { URL_TYPES } = require('../constants/databaseConstants.js');
 
 async function createUrl(url) {
-    const { redirectUrl, userId, name, code, expire, type } = url;
+    const { redirectUrl, userId, name, code, expire, type, codeLength } = url;
 
     const newUrl = await urlRepository.saveUrl({
-        code: code ?? generateHash(),
+        code: code ?? generateHash(codeLength),
         redirectUrl,
         userId,
         name,
