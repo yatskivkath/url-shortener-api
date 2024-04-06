@@ -7,7 +7,7 @@ const DEFAULT_LENGTH = 5;
 
 const generateHash = (len = DEFAULT_LENGTH) => {
     if (!Number(len)) {
-        throw new Error('Please send a correct string length');
+        return '';
     }
 
     let result = '';
