@@ -5,6 +5,8 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis').default;
+const swaggerUI = require('swagger-ui-express');
+const swaggerSpec = require('../swagger');
 
 const redisClient = require('./redis/redisClient.js');
 const userRouter = require('./routes/userRouter.js');
@@ -44,7 +46,12 @@ function initControllers(app) {
     app.use('/urls', urlRouter);
 }
 
+function initDocs(app) {
+    app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+}
+
 module.exports = function webContext(app) {
     initMiddlewares(app);
     initControllers(app);
+    initDocs(app);
 };

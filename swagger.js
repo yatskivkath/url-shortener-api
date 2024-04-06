@@ -12,7 +12,7 @@ const swaggerDefinition = {
 
 const options = {
     swaggerDefinition,
-    apis: ['./routes/*.js'], // Path to the API routes in your Node.js application
+    apis: ['./src/routes/*.js'], // Path to the API routes in your Node.js application
 };
 
 const swaggerSpec = swaggerJSDoc(options);
