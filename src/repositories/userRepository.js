@@ -5,7 +5,8 @@ const models = require('../models/index.js');
 
 async function saveUser(user) {
     const newUser = await models.user.create({
-        name: user.name,
+        first_name: user.firstName,
+        last_name: user.lastName,
         email: user.email,
         password: user.password,
     });
