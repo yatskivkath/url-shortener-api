@@ -79,6 +79,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Url.addScope('publicScope', {
         attributes: [
+            'id',
             'short_url',
             'url',
             'code',

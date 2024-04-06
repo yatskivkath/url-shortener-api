@@ -99,4 +99,6 @@ urlRouter.get('/info/:code', urlController.getUrl);
  */
 urlRouter.get('/', urlController.getAllUrlsByUserId);
 
+urlRouter.delete('/:id', urlController.deleteUrl);
+
 module.exports = urlRouter;

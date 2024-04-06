@@ -75,6 +75,12 @@ async function updateUrl(url) {
     return updatedUrl;
 }
 
+async function deleteUrl(id) {
+    const deletedUrl = await urlRepository.deleteUrl(id);
+
+    return deletedUrl;
+}
+
 module.exports = {
     createUrl,
     getUrl,
@@ -82,4 +88,5 @@ module.exports = {
     getUrlsByUserPublic,
     visitUrl,
     updateUrl,
+    deleteUrl,
 };

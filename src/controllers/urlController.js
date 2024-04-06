@@ -51,8 +51,21 @@ async function getAllUrlsByUserId(req, res) {
     }
 }
 
+async function deleteUrl(req, res) {
+    const { id } = req.params;
+
+    try {
+        await urlService.deleteUrl(id);
+
+        res.status(204).end();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = {
     createUrl,
     getUrl,
     getAllUrlsByUserId,
+    deleteUrl,
 };
