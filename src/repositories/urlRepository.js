@@ -4,8 +4,8 @@
 const models = require('../models/index.js');
 const { URL_TYPES } = require('../constants/databaseConstants.js');
 
-async function saveUrl(url) {
-    const newUrl = await models.url.create({
+async function saveUrl(url, scope = 'publicScope') {
+    const newUrl = await models.url.scope('publicScope').create({
         code: url.code,
         url: url.redirectUrl,
         user_id: url.userId,
@@ -49,6 +49,9 @@ async function updateUrl(url) {
             code: url.code,
             url: url.url,
             visits: url.visits,
+            enabled: url.enabled,
+            expiration_date: url.expiration_date,
+            type: url.type,
         },
         {
             where: {
@@ -60,10 +63,21 @@ async function updateUrl(url) {
     return updatedUrl;
 }
 
+async function deleteUrl(id) {
+    const deletedUrl = await models.url.destroy({
+        where: {
+            id,
+        },
+    });
+
+    return deletedUrl;
+}
+
 module.exports = {
     saveUrl,
     findUrlByCode,
     getAllUrls,
     getAllUrlsByUserId,
     updateUrl,
+    deleteUrl,
 };
