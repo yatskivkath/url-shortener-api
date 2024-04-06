@@ -4,6 +4,7 @@
 const urlRepository = require('../repositories/urlRepository.js');
 const { generateHash } = require('../utils/hashFunctions.js');
 const scopes = require('../constants/scopes.js');
+const { URL_TYPES } = require('../constants/databaseConstants.js');
 
 async function createUrl(url) {
     const { redirectUrl, userId, name, code, expire, type } = url;
@@ -54,10 +55,31 @@ async function visitUrl(code) {
     return url;
 }
 
+async function updateUrl(url) {
+    const { enabled, expirationDate, type } = url;
+
+    if (type === URL_TYPES.TEMPORARY && !expirationDate) {
+        throw new Error('Expiration date is required for temporary urls');
+    }
+
+    if (type !== URL_TYPES.TEMPORARY && expirationDate) {
+        throw new Error('Expiration date is not allowed for permanent urls');
+    }
+
+    const updatedUrl = await urlRepository.updateUrl({
+        expirationDate,
+        enabled,
+        type,
+    });
+
+    return updatedUrl;
+}
+
 module.exports = {
     createUrl,
     getUrl,
     getUrlPublic,
     getUrlsByUserPublic,
     visitUrl,
+    updateUrl,
 };

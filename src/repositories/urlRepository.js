@@ -3,9 +3,10 @@
 
 const models = require('../models/index.js');
 const { URL_TYPES } = require('../constants/databaseConstants.js');
+const scopes = require('../constants/scopes.js');
 
-async function saveUrl(url, scope = 'publicScope') {
-    const newUrl = await models.url.scope('publicScope').create({
+async function saveUrl(url) {
+    const newUrl = await models.url.create({
         code: url.code,
         url: url.redirectUrl,
         user_id: url.userId,
@@ -17,7 +18,7 @@ async function saveUrl(url, scope = 'publicScope') {
     return newUrl;
 }
 
-async function findUrlByCode(code, scope = 'defaultScope') {
+async function findUrlByCode(code, scope = scopes.url.default) {
     const url = await models.url.scope(scope).findOne({
         where: {
             code,
@@ -27,13 +28,13 @@ async function findUrlByCode(code, scope = 'defaultScope') {
     return url;
 }
 
-async function getAllUrls(scope = 'defaultScope') {
+async function getAllUrls(scope = scopes.url.default) {
     const urls = await models.url.scope(scope).findAll();
 
     return urls;
 }
 
-async function getAllUrlsByUserId(userId, scope = 'defaultScope') {
+async function getAllUrlsByUserId(userId, scope = scopes.url.default) {
     const urls = await models.url.scope(scope).findAll({
         where: {
             user_id: userId,
@@ -50,7 +51,7 @@ async function updateUrl(url) {
             url: url.url,
             visits: url.visits,
             enabled: url.enabled,
-            expiration_date: url.expiration_date,
+            expiration_date: url.expirationDate,
             type: url.type,
         },
         {
