@@ -42,16 +42,24 @@ function initControllers(app) {
         res.send('Works!');
     });
 
-    app.use('/users', userRouter);
-    app.use('/urls', urlRouter);
+    app.use('/api/users', userRouter);
+    app.use('/api/urls', urlRouter);
 }
 
 function initDocs(app) {
-    app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+    app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+}
+
+function initErrorHandling(app) {
+    app.use((error, req, res, next) => {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    });
 }
 
 module.exports = function webContext(app) {
     initMiddlewares(app);
     initControllers(app);
     initDocs(app);
+    initErrorHandling(app);
 };
