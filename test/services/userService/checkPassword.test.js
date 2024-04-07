@@ -38,9 +38,9 @@ jest.mock('bcrypt', () => {
     };
 });
 
-const userService = require('../../../src/services/userService.js');
-
 describe('User Service getUserByEmail function', () => {
+    const userService = require('../../../src/services/userService.js');
+
     beforeEach(() => {
         jest.resetModules();
     });

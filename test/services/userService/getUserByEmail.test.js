@@ -9,15 +9,6 @@ jest.mock('../../../src/repositories/userRepository.js', () => {
             createdAt: '2024-04-07T10:09:27.843Z',
             updatedAt: '2024-04-07T10:09:42.750Z',
         },
-        {
-            id: '3b365a11-97a3-4d44-8137-b944cade14da',
-            email: 'test2@mail.com',
-            password: 'hashedtest2',
-            first_name: 'Jane',
-            last_name: 'Doe',
-            createdAt: '2024-04-07T10:09:27.843Z',
-            updatedAt: '2024-04-07T10:09:42.750Z',
-        },
     ];
 
     return {
@@ -27,9 +18,9 @@ jest.mock('../../../src/repositories/userRepository.js', () => {
     };
 });
 
-const userService = require('../../../src/services/userService.js');
-
 describe('User Service getUserByEmail function', () => {
+    const userService = require('../../../src/services/userService.js');
+
     beforeEach(() => {
         jest.resetModules();
     });
