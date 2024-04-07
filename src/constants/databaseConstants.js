@@ -4,6 +4,12 @@ const URL_TYPES = {
     ONE_TIME: 'OT',
 };
 
+const USER_ROLES = {
+    USER: 'user',
+    ADMIN: 'admin',
+};
+
 module.exports = {
     URL_TYPES,
+    USER_ROLES,
 };
