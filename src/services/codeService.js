@@ -1,7 +1,7 @@
 // codeService.js
 // Implementation of the Code service
 
-import urlService from './urlService.js';
+const urlService = require('./urlService.js');
 
 async function getUrlToRedirect(code) {
     const url = await urlService.getUrl(code);

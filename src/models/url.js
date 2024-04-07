@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
             short_url: {
                 type: DataTypes.VIRTUAL,
                 get() {
-                    return `${WEB_DOMAIN}/${this.code}`;
+                    return `${WEB_DOMAIN}/redirect/${this.code}`;
                 },
             },
             createdAt: {

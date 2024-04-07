@@ -1,7 +1,7 @@
 // codeController.js
 // Implmentation of the Code controller
 
-import urlService from '../services/urlService.js';
+const urlService = require('../services/urlService.js');
 const codeService = require('../services/codeService.js');
 
 async function redirectByCode(req, res, next) {
