@@ -12,11 +12,10 @@ async function redirectByCode(req, res, next) {
 
         if (!url) {
             res.status(404).end('Not Found');
+        } else {
+            await urlService.visitUrl(code);
+            res.redirect(302, url);
         }
-
-        await urlService.visitUrl(code);
-
-        res.redirect(302, url);
     } catch (error) {
         next(error);
     }
