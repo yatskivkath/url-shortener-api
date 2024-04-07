@@ -20,6 +20,10 @@ async function createUser(user) {
 }
 
 async function getUserByEmail(email) {
+    if (typeof email !== 'string') {
+        throw new Error('Invalid value was passed to email');
+    }
+
     const user = await userRepository.findUserByEmail(email);
 
     if (!user) {
@@ -36,18 +40,22 @@ async function getUsersPublic() {
 }
 
 async function checkPassword(email, password) {
-    const user = await getUserByEmail(email);
+    try {
+        const user = await getUserByEmail(email);
+        const isMatch = await authenticateService.comparePasswords(
+            password,
+            user.password
+        );
 
-    if (!user) {
-        return false;
+        return isMatch;
+    } catch (error) {
+        switch (error.message) {
+            case 'User was not found':
+                return false;
+            default:
+                throw error;
+        }
     }
-
-    const isMatch = await authenticateService.comparePasswords(
-        password,
-        user.password
-    );
-
-    return isMatch;
 }
 
 module.exports = {
