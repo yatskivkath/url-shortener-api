@@ -38,7 +38,6 @@ jest.mock('bcrypt', () => {
     };
 });
 
-const e = require('express');
 const userService = require('../../../src/services/userService.js');
 
 describe('User Service getUserByEmail function', () => {
