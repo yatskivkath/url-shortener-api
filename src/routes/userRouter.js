@@ -9,7 +9,7 @@ const userRouter = express.Router();
 
 /**
  * @swagger
- * '/users':
+ * '/api/users':
  *  post:
  *     tags:
  *     - User
@@ -54,7 +54,7 @@ userRouter.use(authMiddleware);
 
 /**
  * @swagger
- * '/users':
+ * '/api/users':
  *  get:
  *     tags:
  *     - User

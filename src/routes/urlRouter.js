@@ -11,7 +11,7 @@ urlRouter.use(authMiddleware);
 
 /**
  * @swagger
- * /urls:
+ * /api/urls:
  *  post:
  *   tags:
  *   - Url
@@ -57,7 +57,7 @@ urlRouter.post('/', urlController.createUrl);
 
 /**
  * @swagger
- * '/urls/info/{code}':
+ * '/api/urls/info/{code}':
  *  get:
  *     tags:
  *     - Url
@@ -82,7 +82,7 @@ urlRouter.get('/info/:code', urlController.getUrl);
 
 /**
  * @swagger
- * '/urls':
+ * '/api/urls':
  *  get:
  *     tags:
  *     - Url
@@ -101,7 +101,7 @@ urlRouter.get('/', urlController.getAllUrlsByUserId);
 
 /**
  * @swagger
- * '/urls/{id}':
+ * '/api/urls/{id}':
  *  get:
  *     tags:
  *     - Url
