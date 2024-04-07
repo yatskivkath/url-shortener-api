@@ -1,4 +1,4 @@
-jest.mock('../../src/repositories/urlRepository.js', () => {
+jest.mock('../../../src/repositories/urlRepository.js', () => {
     const urls = [
         {
             id: '786e6338-c83e-45a8-a1a2-4c7ea6888ed1',
@@ -32,12 +32,26 @@ jest.mock('../../src/repositories/urlRepository.js', () => {
         findUrlByCode: jest.fn().mockImplementation((code) => {
             return urls.find((url) => url.code === code);
         }),
+        saveUrl: jest.fn().mockImplementation((url) => {
+            urls.push(url);
+            return url;
+        }),
+        updateUrl: jest.fn().mockImplementation((url) => {
+            const index = urls.findIndex((u) => u.id === url.id);
+            urls[index] = {
+                ...urls[index],
+                ...url,
+            };
+            return url;
+        }),
     };
 });
 
-const codeService = require('../../src/services/codeService.js');
+const urlService = require('../../../src/services/urlService.js');
+const codeService = require('../../../src/services/codeService.js');
+const e = require('express');
 
-describe('Code Service', () => {
+describe('Code Service getUrlToRedirect function', () => {
     beforeEach(() => {
         jest.resetModules();
     });
@@ -56,7 +70,7 @@ describe('Code Service', () => {
 
         const result = await codeService.getUrlToRedirect(CODE);
 
-        expect(result).toBe(null);
+        expect(result).toBeNull();
     });
 
     it('should return NULL if code was not provided', async () => {
@@ -64,7 +78,7 @@ describe('Code Service', () => {
 
         const result = await codeService.getUrlToRedirect(CODE);
 
-        expect(result).toBe(null);
+        expect(result).toBeNull();
     });
 
     it('should return NULL if code is empty string', async () => {
@@ -72,7 +86,7 @@ describe('Code Service', () => {
 
         const result = await codeService.getUrlToRedirect(CODE);
 
-        expect(result).toBe(null);
+        expect(result).toBeNull();
     });
 
     it('should return NULL if url is inactive', async () => {
@@ -80,14 +94,25 @@ describe('Code Service', () => {
 
         const result = await codeService.getUrlToRedirect(CODE);
 
-        expect(result).toBe(null);
+        expect(result).toBeNull();
     });
 
     it('should return NULL if url is expired', async () => {
         // test implementation here
     });
 
-    it('should return NULL if url is of ONE-TIME type and has been already visited', () => {
-        // test implementation here
+    it('should return NULL if url is of ONE-TIME type and has been already visited', async () => {
+        const URL = {
+            code: 'test',
+            url: 'https://google.com',
+            name: 'Google',
+            type: 'OT',
+        };
+
+        await urlService.createUrl(URL);
+        urlService.visitUrl(URL.code);
+
+        const result = await codeService.getUrlToRedirect(URL.code);
+        expect(result).toBeNull();
     });
 });
