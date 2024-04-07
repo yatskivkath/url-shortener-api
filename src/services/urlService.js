@@ -7,14 +7,30 @@ const scopes = require('../constants/scopes.js');
 const { URL_TYPES } = require('../constants/databaseConstants.js');
 
 async function createUrl(url) {
-    const { redirectUrl, userId, name, code, expire, type, codeLength } = url;
+    const {
+        redirectUrl,
+        userId,
+        name,
+        code,
+        expirationDate,
+        type,
+        codeLength,
+    } = url;
+
+    if (type === URL_TYPES.TEMPORARY && !expirationDate) {
+        throw new Error('Expiration date is required for temporary urls');
+    }
+
+    if (type !== URL_TYPES.TEMPORARY && expirationDate) {
+        throw new Error('Expiration date is not allowed for permanent urls');
+    }
 
     const newUrl = await urlRepository.saveUrl({
         code: code ?? generateHash(codeLength),
         redirectUrl,
         userId,
         name,
-        expire,
+        expirationDate,
         type,
     });
 

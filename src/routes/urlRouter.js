@@ -39,7 +39,7 @@ urlRouter.use(authMiddleware);
  *             code:
  *               type: string
  *               example: google-short
- *             expire:
+ *             expirationDate:
  *               type: string
  *               format: date
  *               example: 2022-12-31
