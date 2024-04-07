@@ -23,7 +23,7 @@ async function getUserByEmail(email) {
     const user = await userRepository.findUserByEmail(email);
 
     if (!user) {
-        throw new Error('User not found');
+        throw new Error('User was not found');
     }
 
     return user;
