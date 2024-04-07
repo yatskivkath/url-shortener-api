@@ -50,6 +50,10 @@ async function visitUrl(code) {
     }
 
     url.visits += 1;
+    if (url.type === URL_TYPES.ONE_TIME) {
+        url.enabled = false;
+    }
+
     await urlRepository.updateUrl(url);
 
     return url;
@@ -78,7 +82,9 @@ async function updateUrl(url) {
 async function deleteUrl(id) {
     const deletedUrl = await urlRepository.deleteUrl(id);
 
-    return deletedUrl;
+    if (!deletedUrl) {
+        throw new Error('Url was not found');
+    }
 }
 
 module.exports = {

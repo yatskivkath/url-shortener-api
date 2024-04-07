@@ -4,7 +4,7 @@
 const urlService = require('../services/urlService.js');
 const urlSchema = require('../validators/urlSchema.js');
 
-async function createUrl(req, res) {
+async function createUrl(req, res, next) {
     try {
         const data = req.body;
 
@@ -20,11 +20,11 @@ async function createUrl(req, res) {
             data: newUrl,
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 }
 
-async function getUrl(req, res) {
+async function getUrl(req, res, next) {
     const { code } = req.params;
 
     try {
@@ -36,11 +36,11 @@ async function getUrl(req, res) {
             res.status(200).json(url);
         }
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 }
 
-async function getAllUrlsByUserId(req, res) {
+async function getAllUrlsByUserId(req, res, next) {
     const userId = req.session.userId;
 
     try {
@@ -48,11 +48,11 @@ async function getAllUrlsByUserId(req, res) {
 
         res.status(200).json(urls);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 }
 
-async function deleteUrl(req, res) {
+async function deleteUrl(req, res, next) {
     const { id } = req.params;
 
     try {
@@ -60,7 +60,7 @@ async function deleteUrl(req, res) {
 
         res.status(204).end();
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 }
 

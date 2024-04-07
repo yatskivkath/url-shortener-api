@@ -4,7 +4,7 @@
 const userService = require('../services/userService.js');
 const userSchema = require('../validators/userSchema.js');
 
-async function createUser(req, res) {
+async function createUser(req, res, next) {
     try {
         const data = req.body;
 
@@ -17,17 +17,17 @@ async function createUser(req, res) {
             data: newUser,
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 }
 
-async function getAllUsers(req, res) {
+async function getAllUsers(req, res, next) {
     try {
         const users = await userService.getUsersPublic();
 
         res.status(200).json(users);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 }
 
