@@ -56,6 +56,11 @@ function initDocs(app) {
     app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 }
 
+function initPages(app) {
+    app.set('views', 'pages');
+    app.set('view engine', 'ejs');
+}
+
 function initErrorHandling(app) {
     app.use((error, req, res, next) => {
         console.error(error);
@@ -67,5 +72,6 @@ module.exports = function webContext(app) {
     initMiddlewares(app);
     initControllers(app);
     initDocs(app);
+    initPages(app);
     initErrorHandling(app);
 };
