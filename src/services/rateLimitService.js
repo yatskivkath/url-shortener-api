@@ -47,7 +47,7 @@ async function checkRateLimitIP(ipAddress) {
     );
 }
 
-export default {
+module.exports = {
     checkRateLimitCode,
     checkRateLimitUser,
     checkRateLimitIP,
