@@ -2,7 +2,7 @@
 // Implement the Rate Limit Service
 
 const redisClient = require('../redis/redisClient.js');
-const config = require('../config/config.js');
+const config = require('../config/config.js')[process.env.NODE_ENV];
 
 async function checkRateLimit(key, limit, expires) {
     const rates = await redisClient.get(key);

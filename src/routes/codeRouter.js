@@ -4,6 +4,11 @@
 const express = require('express');
 
 const { redirectByCode } = require('../controllers/codeController.js');
+const {
+    rateLimitByIP,
+    rateLimitByCode,
+    rateLimitByUser,
+} = require('../middlewares/rateLimitMiddleware.js');
 
 const codeRouter = new express.Router();
 
@@ -28,6 +33,12 @@ const codeRouter = new express.Router();
  *      500:
  *        description: Server Error
  */
-codeRouter.get('/:code', redirectByCode);
+codeRouter.get(
+    '/:code',
+    rateLimitByCode,
+    rateLimitByUser,
+    rateLimitByIP,
+    redirectByCode
+);
 
 module.exports = codeRouter;
