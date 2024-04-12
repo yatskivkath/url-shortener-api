@@ -29,6 +29,15 @@ module.exports = {
         redis: {
             url: process.env.REDIS_URL,
         },
+
+        rateLimit: {
+            requestsLimitPerCode: 60,
+            timeLimitPerCode: 3600,
+            requestsLimitPerUser: 120,
+            timeLimitPerUser: 3600,
+            requestsLimitPerIP: 60,
+            timeLimitPerIP: 3600,
+        },
     },
     production: {
         // Database configuration for production environment
