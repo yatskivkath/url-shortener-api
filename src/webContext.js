@@ -9,9 +9,11 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerSpec = require('../swagger');
 
 const redisClient = require('./redis/redisClient.js');
+
 const userRouter = require('./routes/userRouter.js');
 const urlRouter = require('./routes/urlRouter.js');
 const codeRouter = require('./routes/codeRouter.js');
+const pagesRouter = require('./routes/pagesRouter.js');
 
 // Initialize middlewares
 function initMiddlewares(app) {
@@ -47,6 +49,7 @@ function initControllers(app) {
     app.use('/api/users', userRouter);
     app.use('/api/urls', urlRouter);
     app.use('/redirect', codeRouter);
+    app.use('/', pagesRouter);
 }
 
 function initDocs(app) {
