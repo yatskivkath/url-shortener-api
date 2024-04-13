@@ -57,7 +57,7 @@ function initDocs(app) {
 }
 
 function initPages(app) {
-    app.set('views', 'pages');
+    app.set('views', 'src/pages');
     app.set('view engine', 'ejs');
 }
 
