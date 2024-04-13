@@ -16,20 +16,13 @@ const { URL_TYPES } = require('../constants/databaseConstants.js');
  * @param {Date} url.expirationDate url expiration date
  * @param {string} url.type url type
  * @param {number} url.codeLength url code length
+ * @param {uuid} userId logged in user id
  * @returns {Promise<Object>} created url
  * @throws {Error} if expiration date is not provided for temporary urls
  * @throws {Error} if expiration date is provided for permanent urls
  */
-async function createUrl(url) {
-    const {
-        redirectUrl,
-        userId,
-        name,
-        code,
-        expirationDate,
-        type,
-        codeLength,
-    } = url;
+async function createUrl(url, userId) {
+    const { redirectUrl, name, code, expirationDate, type, codeLength } = url;
 
     if (type === URL_TYPES.TEMPORARY && !expirationDate) {
         throw new Error('Expiration date is required for temporary urls');
@@ -54,9 +47,10 @@ async function createUrl(url) {
 /**
  * Get a url by code
  * @param {string} code url code
+ * @param {uuid} userId user id
  * @returns {Promise<Object>} url
  */
-async function getUrl(code) {
+async function getUrl(code, userId) {
     const url = await urlRepository.findUrlByCode(code);
 
     return url;
@@ -65,9 +59,10 @@ async function getUrl(code) {
 /**
  * Get a url public data by code
  * @param {string} code url code
+ * @param {uuid} userId user id
  * @returns {Promise<Object>} url
  */
-async function getUrlPublic(code) {
+async function getUrlPublic(code, userId) {
     const url = await urlRepository.findUrlByCode(code, scopes.url.public);
 
     return url;

@@ -12,9 +12,9 @@ async function createUrl(req, res, next) {
     try {
         urlSchemaCreate.validate(data);
 
-        data.userId = req.session.userId;
+        const userId = req.session.userId;
 
-        const newUrl = await urlService.createUrl(data);
+        const newUrl = await urlService.createUrl(data, userId);
 
         res.status(201).json({
             status: 'success',
@@ -55,6 +55,7 @@ async function getAllUrlsByUserId(req, res, next) {
 
 async function deleteUrl(req, res, next) {
     const { id } = req.params;
+    const userId = req.session.userId;
 
     try {
         await urlService.deleteUrl(id);

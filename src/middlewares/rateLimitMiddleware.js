@@ -18,7 +18,7 @@ async function rateLimitByCode(req, res, next) {
 
 async function rateLimitByUser(req, res, next) {
     const { code } = req.params;
-    const url = urlService.getUrl(code);
+    const url = urlService.getUrlPublic(code);
 
     if (!url) {
         res.status(404).end('Not Found');

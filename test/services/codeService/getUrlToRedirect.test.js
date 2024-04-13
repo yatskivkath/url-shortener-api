@@ -109,7 +109,9 @@ describe('Code Service getUrlToRedirect function', () => {
             type: 'OT',
         };
 
-        await urlService.createUrl(URL);
+        const USER_ID = '3b365a11-97a3-4d44-8137-b944cade14da';
+
+        await urlService.createUrl(URL, USER_ID);
         urlService.visitUrl(URL.code);
 
         const result = await codeService.getUrlToRedirect(URL.code);

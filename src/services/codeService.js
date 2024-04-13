@@ -4,7 +4,7 @@
 const urlService = require('./urlService.js');
 
 async function getUrlToRedirect(code) {
-    const url = await urlService.getUrl(code);
+    const url = await urlService.getUrlPublic(code);
 
     if (!url || !url.enabled) {
         return null;
