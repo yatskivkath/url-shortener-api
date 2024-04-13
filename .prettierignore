@@ -1,5 +1,7 @@
 node_modules
 
+public
+
 .eslintrc.json
 
 .prettierrc.json

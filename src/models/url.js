@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
                         default:
                             return 'Unknown';
                     }
-                }
+                },
             },
             enabled: {
                 allowNull: false,
