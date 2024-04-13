@@ -2,18 +2,19 @@
 // Implementation of the Url controller
 
 const urlService = require('../services/urlService.js');
-const urlSchema = require('../validators/urlSchema.js');
+const {
+    urlSchemaCreate,
+    urlSchemaUpdate,
+} = require('../validators/urlSchema.js');
 
 async function createUrl(req, res, next) {
+    const data = req.body;
     try {
-        const data = req.body;
+        urlSchemaCreate.validate(data);
 
-        urlSchema.validate(data);
+        data.userId = req.session.userId;
 
-        const newUrl = await urlService.createUrl({
-            ...data,
-            userId: req.session.userId,
-        });
+        const newUrl = await urlService.createUrl(data);
 
         res.status(201).json({
             status: 'success',
@@ -64,9 +65,27 @@ async function deleteUrl(req, res, next) {
     }
 }
 
+async function updateUrl(req, res, next) {
+    const { id } = req.params;
+    const data = req.body;
+
+    try {
+        urlSchemaUpdate.validate(data);
+
+        data.id = id;
+
+        const updatedUrl = await urlService.updateUrl(data);
+
+        res.status(200).json(updatedUrl);
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     createUrl,
     getUrl,
     getAllUrlsByUserId,
     deleteUrl,
+    updateUrl,
 };

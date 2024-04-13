@@ -70,13 +70,20 @@ async function visitUrl(code) {
         url.enabled = false;
     }
 
-    await urlRepository.updateUrl(url);
+    await urlRepository.updateUrl({
+        id: url.id,
+        visits: url.visits,
+    });
 
     return url;
 }
 
 async function updateUrl(url) {
-    const { enabled, expirationDate, type } = url;
+    const { id, name, enabled, expirationDate, type } = url;
+
+    if (!id) {
+        throw new Error('Url id is required');
+    }
 
     if (type === URL_TYPES.TEMPORARY && !expirationDate) {
         throw new Error('Expiration date is required for temporary urls');
@@ -87,9 +94,11 @@ async function updateUrl(url) {
     }
 
     const updatedUrl = await urlRepository.updateUrl({
+        id,
         expirationDate,
         enabled,
         type,
+        name,
     });
 
     return updatedUrl;

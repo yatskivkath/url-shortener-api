@@ -5,7 +5,7 @@ const Joi = require('joi');
 
 const { URL_TYPES } = require('../constants/databaseConstants.js');
 
-const urlSchema = Joi.object({
+const urlSchemaCreate = Joi.object({
     redirectUrl: Joi.string().uri().required(),
     name: Joi.string().required(),
     code: Joi.string().alphanum().min(5).max(15),
@@ -14,4 +14,14 @@ const urlSchema = Joi.object({
     codeLength: Joi.number().integer().min(5).max(15),
 });
 
-module.exports = urlSchema;
+const urlSchemaUpdate = Joi.object({
+    name: Joi.string(),
+    expirationDate: Joi.date().min('now'),
+    type: Joi.string().valid(...Object.values(URL_TYPES)),
+    enabled: Joi.boolean(),
+});
+
+module.exports = {
+    urlSchemaCreate,
+    urlSchemaUpdate,
+};
