@@ -49,6 +49,18 @@ module.exports = (sequelize, DataTypes) => {
             type: {
                 allowNull: false,
                 type: DataTypes.ENUM('P', 'T', 'OT'),
+                get() {
+                    switch (this.getDataValue('type')) {
+                        case 'P':
+                            return 'permanent';
+                        case 'T':
+                            return 'temporary';
+                        case 'OT':
+                            return 'one-time';
+                        default:
+                            return 'Unknown';
+                    }
+                }
             },
             enabled: {
                 allowNull: false,
@@ -82,6 +94,7 @@ module.exports = (sequelize, DataTypes) => {
             'id',
             'short_url',
             'url',
+            'name',
             'code',
             'visits',
             'type',
