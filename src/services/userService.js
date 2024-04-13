@@ -5,6 +5,15 @@ const userRepository = require('../repositories/userRepository.js');
 const authenticationService = require('./authenticationService.js');
 const scopes = require('../constants/scopes.js');
 
+/**
+ * Create a new user
+ * @param {Object} user user object
+ * @param {string} user.firstName user first name
+ * @param {string} user.lastName user last name
+ * @param {string} user.email user email
+ * @param {string} user.password user password
+ * @returns {Promise<Object>} created user
+ */
 async function createUser(user) {
     const { firstName, lastName, email, password } = user;
     const hashedPassword = await authenticationService.hashPassword(password);
@@ -19,6 +28,12 @@ async function createUser(user) {
     return newUser;
 }
 
+/**
+ * Get a user by email
+ * @param {string} email user email
+ * @returns {Promise<Object>} user
+ * @throws {Error} if user was not found
+ */
 async function getUserByEmail(email) {
     if (typeof email !== 'string') {
         throw new Error('Invalid value was passed to email');
@@ -33,12 +48,22 @@ async function getUserByEmail(email) {
     return user;
 }
 
+/**
+ * Get all users with public scope
+ * @returns {Promise<Array>} users
+ */
 async function getUsersPublic() {
     const users = await userRepository.getAllUsers(scopes.user.public);
 
     return users;
 }
 
+/**
+ * Check if the password is correct
+ * @param {string} email user email
+ * @param {string} password user password
+ * @returns {Promise<boolean>} is password correct
+ */
 async function checkPassword(email, password) {
     try {
         const user = await getUserByEmail(email);
@@ -58,6 +83,12 @@ async function checkPassword(email, password) {
     }
 }
 
+/**
+ * Get a user by id
+ * @param {uuid} userId user id
+ * @returns {Promise<Object>} user
+ * @throws {Error} if user was not found
+ */
 async function getUserById(userId) {
     const user = await userRepository.findUserById(userId);
 
