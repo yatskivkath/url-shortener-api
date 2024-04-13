@@ -27,9 +27,10 @@
 
     <div class="flex flex-col justify-start px-6 py-12 lg:px-8 gap-4">
         <h2 class="text-base font-semibold leading-7 text-gray-900">My Short URLs</h2>
-        <div class="grid xl:grid-cols-6 lg:grid-cols-4 sm:grid-cols-1 gap-4">
-            <% for (let url of urls){%>
-                <div class="flex flex-col gap-3 bg-white shadow-md shadow-indigo-200 hover:shadow-indigo-300 rounded-lg p-4">
+        <div id="urls_list" class="grid xl:grid-cols-6 lg:grid-cols-4 sm:grid-cols-1 gap-4">
+            <% for (let i = 0; i < urls.length; i++) {%>
+                <% const url = urls[i] %>
+                <div class="flex flex-col gap-3 bg-white shadow-md shadow-indigo-200 hover:shadow-indigo-300 hover:shadow-lg rounded-lg p-4">
                     <div class="flex flex-col gap-0.5">
                         <div class="flex justify-center w-20 bg-gray-500 rounded-md px-1 py-0.5 mb-2">
                             <span class="text-white font-semibold text-xs">
@@ -54,13 +55,13 @@
                             </span>
                         </div>
                         <div class="flex justify-end gap-2">
-                            <button class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
+                            <button id="edit_btn_<%= i %>" class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
                                 edit
                             </button>
-                            <span class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
+                            <span id="copy_btn_<%= i %>" class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
                                 content_copy
                             </span>
-                            <span class="material-icons text-gray-300 hover:text-red-600 cursor-pointer">
+                            <span id="delete_btn_<%= i %>" class="material-icons text-gray-300 hover:text-red-600 cursor-pointer">
                                 delete
                             </span> 
                         </div>
@@ -69,5 +70,12 @@
              <% }%>
         </div>
     </div>
+    <script >
+        document.getElementById("customize_btn").addEventListener("click", redirect);
+
+        function redirect() { 
+            window.location = "/url/customize"; 
+        }
+    </script>
 </body>
 </html>

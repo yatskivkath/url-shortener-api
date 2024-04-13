@@ -20,4 +20,6 @@ pagesRouter.get('/dasboard', pagesController.dashboardPage);
 
 pagesRouter.get('/admin', pagesController.adminPage);
 
+pagesRouter.get('/url/customize', pagesController.urlCustomizePage);
+
 module.exports = pagesRouter;

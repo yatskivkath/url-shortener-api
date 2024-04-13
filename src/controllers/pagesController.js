@@ -29,10 +29,15 @@ async function adminPage(req, res) {
     res.render('admin', { users });
 }
 
+async function urlCustomizePage(req, res) {
+    res.render('url');
+}
+
 module.exports = {
     homePage,
     loginPage,
     registerPage,
     dashboardPage,
     adminPage,
+    urlCustomizePage,
 };
