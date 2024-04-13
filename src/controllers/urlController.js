@@ -9,12 +9,21 @@ const {
 
 async function createUrl(req, res, next) {
     const data = req.body;
+
+    console.log('data', data);
+
     try {
         urlSchemaCreate.validate(data);
 
         const userId = req.session.userId;
 
-        const newUrl = await urlService.createUrl(data, userId);
+        const newUrl = await urlService.createUrl(
+            {
+                redirectUrl: data.url,
+                name: data.name,
+            },
+            userId
+        );
 
         res.status(201).json({
             status: 'success',
