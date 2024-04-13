@@ -27,9 +27,10 @@ async function createUrl(req, res, next) {
 
 async function getUrl(req, res, next) {
     const { code } = req.params;
+    const userId = req.session.userId;
 
     try {
-        const url = await urlService.getUrlPublic(code);
+        const url = await urlService.getUrlPublic(code, userId);
 
         if (!url) {
             res.status(404).json({ error: 'Url not found' });

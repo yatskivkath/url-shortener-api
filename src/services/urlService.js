@@ -5,6 +5,9 @@ const urlRepository = require('../repositories/urlRepository.js');
 const { generateHash } = require('../utils/hashFunctions.js');
 const scopes = require('../constants/scopes.js');
 const { URL_TYPES } = require('../constants/databaseConstants.js');
+const { actions, subjects } = require('../constants/permissionsConstants.js');
+const permissionsService = require('./permissionsService.js');
+const userService = require('./userService.js');
 
 /**
  * Create a new url
@@ -51,7 +54,10 @@ async function createUrl(url, userId) {
  * @returns {Promise<Object>} url
  */
 async function getUrl(code, userId) {
+    const user = await userService.getUserById(userId);
     const url = await urlRepository.findUrlByCode(code);
+
+    permissionsService.checkPermissions(user, url, actions.READ, subjects.URL);
 
     return url;
 }
@@ -63,7 +69,10 @@ async function getUrl(code, userId) {
  * @returns {Promise<Object>} url
  */
 async function getUrlPublic(code, userId) {
+    const user = await userService.getUserById(userId);
     const url = await urlRepository.findUrlByCode(code, scopes.url.public);
+
+    permissionsService.checkPermissions(user, url, actions.READ, subjects.URL);
 
     return url;
 }
