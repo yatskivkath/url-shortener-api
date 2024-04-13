@@ -3,7 +3,7 @@
 
 const express = require('express');
 
-const authenticateController = require('../controllers/authenticateController.js');
+const authenticationController = require('../controllers/authenticationController.js');
 
 const authRouter = new express.Router();
 
@@ -36,6 +36,6 @@ const authRouter = new express.Router();
  *      500:
  *        description: Server Error
  */
-authRouter.post('/login', authenticateController.login);
+authRouter.post('/login', authenticationController.login);
 
 module.exports = authRouter;
