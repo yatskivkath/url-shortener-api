@@ -43,15 +43,11 @@ function initMiddlewares(app) {
 
 // Initialize controllers
 function initControllers(app) {
-    app.all('/', (req, res) => {
-        res.send('Works!');
-    });
-
     app.use('/api/users', userRouter);
     app.use('/api/urls', urlRouter);
     app.use('/redirect', codeRouter);
-    app.use('/', pagesRouter);
     app.use('/api/auth', authRouter);
+    app.use('/', pagesRouter);
 }
 
 function initDocs(app) {

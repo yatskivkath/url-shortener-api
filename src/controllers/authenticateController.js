@@ -7,9 +7,11 @@ const authenticateService = require('../services/authenticateService.js');
 async function login(req, res) {
     const { email, password } = req.body;
 
-    const isLoggedIn = await authenticateService.comparePassword(
-        email,
-        password
+    const user = await userService.getUserByEmail(email);
+
+    const isLoggedIn = await authenticateService.comparePasswords(
+        password,
+        user.password
     );
 
     if (isLoggedIn) {
