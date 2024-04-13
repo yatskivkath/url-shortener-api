@@ -3,7 +3,7 @@
 
 const express = require('express');
 
-const webContext = require('./src/webContext.js');
+const webContext = require('./webContext.js');
 
 const app = express();
 
