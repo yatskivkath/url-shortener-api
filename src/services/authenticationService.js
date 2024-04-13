@@ -1,4 +1,4 @@
-// authenticateService.js
+// authenticationService.js
 // Implementation of the Authenticate service
 
 const bcrypt = require('bcrypt');

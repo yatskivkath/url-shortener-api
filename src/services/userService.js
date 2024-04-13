@@ -2,12 +2,12 @@
 // Implementation of the User service
 
 const userRepository = require('../repositories/userRepository.js');
-const authenticateService = require('./authenticateService.js');
+const authenticationService = require('./authenticationService.js');
 const scopes = require('../constants/scopes.js');
 
 async function createUser(user) {
     const { firstName, lastName, email, password } = user;
-    const hashedPassword = await authenticateService.hashPassword(password);
+    const hashedPassword = await authenticationService.hashPassword(password);
 
     const newUser = await userRepository.saveUser({
         firstName,
@@ -42,7 +42,7 @@ async function getUsersPublic() {
 async function checkPassword(email, password) {
     try {
         const user = await getUserByEmail(email);
-        const isMatch = await authenticateService.comparePasswords(
+        const isMatch = await authenticationService.comparePasswords(
             password,
             user.password
         );
