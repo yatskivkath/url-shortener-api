@@ -15,3 +15,5 @@ pagesRouter.get('/register', pagesController.registerPage);
 pagesRouter.get('/dasboard', pagesController.dashboardPage);
 
 pagesRouter.get('/admin', pagesController.adminPage);
+
+module.exports = pagesRouter;
