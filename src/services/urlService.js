@@ -65,14 +65,10 @@ async function getUrl(code, userId) {
 /**
  * Get a url public data by code
  * @param {string} code url code
- * @param {uuid} userId user id
  * @returns {Promise<Object>} url
  */
-async function getUrlPublic(code, userId) {
-    const user = await userService.getUserById(userId);
+async function getUrlPublic(code) {
     const url = await urlRepository.findUrlByCode(code, scopes.url.public);
-
-    permissionsService.checkPermissions(user, url, actions.READ, subjects.URL);
 
     return url;
 }

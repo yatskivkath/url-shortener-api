@@ -85,6 +85,7 @@ module.exports = (sequelize, DataTypes) => {
             'code',
             'visits',
             'type',
+            'enabled',
             'expiration_date',
         ],
     });
