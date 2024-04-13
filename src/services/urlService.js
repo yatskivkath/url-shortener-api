@@ -6,6 +6,20 @@ const { generateHash } = require('../utils/hashFunctions.js');
 const scopes = require('../constants/scopes.js');
 const { URL_TYPES } = require('../constants/databaseConstants.js');
 
+/**
+ * Create a new url
+ * @param {Object} url url object
+ * @param {string} url.redirectUrl url redirect url
+ * @param {uuid} url.userId user id
+ * @param {string} url.name url name
+ * @param {string} url.code url code
+ * @param {Date} url.expirationDate url expiration date
+ * @param {string} url.type url type
+ * @param {number} url.codeLength url code length
+ * @returns {Promise<Object>} created url
+ * @throws {Error} if expiration date is not provided for temporary urls
+ * @throws {Error} if expiration date is provided for permanent urls
+ */
 async function createUrl(url) {
     const {
         redirectUrl,
@@ -37,18 +51,33 @@ async function createUrl(url) {
     return newUrl;
 }
 
+/**
+ * Get a url by code
+ * @param {string} code url code
+ * @returns {Promise<Object>} url
+ */
 async function getUrl(code) {
     const url = await urlRepository.findUrlByCode(code);
 
     return url;
 }
 
+/**
+ * Get a url public data by code
+ * @param {string} code url code
+ * @returns {Promise<Object>} url
+ */
 async function getUrlPublic(code) {
     const url = await urlRepository.findUrlByCode(code, scopes.url.public);
 
     return url;
 }
 
+/**
+ * Get all urls by user id
+ * @param {uuid} userId user id
+ * @returns {Promise<Array>} urls
+ */
 async function getUrlsByUserPublic(userId) {
     const urls = await urlRepository.getAllUrlsByUserId(
         userId,
@@ -58,6 +87,12 @@ async function getUrlsByUserPublic(userId) {
     return urls;
 }
 
+/**
+ * Visit a url by code
+ * @param {string} code url code
+ * @returns {Promise<Object>} visited url
+ * @throws {Error} if url was not found
+ */
 async function visitUrl(code) {
     const url = await urlRepository.findUrlByCode(code);
 
@@ -78,12 +113,21 @@ async function visitUrl(code) {
     return url;
 }
 
-async function updateUrl(url) {
+/**
+ * Update a url by id
+ * @param {Object} url url object
+ * @param {uuid} url.id url id
+ * @param {string} url.name url name
+ * @param {string} url.enabled url enabled
+ * @param {string} url.expirationDate url expiration date
+ * @param {string} url.type url type
+ * @param {uuid} userId logged in user id
+ * @returns {Promise<Object>} updated url
+ * @throws {Error} if expiration date is not provided temporary urls
+ * @throws {Error} if expiration date is provided for permanent urls
+ */
+async function updateUrl(url, userId) {
     const { id, name, enabled, expirationDate, type } = url;
-
-    if (!id) {
-        throw new Error('Url id is required');
-    }
 
     if (type === URL_TYPES.TEMPORARY && !expirationDate) {
         throw new Error('Expiration date is required for temporary urls');
@@ -104,8 +148,14 @@ async function updateUrl(url) {
     return updatedUrl;
 }
 
-async function deleteUrl(id) {
-    const deletedUrl = await urlRepository.deleteUrl(id);
+/**
+ * Delete a url by id
+ * @param {uuid} urlId url id
+ * @param {uuid} userId logged in user id
+ * @returns {Promise<void>}
+ */
+async function deleteUrl(urlId, userId) {
+    const deletedUrl = await urlRepository.deleteUrl(urlId);
 
     if (!deletedUrl) {
         throw new Error('Url was not found');
