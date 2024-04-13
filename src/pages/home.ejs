@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URLs Page</title>
+</head>
+<body>
+    <h1>URLs Page</h1>
+    <section>
+        <h2>Create a Short URL</h2>
+        <form id="new-url-form" action="">
+            <div>
+                <label for="url">Url:</label>
+                <input type="text" name="url" id="url" required>
+                <input type="submit" value="Create">
+            </div>
+        </form>
+    </section>
+    <section>
+        <h2>List of URLs</h2>
+        <div id="urls--container" class="urls--container">
+            <!-- <% for (let url of urls){%>
+                <div class="urls__item">
+                    <h4 style="margin-bottom: 0;">
+                       <%= url.short_url %>
+                    </h4>
+                    <p style="margin-top: 5px;">
+                        <%= url.url %>
+                    </p>
+                </div>`
+             <% }%> -->
+        </div>
+    </section>
+</body>
+</html>

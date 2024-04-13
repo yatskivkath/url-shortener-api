@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+    </style>
+</head>
+<body>
+    <h1>Users Page</h1>
+    <section>
+        <h2>Create a New User</h2>
+        <form id="new-user-form" action="">
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" required>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div>
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </section>
+    <section>
+        <h2>List of Users</h2>
+        <div class="users--container">
+            <% for (let user of users){%>
+                <div class="users__item">
+                 <h4 style="margin-bottom: 0;">
+                     <%= user.name %>
+                 </h4>
+                 <p style="margin-top: 5px;">
+                     <%= user.email %>
+                 </p>
+                </div>
+             <% }%>
+        </div>
+    </section>
+</body>
+</html>
