@@ -58,9 +58,20 @@ async function checkPassword(email, password) {
     }
 }
 
+async function getUserById(userId) {
+    const user = await userRepository.findUserById(userId);
+
+    if (!user) {
+        throw new Error('User was not found');
+    }
+
+    return user;
+}
+
 module.exports = {
     createUser,
     getUserByEmail,
     getUsersPublic,
     checkPassword,
+    getUserById,
 };
