@@ -4,7 +4,7 @@
 const express = require('express');
 
 const pagesController = require('../controllers/pagesController.js');
-const authMiddleware = require('../middlewares/authMiddleware.js');
+const authenticationMiddleware = require('../middlewares/authenticationMiddleware.js');
 
 const pagesRouter = express.Router();
 
@@ -12,7 +12,7 @@ pagesRouter.get('/login', pagesController.loginPage);
 
 pagesRouter.get('/register', pagesController.registerPage);
 
-pagesRouter.use(authMiddleware);
+pagesRouter.use(authenticationMiddleware);
 
 pagesRouter.get('/', pagesController.homePage);
 

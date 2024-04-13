@@ -3,11 +3,11 @@
 
 const express = require('express');
 const urlController = require('../controllers/urlController.js');
-const authMiddleware = require('../middlewares/authMiddleware.js');
+const authenticationMiddleware = require('../middlewares/authenticationMiddleware.js');
 
 const urlRouter = express.Router();
 
-urlRouter.use(authMiddleware);
+urlRouter.use(authenticationMiddleware);
 
 /**
  * @swagger

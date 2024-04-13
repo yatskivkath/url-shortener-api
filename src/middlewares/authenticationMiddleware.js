@@ -1,4 +1,4 @@
-// authMiddleware.js
+// authenticationMiddleware.js
 // Implementation of the authentication middleware
 
 async function sessionCookieMiddleware(req, res, next) {

@@ -3,7 +3,7 @@
 
 const express = require('express');
 const userController = require('../controllers/userController.js');
-const authMiddleware = require('../middlewares/authMiddleware.js');
+const authenticationMiddleware = require('../middlewares/authenticationMiddleware.js');
 
 const userRouter = express.Router();
 
@@ -50,7 +50,7 @@ const userRouter = express.Router();
  */
 userRouter.post('/', userController.createUser);
 
-userRouter.use(authMiddleware);
+userRouter.use(authenticationMiddleware);
 
 /**
  * @swagger
