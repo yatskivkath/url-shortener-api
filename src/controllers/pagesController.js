@@ -1,8 +1,14 @@
 // pagesController.js
 // Implementation of the ejs pages controller
 
+const urlService = require('../services/urlService.js');
+const userService = require('../services/userService.js');
+
 async function homePage(req, res) {
-    res.render('home');
+    const userId = req.session.userId;
+    const urls = await urlService.getUrlsByUserPublic(userId);
+
+    res.render('home', { urls });
 }
 
 async function loginPage(req, res) {
@@ -18,7 +24,9 @@ async function dashboardPage(req, res) {
 }
 
 async function adminPage(req, res) {
-    res.render('admin');
+    const users = await userService.getUsersPublic();
+
+    res.render('admin', { users });
 }
 
 module.exports = {
