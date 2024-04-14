@@ -6,7 +6,7 @@ jest.mock('../../../src/repositories/urlRepository.js', () => {
             url: 'https://google.com',
             name: 'Google',
             visits: 1,
-            user_id: '3b365a11-97a3-4d44-8137-b944cade14da',
+            userId: '3b365a11-97a3-4d44-8137-b944cade14da',
             expiration_date: null,
             type: 'P',
             enabled: true,
@@ -19,7 +19,7 @@ jest.mock('../../../src/repositories/urlRepository.js', () => {
             url: 'https://google.com',
             name: 'Google',
             visits: 1,
-            user_id: '3b365a11-97a3-4d44-8137-b944cade14da',
+            userId: '3b365a11-97a3-4d44-8137-b944cade14da',
             expiration_date: null,
             type: 'OT',
             enabled: false,
@@ -109,9 +109,9 @@ describe('Code Service getUrlToRedirect function', () => {
             type: 'OT',
         };
 
-        const USER_ID = '3b365a11-97a3-4d44-8137-b944cade14da';
+        const userId = '3b365a11-97a3-4d44-8137-b944cade14da';
 
-        await urlService.createUrl(URL, USER_ID);
+        await urlService.createUrl(URL, userId);
         urlService.visitUrl(URL.code);
 
         const result = await codeService.getUrlToRedirect(URL.code);

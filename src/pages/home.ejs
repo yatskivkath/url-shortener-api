@@ -33,14 +33,14 @@
                     <div class="flex flex-col gap-0.5">
                         <div class="flex justify-center w-20 bg-gray-500 rounded-md px-1 py-0.5 mb-2">
                             <span class="text-white font-semibold text-xs">
-                                <%= url.type %>
+                                <%= url.typeParsed.toLowerCase() %>
                             </span>
                         </div>
                         <p class="break-all text-gray-500">
                             <%= url.name %>
                         </p>
-                        <a href="<%= url.short_url %>" class="break-all text-indigo-600 font-semibold mb-2" target="_blank" title="Open in new tab">
-                            <%= url.short_url %>
+                        <a href="<%= url.shortUrl %>" class="break-all text-indigo-600 font-semibold mb-2" target="_blank" title="Open in new tab">
+                            <%= url.shortUrl %>
                         </a>
                     </div>
 
@@ -57,7 +57,7 @@
                             <button class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
                                 edit
                             </button>
-                            <button onclick="copyUrl('<%= url.short_url %>')" class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
+                            <button onclick="copyUrl('<%= url.shortUrl %>')" class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
                                 content_copy
                             </button>
                             <button onclick="deleteUrl('<%= url.id %>')" class="material-icons text-gray-300 hover:text-red-600 cursor-pointer">

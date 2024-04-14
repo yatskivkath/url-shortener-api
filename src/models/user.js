@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     class User extends Model {
         static associate(models) {
             User.hasMany(models.url, {
-                foreignKey: 'user_id',
+                foreignKey: 'userId',
                 onDelete: 'casscade',
                 onUpdate: 'casscade',
             });

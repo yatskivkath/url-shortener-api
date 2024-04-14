@@ -9,7 +9,7 @@ async function saveUrl(url) {
     const newUrl = await models.url.create({
         code: url.code,
         url: url.redirectUrl,
-        user_id: url.userId,
+        userId: url.userId,
         name: url.name,
         type: url.type ?? URL_TYPES.PERMANENT,
         expiration_date: url.expirationDate,
@@ -37,7 +37,7 @@ async function getAllUrls(scope = scopes.url.default) {
 async function getAllUrlsByUserId(userId, scope = scopes.url.default) {
     const urls = await models.url.scope(scope).findAll({
         where: {
-            user_id: userId,
+            userId: userId,
         },
     });
 

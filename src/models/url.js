@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     class Url extends Model {
         static associate(models) {
             Url.belongsTo(models.user, {
-                foreignKey: 'user_id',
+                foreignKey: 'userId',
                 onDelete: 'casscade',
                 onUpdate: 'casscade',
             });
@@ -39,7 +39,8 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: 0,
                 type: DataTypes.INTEGER,
             },
-            user_id: {
+            userId: {
+                field: 'user_id',
                 allowNull: false,
                 type: DataTypes.UUID,
             },
@@ -49,14 +50,17 @@ module.exports = (sequelize, DataTypes) => {
             type: {
                 allowNull: false,
                 type: DataTypes.ENUM('P', 'T', 'OT'),
+            },
+            typeParsed: {
+                type: DataTypes.VIRTUAL,
                 get() {
-                    switch (this.getDataValue('type')) {
+                    switch (this.type) {
                         case 'P':
-                            return 'permanent';
+                            return 'Permanent';
                         case 'T':
-                            return 'temporary';
+                            return 'Temporary';
                         case 'OT':
-                            return 'one-time';
+                            return 'One-Time';
                         default:
                             return 'Unknown';
                     }
@@ -67,7 +71,7 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: true,
                 type: DataTypes.BOOLEAN,
             },
-            short_url: {
+            shortUrl: {
                 type: DataTypes.VIRTUAL,
                 get() {
                     return `${WEB_DOMAIN}/redirect/${this.code}`;
@@ -92,12 +96,13 @@ module.exports = (sequelize, DataTypes) => {
     Url.addScope('publicScope', {
         attributes: [
             'id',
-            'short_url',
+            'shortUrl',
             'url',
             'name',
             'code',
             'visits',
             'type',
+            'typeParsed',
             'enabled',
             'expiration_date',
         ],
