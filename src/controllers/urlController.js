@@ -78,6 +78,7 @@ async function deleteUrl(req, res, next) {
 
 async function updateUrl(req, res, next) {
     const { id } = req.params;
+    const userId = req.session.userId;
     const data = req.body;
 
     try {
@@ -85,7 +86,7 @@ async function updateUrl(req, res, next) {
 
         data.id = id;
 
-        const updatedUrl = await urlService.updateUrl(data);
+        const updatedUrl = await urlService.updateUrl(data, userId);
 
         res.status(200).json(updatedUrl);
     } catch (error) {

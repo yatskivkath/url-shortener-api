@@ -74,6 +74,16 @@ async function deleteUrl(id) {
     return deletedUrl;
 }
 
+async function getUrl(id) {
+    const url = await models.url.findOne({
+        where: {
+            id,
+        },
+    });
+
+    return url;
+}
+
 module.exports = {
     saveUrl,
     findUrlByCode,
@@ -81,4 +91,5 @@ module.exports = {
     getAllUrlsByUserId,
     updateUrl,
     deleteUrl,
+    getUrl,
 };

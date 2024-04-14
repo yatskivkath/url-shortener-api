@@ -122,8 +122,8 @@ async function visitUrl(code) {
  * @throws {Error} if expiration date is not provided temporary urls
  * @throws {Error} if expiration date is provided for permanent urls
  */
-async function updateUrl(url, userId) {
-    const { id, name, enabled, expirationDate, type } = url;
+async function updateUrl(data, userId) {
+    const { id, name, enabled, expirationDate, type } = data;
 
     if (type === URL_TYPES.TEMPORARY && !expirationDate) {
         throw new Error('Expiration date is required for temporary urls');
@@ -132,6 +132,16 @@ async function updateUrl(url, userId) {
     if (type !== URL_TYPES.TEMPORARY && expirationDate) {
         throw new Error('Expiration date is not allowed for permanent urls');
     }
+
+    const user = await userService.getUserById(userId);
+    const url = await urlRepository.getUrl(id);
+
+    permissionsService.checkPermissions(
+        user,
+        url,
+        actions.UPDATE,
+        subjects.URL
+    );
 
     const updatedUrl = await urlRepository.updateUrl({
         id,

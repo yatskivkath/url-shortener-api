@@ -36,11 +36,22 @@
                 <% for (const url of urls) {%>
                     <div class="flex flex-col justify-between gap-3 bg-white shadow-md shadow-indigo-200 hover:shadow-indigo-300 hover:shadow-lg rounded-lg p-4">
                         <div class="flex flex-col gap-0.5">
-                            <div class="flex justify-center w-20 bg-gray-500 rounded-md px-1 py-0.5 mb-2">
-                                <span class="text-white font-semibold text-xs">
-                                    <%= url.typeParsed.toLowerCase() %>
-                                </span>
+                            <div class="flex justify-between">
+                                <div class="flex justify-center w-20 bg-gray-500 rounded-md px-1 py-0.5 mb-2">
+                                    <span class="text-white font-semibold text-xs">
+                                        <%= url.typeParsed.toLowerCase() %>
+                                    </span>
+                                </div>
+                                <% if(url.active) {%>
+                                    <label class="inline-flex items-center cursor-pointer">
+                                        <% console.log(url.name) %>
+                                        <% console.log(url.enabled) %>
+                                        <input id="enabledCheckbox" type="checkbox" onchange="enableUrl('<%= url.id %>', this.checked)" <%= url.enabled ? "checked" : "" %> class="sr-only peer">
+                                        <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                    </label>
+                                <% } %>
                             </div>
+                        
                             <p class="break-all text-gray-500">
                                 <%= url.name %>
                             </p>
@@ -118,6 +129,25 @@
 
             if (!response.ok) {
                 alert('Failed to delete URL');
+            }
+        }
+
+        async function enableUrl(urlId, enabled) {
+            console.log('urlId', urlId);
+            console.log('enabled', enabled);
+            const response = await fetch(`/api/urls/${urlId}`, {
+                method: 'PUT',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ enabled }),
+            });
+
+            if (!response.ok) {
+                const checkbox = document.getElementById('enabledCheckbox');
+                checkbox.checked = !enabled;
+                alert('Failed to enable URL');
             }
         }
     </script>

@@ -85,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
                         return false;
                     }
 
-                    return this.enabled;
+                    return true;
                 },
             },
             shortUrl: {
