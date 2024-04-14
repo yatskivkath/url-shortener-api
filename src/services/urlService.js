@@ -39,6 +39,15 @@ async function createUrl(url, userId) {
         throw new ValidationError();
     }
 
+    const user = await userService.getUserById(userId);
+
+    permissionsService.checkPermissions(
+        user,
+        url,
+        actions.CREATE,
+        subjects.URL
+    );
+
     const newUrl = await urlRepository.saveUrl({
         code: code ?? generateHash(codeLength),
         redirectUrl,
