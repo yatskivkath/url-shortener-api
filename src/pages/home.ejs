@@ -40,7 +40,7 @@
                         <p class="break-all text-gray-500">
                             <%= url.name %>
                         </p>
-                        <a href="<%= url.short_url %>" class="break-all text-indigo-600 font-semibold mb-2" target="_blank" title="Open in new tab">
+                        <a id="short_url_<%= i %>" href="<%= url.short_url %>" class="break-all text-indigo-600 font-semibold mb-2" target="_blank" title="Open in new tab">
                             <%= url.short_url %>
                         </a>
                     </div>
@@ -58,12 +58,12 @@
                             <button id="edit_btn_<%= i %>" class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
                                 edit
                             </button>
-                            <span id="copy_btn_<%= i %>" class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
+                            <button id="copy_btn_<%= i %>" onclick="copyUrl('<%= url.short_url %>')" class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
                                 content_copy
-                            </span>
-                            <span id="delete_btn_<%= i %>" class="material-icons text-gray-300 hover:text-red-600 cursor-pointer">
+                            </button>
+                            <button id="delete_btn_<%= i %>" onclick="deleteUrl('<%= url.id %>')" class="material-icons text-gray-300 hover:text-red-600 cursor-pointer">
                                 delete
-                            </span> 
+                            </button> 
                         </div>
                     </div>
                 </div>
@@ -71,10 +71,26 @@
         </div>
     </div>
     <script >
-        document.getElementById("customize_btn").addEventListener("click", redirect);
-
-        function redirect() { 
+        document.getElementById("customize_btn").addEventListener("click", () => { 
             window.location = "/url/customize"; 
+        });
+
+        async function copyUrl(shortUrl) {
+            try {
+                await navigator.clipboard.writeText(shortUrl);
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+            }
+        }
+
+        async function deleteUrl(urlId) {
+            const response = await fetch(`/api/urls/${urlId}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                alert('Failed to delete URL');
+            }
         }
     </script>
 </body>
