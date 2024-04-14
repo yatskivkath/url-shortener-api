@@ -737,6 +737,9 @@ select {
 .ms-3 {
   margin-inline-start: 0.75rem;
 }
+.mt-6 {
+  margin-top: 1.5rem;
+}
 .block {
   display: block;
 }
@@ -779,6 +782,9 @@ select {
 .flex-col {
   flex-direction: column;
 }
+.place-items-center {
+  place-items: center;
+}
 .items-center {
   align-items: center;
 }
@@ -811,6 +817,10 @@ select {
 }
 .gap-4 {
   gap: 1rem;
+}
+.gap-x-6 {
+  -moz-column-gap: 1.5rem;
+       column-gap: 1.5rem;
 }
 .space-y-6 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
@@ -915,6 +925,18 @@ select {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
+.px-3\.5 {
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
+}
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
 .pl-4 {
   padding-left: 1rem;
 }
@@ -933,11 +955,18 @@ select {
   font-size: 0.75rem;
   line-height: 1rem;
 }
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
 .font-medium {
   font-weight: 500;
 }
 .font-semibold {
   font-weight: 600;
+}
+.font-bold {
+  font-weight: 700;
 }
 .italic {
   font-style: italic;
@@ -947,6 +976,9 @@ select {
 }
 .leading-7 {
   line-height: 1.75rem;
+}
+.tracking-tight {
+  letter-spacing: -0.025em;
 }
 .text-gray-300 {
   --tw-text-opacity: 1;
@@ -971,6 +1003,10 @@ select {
 .text-gray-400 {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+.text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
 }
 .shadow-md {
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -1175,9 +1211,19 @@ select {
     gap: 1.5rem;
   }
 
+  .sm\:py-32 {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+
   .sm\:text-sm {
     font-size: 0.875rem;
     line-height: 1.25rem;
+  }
+
+  .sm\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
   }
 
   .sm\:leading-6 {

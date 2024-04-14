@@ -11,7 +11,7 @@ async function redirectByCode(req, res, next) {
         const url = await codeService.getUrlToRedirect(code);
 
         if (!url) {
-            res.status(404).end('Not Found');
+            res.status(404).render('404');
         } else {
             await urlService.visitUrl(code);
             res.redirect(302, url);
