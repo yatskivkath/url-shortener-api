@@ -18,9 +18,9 @@ async function createUrl(req, res, next) {
             {
                 redirectUrl: data.url,
                 name: data.name,
-                code: data.code, 
-                expirationDate: data.expirationDate, 
-                type: data.type, 
+                code: data.code,
+                expirationDate: data.expirationDate,
+                type: data.type,
                 codeLength: data.codeLength,
             },
             userId
