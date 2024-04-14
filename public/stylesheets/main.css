@@ -1089,6 +1089,11 @@ select {
     margin-right: auto;
   }
 
+  .lg\:mx-52 {
+    margin-left: 13rem;
+    margin-right: 13rem;
+  }
+
   .lg\:w-24 {
     width: 6rem;
   }
@@ -1113,6 +1118,10 @@ select {
     max-width: 24rem;
   }
 
+  .lg\:max-w-md {
+    max-width: 28rem;
+  }
+
   .lg\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -1131,6 +1140,14 @@ select {
   }
 }
 @media (min-width: 1280px) {
+
+  .xl\:max-w-lg {
+    max-width: 32rem;
+  }
+
+  .xl\:max-w-xl {
+    max-width: 36rem;
+  }
 
   .xl\:grid-cols-6 {
     grid-template-columns: repeat(6, minmax(0, 1fr));
