@@ -107,10 +107,14 @@ module.exports = (sequelize, DataTypes) => {
             sequelize,
             modelName: 'url',
             tableName: 'urls',
+            defaultScope: {
+                order: [['createdAt', 'DESC']],
+            },
         }
     );
 
     Url.addScope('publicScope', {
+        order: [['createdAt', 'DESC']],
         attributes: [
             'id',
             'shortUrl',
