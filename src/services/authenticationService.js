@@ -2,6 +2,7 @@
 // Implementation of the Authenticate service
 
 const bcrypt = require('bcrypt');
+const { ValidationError } = require('../errors/errors.js');
 
 /**
  * Hash a password
@@ -11,7 +12,7 @@ const bcrypt = require('bcrypt');
  */
 async function hashPassword(password) {
     if (!password || typeof password !== 'string') {
-        throw new Error('Invalid value was passed to password');
+        throw new ValidationError();
     }
 
     const saltRounds = 10;
@@ -34,7 +35,7 @@ async function comparePasswords(password, hashedPassword) {
         !hashedPassword ||
         typeof hashedPassword !== 'string'
     ) {
-        throw new Error('Invalid value was passed to password');
+        throw new ValidationError();
     }
 
     const isMatch = await bcrypt.compare(password, hashedPassword);

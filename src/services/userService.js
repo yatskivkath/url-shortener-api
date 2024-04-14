@@ -4,6 +4,7 @@
 const userRepository = require('../repositories/userRepository.js');
 const authenticationService = require('./authenticationService.js');
 const scopes = require('../constants/scopes.js');
+const { ValidationError, BadRequest } = require('../errors/errors.js');
 
 /**
  * Create a new user
@@ -36,13 +37,13 @@ async function createUser(user) {
  */
 async function getUserByEmail(email) {
     if (typeof email !== 'string') {
-        throw new Error('Invalid value was passed to email');
+        throw new ValidationError();
     }
 
     const user = await userRepository.findUserByEmail(email);
 
     if (!user) {
-        throw new Error('User was not found');
+        throw new BadRequest('User not found');
     }
 
     return user;
@@ -93,7 +94,7 @@ async function getUserById(userId) {
     const user = await userRepository.findUserById(userId);
 
     if (!user) {
-        throw new Error('User was not found');
+        throw new BadRequest('User was not found');
     }
 
     return user;

@@ -6,6 +6,7 @@ const { AbilityBuilder, createMongoAbility } = require('@casl/ability');
 const { USER_ROLES } = require('../constants/databaseConstants');
 const adminPermissions = require('./adminPermissions');
 const userPermissions = require('./userPermissions');
+const { Forbidden } = require('../errors/errors');
 
 const rolePermissions = {
     [USER_ROLES.ADMIN]: adminPermissions,
@@ -18,7 +19,7 @@ function defineAbilityFor(user) {
     if (typeof rolePermissions[user.role] === 'function') {
         rolePermissions[user.role](user, builder);
     } else {
-        throw new Error(`Trying to use unknown role "${user.role}"`);
+        throw new Forbidden('No permission');
     }
 
     return builder.build();

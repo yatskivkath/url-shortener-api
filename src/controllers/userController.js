@@ -3,12 +3,16 @@
 
 const userService = require('../services/userService.js');
 const userSchema = require('../validators/userSchema.js');
+const { ValidationError } = require('../errors/errors.js');
 
 async function createUser(req, res, next) {
     try {
         const data = req.body;
 
-        userSchema.validate(data);
+        const { error } = userSchema.validate(data);
+        if (error) {
+            throw new ValidationError(error.message);
+        }
 
         const newUser = await userService.createUser(data);
 

@@ -2,6 +2,7 @@
 // Implementation of the permissions service
 
 const { ForbiddenError, subject } = require('@casl/ability');
+const { Forbidden } = require('../errors/errors.js');
 
 const defineAbilityFor = require('../permissions/index.js');
 
@@ -20,10 +21,15 @@ function checkPermissions(
     subjectType
 ) {
     const ability = defineAbilityFor(userToCheck);
-    ForbiddenError.from(ability).throwUnlessCan(
-        actionType,
-        subject(subjectType, subjectToCheck)
-    );
+
+    try {
+        ForbiddenError.from(ability).throwUnlessCan(
+            actionType,
+            subject(subjectType, subjectToCheck)
+        );
+    } catch (error) {
+        throw new Forbidden('No permission');
+    }
 }
 
 module.exports = {

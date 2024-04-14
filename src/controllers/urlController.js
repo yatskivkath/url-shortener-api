@@ -1,6 +1,7 @@
 // urlController.js
 // Implementation of the Url controller
 
+const { ValidationError } = require('../errors/errors.js');
 const urlService = require('../services/urlService.js');
 const {
     urlSchemaCreate,
@@ -9,14 +10,18 @@ const {
 
 async function createUrl(req, res, next) {
     const data = req.body;
+
     try {
-        urlSchemaCreate.validate(data);
+        const { error } = urlSchemaCreate.validate(data);
+        if (error) {
+            throw new ValidationError(error.message);
+        }
 
         const userId = req.session.userId;
 
         const newUrl = await urlService.createUrl(
             {
-                redirectUrl: data.url,
+                redirectUrl: data.redirectUrl,
                 name: data.name,
                 code: data.code,
                 expirationDate: data.expirationDate,
@@ -82,7 +87,10 @@ async function updateUrl(req, res, next) {
     const data = req.body;
 
     try {
-        urlSchemaUpdate.validate(data);
+        const { error } = urlSchemaUpdate.validate(data);
+        if (error) {
+            throw new ValidationError(error.message);
+        }
 
         data.id = id;
 

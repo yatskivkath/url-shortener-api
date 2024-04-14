@@ -8,6 +8,11 @@ const { URL_TYPES } = require('../constants/databaseConstants.js');
 const { actions, subjects } = require('../constants/permissionsConstants.js');
 const permissionsService = require('./permissionsService.js');
 const userService = require('./userService.js');
+const {
+    NotFound,
+    ValidationError,
+    BadRequest,
+} = require('../errors/errors.js');
 
 /**
  * Create a new url
@@ -27,11 +32,11 @@ async function createUrl(url, userId) {
     const { redirectUrl, name, code, expirationDate, type, codeLength } = url;
 
     if (type === URL_TYPES.TEMPORARY && !expirationDate) {
-        throw new Error('Expiration date is required for temporary urls');
+        throw new ValidationError();
     }
 
     if (type !== URL_TYPES.TEMPORARY && expirationDate) {
-        throw new Error('Expiration date is not allowed for permanent urls');
+        throw new ValidationError();
     }
 
     const newUrl = await urlRepository.saveUrl({
@@ -96,7 +101,7 @@ async function visitUrl(code) {
     const url = await urlRepository.findUrlByCode(code);
 
     if (!url) {
-        throw new Error('Url was not found');
+        throw new NotFound('Url was not found');
     }
 
     url.visits += 1;
@@ -126,11 +131,11 @@ async function updateUrl(data, userId) {
     const { id, name, enabled, expirationDate, type } = data;
 
     if (type === URL_TYPES.TEMPORARY && !expirationDate) {
-        throw new Error('Expiration date is required for temporary urls');
+        throw new ValidationError();
     }
 
     if (type !== URL_TYPES.TEMPORARY && expirationDate) {
-        throw new Error('Expiration date is not allowed for permanent urls');
+        throw new ValidationError();
     }
 
     const user = await userService.getUserById(userId);
@@ -162,7 +167,7 @@ async function deleteUrl(urlId, userId) {
     const deletedUrl = await urlRepository.deleteUrl(urlId);
 
     if (!deletedUrl) {
-        throw new Error('Url was not found');
+        throw new BadRequest('Url was not found');
     }
 }
 
