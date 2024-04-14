@@ -61,6 +61,28 @@ async function createUrl(url, userId) {
 }
 
 /**
+ * Get a url by id
+ * @param {uuid} urlId url id
+ * @param {uuid} userId user id
+ * @returns {Promise<Object>} url
+ * @throws {Error} if url was not found
+ * @throws {Error} if user does not have permissions
+ * @throws {Error} if user is not found
+ */
+async function getUrlById(urlId, userId) {
+    const user = await userService.getUserById(userId);
+    const url = await urlRepository.getUrl(urlId);
+
+    if (!url) {
+        throw new NotFound('Url was not found');
+    }
+
+    permissionsService.checkPermissions(user, url, actions.READ, subjects.URL);
+
+    return url;
+}
+
+/**
  * Get a url by code
  * @param {string} code url code
  * @param {uuid} userId user id
@@ -69,6 +91,10 @@ async function createUrl(url, userId) {
 async function getUrlByCode(code, userId) {
     const user = await userService.getUserById(userId);
     const url = await urlRepository.findUrlByCode(code);
+
+    if (!url) {
+        throw new NotFound('Url was not found');
+    }
 
     permissionsService.checkPermissions(user, url, actions.READ, subjects.URL);
 
@@ -192,6 +218,7 @@ async function deleteUrl(urlId, userId) {
 
 module.exports = {
     createUrl,
+    getUrlById,
     getUrlByCode,
     getUrlByCodePublic,
     getUrlsByUserPublic,

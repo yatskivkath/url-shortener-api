@@ -30,7 +30,15 @@ async function adminPage(req, res) {
 }
 
 async function urlCustomizePage(req, res) {
-    res.render('url');
+    res.render('url-customize');
+}
+
+async function urlEditPage(req, res) {
+    const { id } = req.params;
+
+    const url = await urlService.getUrlById(id);
+
+    res.render('url-edit', { url });
 }
 
 module.exports = {
@@ -40,4 +48,5 @@ module.exports = {
     dashboardPage,
     adminPage,
     urlCustomizePage,
+    urlEditPage,
 };

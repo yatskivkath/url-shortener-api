@@ -28,4 +28,6 @@ pagesRouter.get(
 
 pagesRouter.get('/url/customize', pagesController.urlCustomizePage);
 
+pagesRouter.get('/url/edit/:id', pagesController.urlEditPage);
+
 module.exports = pagesRouter;
