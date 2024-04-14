@@ -12,7 +12,9 @@ const urlSchemaCreate = Joi.object({
     expirationDate: Joi.date().min('now'),
     type: Joi.string().valid(...Object.values(URL_TYPES)),
     codeLength: Joi.number().integer().min(5).max(15),
-});
+})
+    .without('code', 'codeLength')
+    .with('expirationDate', 'type');
 
 const urlSchemaUpdate = Joi.object({
     name: Joi.string(),
