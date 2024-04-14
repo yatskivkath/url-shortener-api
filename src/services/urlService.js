@@ -100,14 +100,10 @@ async function visitUrl(code) {
     }
 
     url.visits += 1;
-    if (url.type === URL_TYPES.ONE_TIME) {
-        url.enabled = false;
-    }
 
     await urlRepository.updateUrl({
         id: url.id,
         visits: url.visits,
-        enabled: url.enabled,
     });
 
     return url;

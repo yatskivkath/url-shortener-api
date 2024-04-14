@@ -9,7 +9,9 @@ jest.mock('../../../src/repositories/urlRepository.js', () => {
             userId: '3b365a11-97a3-4d44-8137-b944cade14da',
             expirationdDate: null,
             type: 'P',
+            typeParsed: 'Permanent',
             enabled: true,
+            active: true,
             createdAt: '2024-04-07T10:09:27.843Z',
             updatedAt: '2024-04-07T10:09:42.750Z',
         },
@@ -22,9 +24,26 @@ jest.mock('../../../src/repositories/urlRepository.js', () => {
             userId: '3b365a11-97a3-4d44-8137-b944cade14da',
             expirationdDate: null,
             type: 'OT',
+            typeParsed: 'One-Time',
             enabled: false,
+            active: false,
             createdAt: '2024-04-07T10:09:27.843Z',
             updatedAt: '2024-04-07T10:09:42.750Z',
+        },
+        {
+            id: '83d29972-9543-418f-90e2-270bf9cda48b',
+            code: 'uU1',
+            url: 'https://google.com',
+            name: 'Google',
+            visits: 13,
+            userId: '3b365a11-97a3-4d44-8137-b944cade14da',
+            expirationdDate: '2023-04-19 02:00:00+02',
+            type: 'T',
+            typeParsed: 'Temporary',
+            enabled: false,
+            active: false,
+            createdAt: '2022-04-07T10:09:27.843Z',
+            updatedAt: '2022-04-07T10:09:42.750Z',
         },
     ];
 
@@ -47,9 +66,12 @@ jest.mock('../../../src/repositories/urlRepository.js', () => {
     };
 });
 
+jest.mock('../../../src/repositories/userRepository.js', () => {
+    return {};
+});
+
 const urlService = require('../../../src/services/urlService.js');
 const codeService = require('../../../src/services/codeService.js');
-const e = require('express');
 
 describe('Code Service getUrlToRedirect function', () => {
     beforeEach(() => {
@@ -89,7 +111,7 @@ describe('Code Service getUrlToRedirect function', () => {
         expect(result).toBeNull();
     });
 
-    it('should return NULL if url is inactive', async () => {
+    it('should return NULL if url is not enabled', async () => {
         const CODE = '6b8';
 
         const result = await codeService.getUrlToRedirect(CODE);
@@ -98,7 +120,11 @@ describe('Code Service getUrlToRedirect function', () => {
     });
 
     it('should return NULL if url is expired', async () => {
-        // test implementation here
+        const CODE = 'uU1';
+
+        const result = await codeService.getUrlToRedirect(CODE);
+
+        expect(result).toBeNull();
     });
 
     it('should return NULL if url is of ONE-TIME type and has been already visited', async () => {

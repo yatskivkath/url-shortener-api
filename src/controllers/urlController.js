@@ -66,7 +66,6 @@ async function getAllUrlsByUserId(req, res, next) {
 
 async function deleteUrl(req, res, next) {
     const { id } = req.params;
-    const userId = req.session.userId;
 
     try {
         await urlService.deleteUrl(id);
