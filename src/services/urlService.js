@@ -107,6 +107,7 @@ async function visitUrl(code) {
     await urlRepository.updateUrl({
         id: url.id,
         visits: url.visits,
+        enabled: url.enabled,
     });
 
     return url;
