@@ -82,7 +82,7 @@
                             </div>
                             
                             <div class="flex justify-end gap-2">
-                                <button class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
+                                <button onclick="editUrl('<%= url.id %>')" class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
                                     edit
                                 </button>
                                 <button onclick="copyUrl('<%= url.shortUrl %>')" class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
@@ -145,6 +145,10 @@
                 checkbox.checked = !enabled;
                 alert('Failed to enable URL');
             }
+        }
+
+        async function editUrl(urlId) {
+            window.location = `/url/edit/${urlId}`;
         }
     </script>
 </body>

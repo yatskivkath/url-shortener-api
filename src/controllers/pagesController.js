@@ -35,8 +35,9 @@ async function urlCustomizePage(req, res) {
 
 async function urlEditPage(req, res) {
     const { id } = req.params;
+    const userId = req.session.userId;
 
-    const url = await urlService.getUrlById(id);
+    const url = await urlService.getUrlById(id, userId);
 
     res.render('url-edit', { url });
 }
