@@ -45,7 +45,7 @@ async function getAllUrlsByUserId(userId, scope = scopes.url.default) {
 }
 
 async function updateUrl(url) {
-    const updatedUrl = await models.url.update(
+    await models.url.update(
         {
             code: url.code,
             url: url.url,
@@ -60,8 +60,6 @@ async function updateUrl(url) {
             },
         }
     );
-
-    return updatedUrl;
 }
 
 async function deleteUrl(id) {

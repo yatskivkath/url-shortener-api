@@ -86,9 +86,9 @@ async function updateUrl(req, res, next) {
 
         data.id = id;
 
-        const updatedUrl = await urlService.updateUrl(data, userId);
+        await urlService.updateUrl(data, userId);
 
-        res.status(200).json(updatedUrl);
+        res.status(204).end();
     } catch (error) {
         next(error);
     }

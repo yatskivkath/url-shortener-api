@@ -118,7 +118,7 @@ async function visitUrl(code) {
  * @param {string} url.expirationDate url expiration date
  * @param {string} url.type url type
  * @param {uuid} userId logged in user id
- * @returns {Promise<Object>} updated url
+ * @returns {Promise<void>}
  * @throws {Error} if expiration date is not provided temporary urls
  * @throws {Error} if expiration date is provided for permanent urls
  */
@@ -143,15 +143,13 @@ async function updateUrl(data, userId) {
         subjects.URL
     );
 
-    const updatedUrl = await urlRepository.updateUrl({
+    await urlRepository.updateUrl({
         id,
         expirationDate,
         enabled,
         type,
         name,
     });
-
-    return updatedUrl;
 }
 
 /**

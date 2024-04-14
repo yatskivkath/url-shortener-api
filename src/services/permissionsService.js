@@ -19,7 +19,6 @@ function checkPermissions(
     actionType,
     subjectType
 ) {
-    console.log('subjectToCheck', subjectToCheck);
     const ability = defineAbilityFor(userToCheck);
     ForbiddenError.from(ability).throwUnlessCan(
         actionType,
