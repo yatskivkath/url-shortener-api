@@ -45,7 +45,7 @@ async function getUrl(req, res, next) {
     const userId = req.session.userId;
 
     try {
-        const url = await urlService.getUrlPublic(code, userId);
+        const url = await urlService.getUrlByCodePublic(code, userId);
 
         if (!url) {
             res.status(404).json({ error: 'Url not found' });

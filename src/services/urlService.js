@@ -57,7 +57,7 @@ async function createUrl(url, userId) {
  * @param {uuid} userId user id
  * @returns {Promise<Object>} url
  */
-async function getUrl(code, userId) {
+async function getUrlByCode(code, userId) {
     const user = await userService.getUserById(userId);
     const url = await urlRepository.findUrlByCode(code);
 
@@ -71,7 +71,7 @@ async function getUrl(code, userId) {
  * @param {string} code url code
  * @returns {Promise<Object>} url
  */
-async function getUrlPublic(code) {
+async function getUrlByCodePublic(code) {
     const url = await urlRepository.findUrlByCode(code, scopes.url.public);
 
     return url;
@@ -173,8 +173,8 @@ async function deleteUrl(urlId, userId) {
 
 module.exports = {
     createUrl,
-    getUrl,
-    getUrlPublic,
+    getUrlByCode,
+    getUrlByCodePublic,
     getUrlsByUserPublic,
     visitUrl,
     updateUrl,

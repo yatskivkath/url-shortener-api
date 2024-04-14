@@ -9,7 +9,7 @@ const urlService = require('./urlService.js');
  * @returns {Promise<string | null>} the URL to redirect to or null if the code is not found or disabled
  */
 async function getUrlToRedirect(code) {
-    const url = await urlService.getUrlPublic(code);
+    const url = await urlService.getUrlByCodePublic(code);
 
     if (!url || !url.active || !url.enabled) {
         return null;
