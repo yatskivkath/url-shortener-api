@@ -32,7 +32,7 @@
 
         <div class="mt-20 flex flex-col justify-start gap-4">
             <h2 class="text-base text-center font-semibold leading-7 text-gray-900">My Short URLs</h2>
-            <div id="urls_list" class="mt-4 grid xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
+            <div id="urls_list" class="mt-4 grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
                 <% for (const url of urls) {%>
                     <div class="flex flex-col gap-3 bg-white shadow-md shadow-indigo-200 hover:shadow-indigo-300 hover:shadow-lg rounded-lg p-4">
                         <div class="flex flex-col gap-0.5">
@@ -50,14 +50,28 @@
                         </div>
     
                         <div class="flex justify-between">
-                            <div class="flex gap-3">
-                                <span class="material-icons text-gray-300">
-                                    visibility
-                                </span>
-                                <span class="text-gray-500">
-                                    <%= url.visits %>
-                                </span>
+                            <div class="flex gap-4 divide-x-2 divide-gray-300">
+                                <div class="flex gap-2">
+                                    <span class="material-icons text-gray-300">
+                                        visibility
+                                    </span>
+                                    <span class="text-gray-500">
+                                        <%= url.visits %>
+                                    </span>
+                                </div>
+                                <div class="pl-4">
+                                    <% if(url.active) {%>
+                                        <span class="text-gray-300 italic">
+                                            active
+                                        </span>
+                                    <% } else {%>
+                                        <span class="text-gray-300 italic">
+                                            expired
+                                        </span>
+                                    <% }%>
+                                </div>
                             </div>
+                            
                             <div class="flex justify-end gap-2">
                                 <button class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
                                     edit

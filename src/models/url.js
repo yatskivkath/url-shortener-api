@@ -44,7 +44,8 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 type: DataTypes.UUID,
             },
-            expiration_date: {
+            expirationdDate: {
+                field: 'expiration_date',
                 type: DataTypes.DATE,
             },
             type: {
@@ -70,6 +71,19 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 defaultValue: true,
                 type: DataTypes.BOOLEAN,
+            },
+            active: {
+                type: DataTypes.VIRTUAL,
+                get() {
+                    console.log(this.expirationdDate);
+                    if (this.expirationdDate) {
+                        return (
+                            this.enabled && this.expirationdDate > new Date()
+                        );
+                    }
+
+                    return this.enabled;
+                },
             },
             shortUrl: {
                 type: DataTypes.VIRTUAL,
@@ -104,7 +118,8 @@ module.exports = (sequelize, DataTypes) => {
             'type',
             'typeParsed',
             'enabled',
-            'expiration_date',
+            'expirationdDate',
+            'active',
         ],
     });
 
