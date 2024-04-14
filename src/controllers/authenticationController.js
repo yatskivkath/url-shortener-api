@@ -17,7 +17,7 @@ async function login(req, res) {
     if (isLoggedIn) {
         const user = await userService.getUserByEmail(email);
         req.session.userId = user.id;
-        req.session.email = email;
+        req.session.user = user;
 
         res.redirect(302, '/');
     } else {

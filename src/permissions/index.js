@@ -1,5 +1,5 @@
 // index.js
-// Implementation of the permissions util with casl
+// Implementation of the ABAC permissions util with casl
 
 const { AbilityBuilder, createMongoAbility } = require('@casl/ability');
 
