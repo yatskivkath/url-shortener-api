@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html class="h-full bg-white" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a Short URL</title>
+    <link href="/stylesheets/main.css" rel="stylesheet">
+</head>
+<body class="h-full">
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+        <h2 class="text-base text-center font-semibold leading-7 text-gray-900">Create a Custom Short URL</h2>
+        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <form id="new-url-form" action="/api/urls" method="POST" class="space-y-6">
+                <div>
+                    <label for="url" class="block text-sm font-medium leading-6 text-gray-900">Your long URL:</label>
+                    <div class="mt-2 w-full">
+                        <input id="url" name="url" type="url" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                </div>
+                <div>
+                    <label for="url" class="block text-sm font-medium leading-6 text-gray-900">Alias name:</label>
+                    <div class="mt-2 w-full">
+                        <input id="alias" name="name" type="text" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                </div>
+                <div>
+                    <label for="type" class="block text-sm font-medium leading-6 text-gray-900">Type:</label>
+                    <select name="type" id="urlType" onchange="selectType()" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <option value="P" selected>Permanent</option>
+                        <option value="T">Temporary</option>
+                        <option value="OT">One-time</option>
+                      </select>
+                </div>
+                <div id="expirationDate__container" class="hidden">
+                    <label for="expirationDate" class="block text-sm font-medium leading-6 text-gray-900">Expiration date:</label>
+                    <input id="expirationDate" name="expirationDate" type="date" min="<%= new Date().toISOString().split("T")[0]   %>" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" disabled>
+                </div>
+                <div class="flex flex-col sm:flex-row justify-between gap-2">
+                    <button type="submit" class="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent hover:bg-indigo-700">
+                        Create
+                    </button>
+                    <button type="button" onclick="redirectBack()" class="w-full full px-4 py-2 border border-indigo-600 text-indigo-600 font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent hover:text-white hover:border hover:border-indigo-700 hover:bg-indigo-700">
+                        Back
+                    </button>
+                </div>
+            </form>    
+        </div>
+    </div>
+    <script>
+        const url = window.sessionStorage.getItem('url');
+        if (url) {
+            document.getElementById('url').value = url;
+        }
+
+        const alias = window.sessionStorage.getItem('alias');
+        if (alias) {
+            document.getElementById('alias').value = alias;
+        }
+
+        selectType();
+
+        function selectType() {
+            const type = document.getElementById('urlType').value;
+            const expirationDate = document.getElementById('expirationDate');
+            const expirationDateContainer = document.getElementById('expirationDate__container');
+
+            switch (type) {
+                case 'P':
+                    expirationDate.disabled = true;
+                    expirationDate.required = false;
+                    expirationDateContainer.classList.add("hidden");
+                    break;
+                case 'T':
+                    expirationDate.disabled = false;
+                    expirationDate.required = true;
+                    expirationDateContainer.classList.remove("hidden");
+                    break;
+                case 'OT':
+                    expirationDate.disabled = true;
+                    expirationDate.required = false;
+                    expirationDateContainer.classList.add("hidden");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function redirectBack() {
+            window.location = '/';
+        }
+    </script>
+</body>
+</html>

@@ -13,7 +13,6 @@ const userService = require('./userService.js');
  * Create a new url
  * @param {Object} url url object
  * @param {string} url.redirectUrl url redirect url
- * @param {uuid} url.userId user id
  * @param {string} url.name url name
  * @param {string} url.code url code
  * @param {Date} url.expirationDate url expiration date

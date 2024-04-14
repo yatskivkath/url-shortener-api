@@ -9,9 +9,6 @@ const {
 
 async function createUrl(req, res, next) {
     const data = req.body;
-
-    console.log('data', data);
-
     try {
         urlSchemaCreate.validate(data);
 
@@ -21,6 +18,10 @@ async function createUrl(req, res, next) {
             {
                 redirectUrl: data.url,
                 name: data.name,
+                code: data.code, 
+                expirationDate: data.expirationDate, 
+                type: data.type, 
+                codeLength: data.codeLength,
             },
             userId
         );
