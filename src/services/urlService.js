@@ -166,6 +166,16 @@ async function updateUrl(data, userId) {
 async function deleteUrl(urlId, userId) {
     const deletedUrl = await urlRepository.deleteUrl(urlId);
 
+    const user = await userService.getUserById(userId);
+    const url = await urlRepository.getUrl(urlId);
+
+    permissionsService.checkPermissions(
+        user,
+        url,
+        actions.DELETE,
+        subjects.URL
+    );
+
     if (!deletedUrl) {
         throw new BadRequest('Url was not found');
     }

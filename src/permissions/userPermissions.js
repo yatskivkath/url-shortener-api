@@ -5,5 +5,6 @@ const { actions, subjects } = require('../constants/permissionsConstants');
 
 module.exports = (user, { can, cannot }) => {
     can(actions.MANAGE, subjects.URL, { userId: user.id });
+    can(actions.CREATE, subjects.URL);
     can(actions.READ, subjects.URL);
 };
