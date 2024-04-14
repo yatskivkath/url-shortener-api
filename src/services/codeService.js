@@ -2,6 +2,7 @@
 // Implementation of the Code service
 
 const urlService = require('./urlService.js');
+const { NotFound } = require('../errors/errors.js');
 
 /**
  * Get the URL to redirect to for a given code
@@ -9,9 +10,18 @@ const urlService = require('./urlService.js');
  * @returns {Promise<string | null>} the URL to redirect to or null if the code is not found or disabled
  */
 async function getUrlToRedirect(code) {
-    const url = await urlService.getUrlByCodePublic(code);
+    let url;
+    try {
+        url = await urlService.getUrlByCodePublic(code);
+    } catch (error) {
+        if (error instanceof NotFound) {
+            return null;
+        } else {
+            throw error;
+        }
+    }
 
-    if (!url || !url.active || !url.enabled) {
+    if (!url?.active || !url?.enabled) {
         return null;
     }
 

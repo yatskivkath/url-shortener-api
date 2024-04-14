@@ -109,6 +109,10 @@ async function getUrlByCode(code, userId) {
 async function getUrlByCodePublic(code) {
     const url = await urlRepository.findUrlByCode(code, scopes.url.public);
 
+    if (!url) {
+        throw new NotFound('Url was not found');
+    }
+
     return url;
 }
 

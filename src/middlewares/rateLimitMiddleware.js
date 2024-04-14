@@ -3,6 +3,7 @@
 
 const rateLimitService = require('../services/rateLimitService.js');
 const urlService = require('../services/urlService.js');
+const { NotFound } = require('../errors/errors.js');
 
 async function rateLimitByCode(req, res, next) {
     const { code } = req.params;
@@ -18,18 +19,23 @@ async function rateLimitByCode(req, res, next) {
 
 async function rateLimitByUser(req, res, next) {
     const { code } = req.params;
-    const url = urlService.getUrlByCode(code);
 
-    if (!url) {
-        res.status(404).end('Not Found');
-    }
+    try {
+        const url = await urlService.getUrlByCodePublic(code);
 
-    const isPassed = await rateLimitService.checkRateLimitUser(url?.userId);
+        const isPassed = await rateLimitService.checkRateLimitUser(url.userId);
 
-    if (isPassed) {
-        return next();
-    } else {
-        res.status(429).end('Rate Limit');
+        if (isPassed) {
+            return next();
+        } else {
+            res.status(429).end('Rate Limit');
+        }
+    } catch (error) {
+        if (error instanceof NotFound) {
+            return next();
+        }
+
+        res.status(error.statusCode).end(error.message);
     }
 }
 
