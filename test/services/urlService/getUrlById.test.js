@@ -1,7 +1,5 @@
 const { NotFound, Forbidden } = require('../../../src/errors/errors.js');
 
-jest.mock('../../../src/repositories/urlRepository.js', () => {});
-
 jest.mock('../../../src/repositories/userRepository.js', () => {
     const users = [
         {
@@ -155,7 +153,7 @@ describe('Url Service getUrlById function', () => {
 
     it('should throw an error if invalid value was passed to userId', async () => {
         const ID = '701db3f5-59f1-443c-beeb-50ff31c5b14f';
-        const INVALID_USER_IDS = [null, undefined, 0, false, NaN, 'DUMMY'];
+        const INVALID_USER_IDS = [null, undefined, 0, false, NaN, 'dummy'];
 
         INVALID_USER_IDS.forEach(async (userId) => {
             await expect(urlService.getUrlById(ID, userId)).rejects.toThrow(
