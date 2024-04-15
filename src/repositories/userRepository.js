@@ -11,13 +11,17 @@ async function saveUser(user) {
         password: user.password,
     });
 
-    return newUser;
+    return newUser?.toJSON();
 }
 
 async function findUserById(id, scope = 'defaultScope') {
-    const user = await models.user.scope(scope).findByPk(id);
+    const user = await models.user.scope(scope).findOne({
+        where: {
+            id,
+        },
+    });
 
-    return user;
+    return user?.toJSON();
 }
 
 async function findUserByEmail(email, scope = 'defaultScope') {
@@ -27,13 +31,13 @@ async function findUserByEmail(email, scope = 'defaultScope') {
         },
     });
 
-    return user;
+    return user?.toJSON();
 }
 
 async function getAllUsers(scope = 'defaultScope') {
     const users = await models.user.scope(scope).findAll();
 
-    return users ?? [];
+    return users?.map((u) => u.toJSON()) ?? [];
 }
 
 module.exports = {

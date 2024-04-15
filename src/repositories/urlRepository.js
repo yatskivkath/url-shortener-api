@@ -15,7 +15,7 @@ async function saveUrl(url) {
         expirationdDate: url.expirationDate,
     });
 
-    return newUrl;
+    return newUrl?.toJSON();
 }
 
 async function findUrlByCode(code, scope = scopes.url.default) {
@@ -25,13 +25,13 @@ async function findUrlByCode(code, scope = scopes.url.default) {
         },
     });
 
-    return url;
+    return url?.toJSON();
 }
 
 async function getAllUrls(scope = scopes.url.default) {
     const urls = await models.url.scope(scope).findAll();
 
-    return urls;
+    return urls?.map((u) => u.toJSON());
 }
 
 async function getAllUrlsByUserId(userId, scope = scopes.url.default) {
@@ -41,7 +41,7 @@ async function getAllUrlsByUserId(userId, scope = scopes.url.default) {
         },
     });
 
-    return urls ?? [];
+    return urls?.map((u) => u.toJSON()) ?? [];
 }
 
 async function updateUrl(url) {
@@ -63,13 +63,11 @@ async function updateUrl(url) {
 }
 
 async function deleteUrl(id) {
-    const deletedUrl = await models.url.destroy({
+    await models.url.destroy({
         where: {
             id,
         },
     });
-
-    return deletedUrl;
 }
 
 async function getUrl(id) {
@@ -79,7 +77,7 @@ async function getUrl(id) {
         },
     });
 
-    return url;
+    return url?.toJSON();
 }
 
 module.exports = {
