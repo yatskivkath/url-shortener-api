@@ -1,69 +1,67 @@
-jest.mock('../../../src/repositories/urlRepository.js', () => {
-    const urls = [
-        {
-            typeParsed: 'Permanent',
-            active: true,
-            shortUrl: 'http://localhost:3001/redirect/tlwnd',
-            userId: 'c9bb5609-4588-4d7d-bb18-c3e430ac7377',
-            id: '701db3f5-59f1-443c-beeb-50ff31c5b14f',
-            url: 'https://tailwindcss.com/',
-            name: 'Tailwind',
-            code: 'tlwnd',
-            visits: 2,
-            type: 'P',
-            enabled: false,
-            expirationdDate: null,
-        },
-        {
-            typeParsed: 'Permanent',
-            active: true,
-            shortUrl: 'http://localhost:3001/redirect/QB1jkaqlRt2ViX1',
-            id: 'ce63f4d7-bba3-41b0-8c4b-d54367a2348e',
-            userId: 'c9bb5609-4588-4d7d-bb18-c3e430ac7377',
-            url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio',
-            name: 'Web',
-            code: 'QB1jkaqlRt2ViX1',
-            visits: 2,
-            type: 'P',
-            enabled: true,
-            expirationdDate: null,
-        },
-        {
-            typeParsed: 'One-Time',
-            active: false,
-            shortUrl: 'http://localhost:3001/redirect/NR2LA',
-            id: 'cb2cbc99-c828-4ebc-87d7-eb088293563e',
-            userId: '3b365a11-97a3-4d44-8137-b944cade14da',
-            url: 'https://docs.google.com/document/d/1-0w6DXR2DWDR2iRNd4Szd29Jn6m1gTXQBvAR5uAiOE4/edit',
-            name: 'Final Project',
-            code: 'NR2LA',
-            visits: 1,
-            type: 'OT',
-            enabled: true,
-            expirationdDate: null,
-        },
-    ];
+jest.mock('../../../src/models/user.js', () => {
+    const SequelizeMock = require('sequelize-mock');
+    const dbMock = new SequelizeMock();
 
-    return {
-        getAllUrlsByUserId: jest.fn().mockImplementation((userId) => {
-            return urls.filter((url) => url.userId === userId);
-        }),
-    };
+    return dbMock.define('user', {
+        id: '3b365a11-97a3-4d44-8137-b944cade14da',
+        first_name: 'Kateyna',
+        last_name: 'Yatskiv',
+        email: 'kath@mail.com',
+        password:
+            '$2b$10$M4MkWr595pnNyfA.vS6OSOOMeMAfUTGjnzMf.zg5QIAA9rCkkJBdi',
+        createdAt: '2024-04-06T10:33:13.050Z',
+        updatedAt: '2024-04-06T10:33:13.050Z',
+        role: 'user',
+    });
 });
 
-jest.mock('../../../src/repositories/userRepository.js', () => {
-    return {};
+jest.mock('../../../src/models/url.js', () => {
+    const SequelizeMock = require('sequelize-mock');
+    const dbMock = new SequelizeMock();
+
+    return dbMock.define('url', {
+        typeParsed: 'Permanent',
+        active: true,
+        shortUrl: 'http://localhost:3001/redirect/knzqR',
+        id: '4145686d-4ec0-44e7-a711-36fbf3dd3af6',
+        code: 'knzqR',
+        url: 'https://google.com',
+        name: 'test',
+        visits: 0,
+        userId: '3b365a11-97a3-4d44-8137-b944cade14da',
+        expirationdDate: null,
+        type: 'P',
+        enabled: true,
+        createdAt: '2024-04-14T17:44:27.951Z',
+        updatedAt: '2024-04-14T17:44:27.951Z',
+    });
+});
+
+jest.mock('../../../src/models/index.js', () => {
+    const SequelizeMock = require('sequelize-mock');
+    const dbMock = new SequelizeMock();
+
+    const url = require('../../../src/models/url.js');
+    const user = require('../../../src/models/user.js');
+
+    return {
+        url,
+        user,
+        sequelize: dbMock,
+        Sequelize: SequelizeMock,
+    };
 });
 
 describe('Url Service getUrlsByUserPublic function', () => {
     const urlService = require('../../../src/services/urlService.js');
+    const url = require('../../../src/models/url.js');
 
     beforeEach(() => {
         jest.resetModules();
     });
 
     it('should return all urls by user id', async () => {
-        const USER_ID = 'c9bb5609-4588-4d7d-bb18-c3e430ac7377';
+        const USER_ID = '3b365a11-97a3-4d44-8137-b944cade14da';
 
         const result = await urlService.getUrlsByUserPublic(USER_ID);
 
@@ -71,36 +69,26 @@ describe('Url Service getUrlsByUserPublic function', () => {
             {
                 typeParsed: 'Permanent',
                 active: true,
-                shortUrl: 'http://localhost:3001/redirect/tlwnd',
-                userId: 'c9bb5609-4588-4d7d-bb18-c3e430ac7377',
-                id: '701db3f5-59f1-443c-beeb-50ff31c5b14f',
-                url: 'https://tailwindcss.com/',
-                name: 'Tailwind',
-                code: 'tlwnd',
-                visits: 2,
-                type: 'P',
-                enabled: false,
+                shortUrl: 'http://localhost:3001/redirect/knzqR',
+                id: '4145686d-4ec0-44e7-a711-36fbf3dd3af6',
+                code: 'knzqR',
+                url: 'https://google.com',
+                name: 'test',
+                visits: 0,
+                userId: '3b365a11-97a3-4d44-8137-b944cade14da',
                 expirationdDate: null,
-            },
-            {
-                typeParsed: 'Permanent',
-                active: true,
-                shortUrl: 'http://localhost:3001/redirect/QB1jkaqlRt2ViX1',
-                id: 'ce63f4d7-bba3-41b0-8c4b-d54367a2348e',
-                userId: 'c9bb5609-4588-4d7d-bb18-c3e430ac7377',
-                url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio',
-                name: 'Web',
-                code: 'QB1jkaqlRt2ViX1',
-                visits: 2,
                 type: 'P',
                 enabled: true,
-                expirationdDate: null,
+                createdAt: '2024-04-14T17:44:27.951Z',
+                updatedAt: '2024-04-14T17:44:27.951Z',
             },
         ]);
     });
 
     it('should return an empty array if no urls are found', async () => {
         const USER_ID = '28143c34-64cb-444f-9e15-abaf6916e156';
+
+        url.$queueResult(null);
 
         const result = await urlService.getUrlsByUserPublic(USER_ID);
 
@@ -111,6 +99,7 @@ describe('Url Service getUrlsByUserPublic function', () => {
         const INVALID_USER_IDS = [null, undefined, 0, false, NaN, 'dummy'];
 
         INVALID_USER_IDS.forEach(async (id) => {
+            url.$queueResult(null);
             const result = await urlService.getUrlsByUserPublic(id);
             expect(result).toEqual([]);
         });
