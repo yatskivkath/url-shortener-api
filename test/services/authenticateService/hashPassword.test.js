@@ -1,3 +1,5 @@
+const { ValidationError } = require('../../../src/errors/errors.js');
+
 jest.mock('bcrypt', () => {
     return {
         hash: jest.fn().mockImplementation((password) => {
@@ -52,7 +54,7 @@ describe('Authenticate Service hashPassword function', () => {
         INVALID_PASSWORDS.forEach(async (password) => {
             await expect(
                 authenticationService.hashPassword(password)
-            ).rejects.toThrow('Invalid value was passed to password');
+            ).rejects.toThrow(ValidationError);
         });
     });
 });

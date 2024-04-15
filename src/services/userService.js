@@ -79,8 +79,8 @@ async function checkPassword(email, password) {
 
         return isMatch;
     } catch (error) {
-        switch (error.message) {
-            case 'User was not found':
+        switch (true) {
+            case error instanceof BadRequest:
                 return false;
             default:
                 throw error;

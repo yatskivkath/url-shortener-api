@@ -67,7 +67,18 @@ jest.mock('../../../src/repositories/urlRepository.js', () => {
 });
 
 jest.mock('../../../src/repositories/userRepository.js', () => {
-    return {};
+    return {
+        findUserById: jest.fn().mockImplementation((id) => ({
+            id: 'c9bb5609-4588-4d7d-bb18-c3e430ac7377',
+            email: 'test1@mail.com',
+            password: 'hashedtest1',
+            first_name: 'John',
+            last_name: 'Doe',
+            createdAt: '2024-04-07T10:09:27.843Z',
+            updatedAt: '2024-04-07T10:09:42.750Z',
+            role: 'admin',
+        })),
+    };
 });
 
 const urlService = require('../../../src/services/urlService.js');

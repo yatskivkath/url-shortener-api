@@ -1,3 +1,9 @@
+const {
+    ValidationError,
+    NotFound,
+    BadRequest,
+} = require('../../../src/errors/errors.js');
+
 jest.mock('../../../src/repositories/userRepository.js', () => {
     const users = [
         {
@@ -46,7 +52,7 @@ describe('User Service getUserByEmail function', () => {
         const EMAIL = 'test3@mail.com';
 
         await expect(userService.getUserByEmail(EMAIL)).rejects.toThrow(
-            'User was not found'
+            BadRequest
         );
     });
 
@@ -55,7 +61,7 @@ describe('User Service getUserByEmail function', () => {
 
         INVALID_EMAILS.forEach(async (email) => {
             await expect(userService.getUserByEmail(email)).rejects.toThrow(
-                'Invalid value was passed to email'
+                ValidationError
             );
         });
     });
