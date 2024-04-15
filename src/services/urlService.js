@@ -104,8 +104,8 @@ async function getUrlByCodePublic(code) {
  */
 async function getUrlsByUserPublic(userId) {
     const urls = await urlRepository.getAllUrlsByUserId(
-        userId,
-        scopes.url.public
+        userId
+        // scopes.url.public
     );
 
     return urls;
