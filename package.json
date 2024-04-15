@@ -16,7 +16,7 @@
     "lint:fix": "eslint --fix .",
     "prepare": "husky",
     "test": "jest",
-    "test-cover": "jest --coverage",
+    "test:cover": "jest --coverage",
     "tailwind": "postcss public/stylesheets/tailwind.css -o public/stylesheets/main.css",
     "tailwind:watch": "postcss public/stylesheets/tailwind.css -o public/stylesheets/main.css --watch"
   },
