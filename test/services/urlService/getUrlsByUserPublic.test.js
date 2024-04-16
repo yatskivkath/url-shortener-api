@@ -45,11 +45,27 @@ describe('Url Service getUrlsByUserPublic function', () => {
     it('should return all urls by user id', async () => {
         const USER_ID = USER.id;
 
-        url.$queueResult([url.build()]);
+        const URL_1 = {
+            ...URL,
+            id: faker.string.uuid(),
+            user_id: USER_ID,
+            url: faker.internet.url(),
+            code: faker.string.alphanumeric(5),
+        };
+
+        const URL_2 = {
+            ...URL,
+            id: faker.string.uuid(),
+            user_id: USER_ID,
+            url: faker.internet.url(),
+            code: faker.string.alphanumeric(5),
+        };
+
+        url.$queueResult([url.build(URL_1), url.build(URL_2)]);
 
         const result = await urlService.getUrlsByUserPublic(USER_ID);
 
-        expect(result).toEqual([URL]);
+        expect(result).toEqual([URL_1, URL_2]);
     });
 
     it('should return an empty array if no urls are found', async () => {

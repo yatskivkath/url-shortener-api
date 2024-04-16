@@ -95,6 +95,10 @@ async function checkPassword(email, password) {
  * @throws {Error} if user was not found
  */
 async function getUserById(userId) {
+    if (typeof userId !== 'string') {
+        throw new ValidationError();
+    }
+
     const user = await userRepository.findUserById(userId);
 
     if (!user) {
