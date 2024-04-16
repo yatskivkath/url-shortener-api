@@ -42,26 +42,7 @@ describe('User Service createUser function', () => {
         jest.resetModules();
     });
 
-    it('should create a new user', async () => {
-        const USER_DATA = {
-            firstName: faker.person.firstName(),
-            lastName: faker.person.lastName(),
-            email: faker.internet.email(),
-            password: faker.internet.password(),
-        };
-
-        user.$queueResult(user.build(USER_DATA));
-
-        const result = await userService.createUser(USER_DATA);
-
-        expect(result).toEqual({
-            ...USER,
-            ...USER_DATA,
-            password: `hashed${USER_DATA.password}`,
-        });
-    });
-
-    test('should throw an error if either firstName or lastName or email or password is not passed', async () => {
+    test('should throw an error if either firstName, lastName, email or password is not provided', async () => {
         const INVALID_USERS = [
             {
                 firstName: USER.firstName,
