@@ -1,10 +1,12 @@
 // authenticationMiddleware.js
 // Implementation of the authentication middleware
 
+const { Unauthorized } = require('../errors/errors');
+
 async function sessionCookieMiddleware(req, res, next) {
     if (!req.session.userId) {
         if (req.originalUrl.startsWith('/api')) {
-            res.status(403).end('No Access');
+            return next(new Unauthorized());
         } else {
             res.redirect(302, '/login');
         }

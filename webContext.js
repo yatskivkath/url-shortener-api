@@ -63,7 +63,7 @@ function initPages(app) {
 function initErrorHandling(app) {
     app.use((error, req, res, next) => {
         console.error(error);
-        res.status(error.statusCode).json({ error: error.message });
+        res.status(error.statusCode).json({ error: error.message }).end();
     });
 }
 

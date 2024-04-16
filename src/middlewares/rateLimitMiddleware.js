@@ -31,11 +31,7 @@ async function rateLimitByUser(req, res, next) {
             res.status(429).end('Rate Limit');
         }
     } catch (error) {
-        if (error instanceof NotFound) {
-            return next();
-        }
-
-        res.status(error.statusCode).end(error.message);
+        return next(error);
     }
 }
 

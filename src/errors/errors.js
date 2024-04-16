@@ -58,6 +58,16 @@ class ServerError extends Error {
     }
 }
 
+class TooManyRequests extends Error {
+    constructor(message = 'Too Many Requests') {
+        super(message);
+
+        this.name = this.constructor.name;
+        this.statusCode = 429;
+        Error.captureStackTrace(this, this.constructor);
+    }
+}
+
 module.exports = {
     NotFound,
     BadRequest,
@@ -65,4 +75,5 @@ module.exports = {
     Forbidden,
     ServerError,
     ValidationError,
+    TooManyRequests,
 };
