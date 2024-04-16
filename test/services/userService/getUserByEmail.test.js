@@ -1,47 +1,43 @@
+const { faker, fa } = require('@faker-js/faker');
 const {
     ValidationError,
-    NotFound,
     BadRequest,
 } = require('../../../src/errors/errors.js');
 
-jest.mock('../../../src/repositories/userRepository.js', () => {
-    const users = [
-        {
-            id: 'c9bb5609-4588-4d7d-bb18-c3e430ac7377',
-            email: 'test1@mail.com',
-            password: 'hashedtest1',
-            first_name: 'John',
-            last_name: 'Doe',
-            createdAt: '2024-04-07T10:09:27.843Z',
-            updatedAt: '2024-04-07T10:09:42.750Z',
-        },
-    ];
+jest.mock('../../../src/models/user.js', () => {
+    const USER = require('../../__mocks__/user.json');
+    const SequelizeMock = require('sequelize-mock');
+    const dbMock = new SequelizeMock();
+
+    return dbMock.define('user', USER);
+});
+
+jest.mock('../../../src/models/index.js', () => {
+    const SequelizeMock = require('sequelize-mock');
+    const dbMock = new SequelizeMock();
+    const user = require('../../../src/models/user.js');
 
     return {
-        findUserByEmail: jest.fn().mockImplementation((email, scope) => {
-            return users.find((user) => user.email === email);
-        }),
+        user,
+        sequelize: dbMock,
+        Sequelize: SequelizeMock,
     };
 });
 
 describe('User Service getUserByEmail function', () => {
     const userService = require('../../../src/services/userService.js');
 
+    const user = require('../../../src/models/user.js');
+    const USER = require('../../__mocks__/user.json');
+
     beforeEach(() => {
         jest.resetModules();
     });
 
     it('should return a user by provided email', async () => {
-        const EMAIL = 'test1@mail.com';
-        const USER = {
-            id: 'c9bb5609-4588-4d7d-bb18-c3e430ac7377',
-            email: 'test1@mail.com',
-            password: 'hashedtest1',
-            first_name: 'John',
-            last_name: 'Doe',
-            createdAt: '2024-04-07T10:09:27.843Z',
-            updatedAt: '2024-04-07T10:09:42.750Z',
-        };
+        const EMAIL = USER.email;
+
+        user.$queueResult(user.build());
 
         const result = await userService.getUserByEmail(EMAIL);
 
@@ -49,7 +45,9 @@ describe('User Service getUserByEmail function', () => {
     });
 
     test('should throw an error if user is not found', async () => {
-        const EMAIL = 'test3@mail.com';
+        const EMAIL = faker.internet.email();
+
+        user.$queueResult(null);
 
         await expect(userService.getUserByEmail(EMAIL)).rejects.toThrow(
             BadRequest
