@@ -1,40 +1,19 @@
+const { faker } = require('@faker-js/faker');
+
 jest.mock('../../../src/models/user.js', () => {
+    const USER = require('../../__mocks__/user.json');
     const SequelizeMock = require('sequelize-mock');
     const dbMock = new SequelizeMock();
 
-    return dbMock.define('user', {
-        id: '3b365a11-97a3-4d44-8137-b944cade14da',
-        first_name: 'Kateyna',
-        last_name: 'Yatskiv',
-        email: 'kath@mail.com',
-        password:
-            '$2b$10$M4MkWr595pnNyfA.vS6OSOOMeMAfUTGjnzMf.zg5QIAA9rCkkJBdi',
-        createdAt: '2024-04-06T10:33:13.050Z',
-        updatedAt: '2024-04-06T10:33:13.050Z',
-        role: 'user',
-    });
+    return dbMock.define('user', USER);
 });
 
 jest.mock('../../../src/models/url.js', () => {
+    const URL = require('../../__mocks__/url.json');
     const SequelizeMock = require('sequelize-mock');
     const dbMock = new SequelizeMock();
 
-    return dbMock.define('url', {
-        typeParsed: 'Permanent',
-        active: true,
-        shortUrl: 'http://localhost:3001/redirect/knzqR',
-        id: '4145686d-4ec0-44e7-a711-36fbf3dd3af6',
-        code: 'knzqR',
-        url: 'https://google.com',
-        name: 'test',
-        visits: 0,
-        userId: '3b365a11-97a3-4d44-8137-b944cade14da',
-        expirationdDate: null,
-        type: 'P',
-        enabled: true,
-        createdAt: '2024-04-14T17:44:27.951Z',
-        updatedAt: '2024-04-14T17:44:27.951Z',
-    });
+    return dbMock.define('url', URL);
 });
 
 jest.mock('../../../src/models/index.js', () => {
@@ -56,37 +35,25 @@ describe('Url Service getUrlsByUserPublic function', () => {
     const urlService = require('../../../src/services/urlService.js');
     const url = require('../../../src/models/url.js');
 
+    const URL = require('../../__mocks__/url.json');
+    const USER = require('../../__mocks__/user.json');
+
     beforeEach(() => {
         jest.resetModules();
     });
 
     it('should return all urls by user id', async () => {
-        const USER_ID = '3b365a11-97a3-4d44-8137-b944cade14da';
+        const USER_ID = USER.id;
+
+        url.$queueResult([url.build()]);
 
         const result = await urlService.getUrlsByUserPublic(USER_ID);
 
-        expect(result).toEqual([
-            {
-                typeParsed: 'Permanent',
-                active: true,
-                shortUrl: 'http://localhost:3001/redirect/knzqR',
-                id: '4145686d-4ec0-44e7-a711-36fbf3dd3af6',
-                code: 'knzqR',
-                url: 'https://google.com',
-                name: 'test',
-                visits: 0,
-                userId: '3b365a11-97a3-4d44-8137-b944cade14da',
-                expirationdDate: null,
-                type: 'P',
-                enabled: true,
-                createdAt: '2024-04-14T17:44:27.951Z',
-                updatedAt: '2024-04-14T17:44:27.951Z',
-            },
-        ]);
+        expect(result).toEqual([URL]);
     });
 
     it('should return an empty array if no urls are found', async () => {
-        const USER_ID = '28143c34-64cb-444f-9e15-abaf6916e156';
+        const USER_ID = faker.string.uuid();
 
         url.$queueResult(null);
 
