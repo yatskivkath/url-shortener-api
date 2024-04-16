@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 type: DataTypes.UUID,
             },
-            expirationdDate: {
+            expirationDate: {
                 field: 'expiration_date',
                 type: DataTypes.DATE,
             },

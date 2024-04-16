@@ -31,6 +31,10 @@ const {
 async function createUrl(url, userId) {
     const { redirectUrl, name, code, expirationDate, type, codeLength } = url;
 
+    if (!redirectUrl || !name || !type) {
+        throw new BadRequest();
+    }
+
     if (type === URL_TYPES.TEMPORARY && !expirationDate) {
         throw new ValidationError();
     }
@@ -41,12 +45,9 @@ async function createUrl(url, userId) {
 
     const user = await userService.getUserById(userId);
 
-    permissionsService.checkPermissions(
-        user,
-        url,
-        actions.CREATE,
-        subjects.URL
-    );
+    if (!user) {
+        throw new NotFound('User was not found');
+    }
 
     const newUrl = await urlRepository.saveUrl({
         code: code ?? generateHash(codeLength),
@@ -184,10 +185,12 @@ async function updateUrl(data, userId) {
  * @returns {Promise<void>}
  */
 async function deleteUrl(urlId, userId) {
-    const deletedUrl = await urlRepository.deleteUrl(urlId);
-
     const user = await userService.getUserById(userId);
     const url = await urlRepository.getUrl(urlId);
+
+    if (!url) {
+        throw new NotFound('Url was not found');
+    }
 
     permissionsService.checkPermissions(
         user,
@@ -196,9 +199,7 @@ async function deleteUrl(urlId, userId) {
         subjects.URL
     );
 
-    if (!deletedUrl) {
-        throw new BadRequest('Url was not found');
-    }
+    await urlRepository.deleteUrl(urlId);
 }
 
 module.exports = {

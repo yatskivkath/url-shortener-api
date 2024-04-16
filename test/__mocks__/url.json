@@ -8,7 +8,7 @@
     "name": "test",
     "visits": 0,
     "userId": "3b365a11-97a3-4d44-8137-b944cade14da",
-    "expirationdDate": null,
+    "expirationDate": null,
     "type": "P",
     "enabled": true,
     "createdAt": "2024-04-14T17:44:43.818Z",
