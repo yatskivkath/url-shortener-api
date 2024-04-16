@@ -12,7 +12,7 @@ async function saveUrl(url) {
         userId: url.userId,
         name: url.name,
         type: url.type ?? URL_TYPES.PERMANENT,
-        expirationdDate: url.expirationDate,
+        expirationDate: url.expirationDate,
     });
 
     return newUrl?.toJSON();
@@ -51,7 +51,7 @@ async function updateUrl(url) {
             url: url.url,
             visits: url.visits,
             enabled: url.enabled,
-            expirationdDate: url.expirationDate,
+            expirationDate: url.expirationDate,
             type: url.type,
         },
         {

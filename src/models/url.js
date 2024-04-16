@@ -75,10 +75,8 @@ module.exports = (sequelize, DataTypes) => {
             active: {
                 type: DataTypes.VIRTUAL,
                 get() {
-                    if (this.expirationdDate) {
-                        return (
-                            this.enabled && this.expirationdDate > new Date()
-                        );
+                    if (this.expirationDate) {
+                        return this.enabled && this.expirationDate > new Date();
                     }
 
                     if (this.type === 'OT' && this.visits > 0) {
@@ -125,7 +123,7 @@ module.exports = (sequelize, DataTypes) => {
             'type',
             'typeParsed',
             'enabled',
-            'expirationdDate',
+            'expirationDate',
             'active',
         ],
     });
