@@ -31,7 +31,7 @@ const {
 async function createUrl(url, userId) {
     const { redirectUrl, name, code, expirationDate, type, codeLength } = url;
 
-    if (!redirectUrl || !name || !type) {
+    if (!redirectUrl || !name) {
         throw new BadRequest();
     }
 
