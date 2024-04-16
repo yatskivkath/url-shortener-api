@@ -63,7 +63,7 @@ describe('Url Service getUrlByCodePublic function', () => {
         );
     });
 
-    it('should throe an error if invalid value was passed', async () => {
+    it('should throw an error if invalid value was passed', async () => {
         const INVALID_CODES = [null, undefined, 0, false, NaN, ''];
 
         INVALID_CODES.forEach(async (code) => {
