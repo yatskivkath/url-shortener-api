@@ -1,6 +1,5 @@
-const { USE } = require('sequelize/lib/index-hints');
 const { NotFound, Forbidden } = require('../../../src/errors/errors.js');
-const { faker, fa } = require('@faker-js/faker');
+const { faker } = require('@faker-js/faker');
 
 jest.mock('../../../src/models/user.js', () => {
     const USER = require('../../__mocks__/user.json');
