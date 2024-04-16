@@ -21,6 +21,11 @@ const {
  */
 async function createUser(user) {
     const { firstName, lastName, email, password } = user;
+
+    if (!firstName || !lastName || !email || !password) {
+        throw new BadRequest();
+    }
+
     const hashedPassword = await authenticationService.hashPassword(password);
 
     const newUser = await userRepository.saveUser({

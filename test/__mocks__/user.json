@@ -1,7 +1,7 @@
 {
     "id": "3b365a11-97a3-4d44-8137-b944cade14da",
-    "first_name": "Kateyna",
-    "last_name": "Yatskiv",
+    "firstName": "Kateyna",
+    "lastName": "Yatskiv",
     "email": "email@mail.com",
     "password": "hashedpassword",
     "createdAt": "2024-04-06T10:33:13.050Z",

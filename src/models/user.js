@@ -21,13 +21,15 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: DataTypes.UUIDV4,
                 type: DataTypes.UUID,
             },
-            first_name: {
+            firstName: {
                 allowNull: false,
                 type: DataTypes.STRING,
+                field: 'first_name',
             },
-            last_name: {
+            lastName: {
                 allowNull: false,
                 type: DataTypes.STRING,
+                field: 'last_name',
             },
             email: {
                 unique: true,
@@ -61,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
     );
 
     User.addScope('publicScope', {
-        attributes: ['id', 'first_name', 'last_name', 'email'],
+        attributes: ['id', 'firstName', 'lastName', 'email'],
     });
 
     User.afterCreate(async (user) => {

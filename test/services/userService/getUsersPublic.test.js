@@ -34,22 +34,22 @@ describe('User Service getUsersPublic function', () => {
         const USER_1 = {
             ...USER,
             id: faker.string.uuid(),
-            first_name: faker.person.firstName(),
-            last_name: faker.person.lastName(),
+            firstName: faker.person.firstName(),
+            lastName: faker.person.lastName(),
             email: faker.internet.email(),
         };
         const USER_2 = {
             ...USER,
             id: faker.string.uuid(),
-            first_name: faker.person.firstName(),
-            last_name: faker.person.lastName(),
+            firstName: faker.person.firstName(),
+            lastName: faker.person.lastName(),
             email: faker.internet.email(),
         };
         const USER_3 = {
             ...USER,
             id: faker.string.uuid(),
-            first_name: faker.person.firstName(),
-            last_name: faker.person.lastName(),
+            firstName: faker.person.firstName(),
+            lastName: faker.person.lastName(),
             email: faker.internet.email(),
         };
 

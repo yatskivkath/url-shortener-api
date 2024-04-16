@@ -37,8 +37,8 @@ describe('User Service getUsersById function', () => {
         const USER_1 = {
             ...USER,
             id: USER_ID,
-            first_name: faker.person.firstName(),
-            last_name: faker.person.lastName(),
+            firstName: faker.person.firstName(),
+            lastName: faker.person.lastName(),
             email: faker.internet.email(),
         };
 
