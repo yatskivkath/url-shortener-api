@@ -68,6 +68,16 @@ class TooManyRequests extends Error {
     }
 }
 
+class UnprocessableContent extends Error {
+    constructor(message = 'Unprocessable Content') {
+        super(message);
+
+        this.name = this.constructor.name;
+        this.statusCode = 422;
+        Error.captureStackTrace(this, this.constructor);
+    }
+}
+
 module.exports = {
     NotFound,
     BadRequest,
@@ -76,4 +86,5 @@ module.exports = {
     ServerError,
     ValidationError,
     TooManyRequests,
+    UnprocessableContent,
 };

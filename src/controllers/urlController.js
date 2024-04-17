@@ -86,6 +86,8 @@ async function updateUrl(req, res, next) {
     const userId = req.session.userId;
     const data = req.body;
 
+    console.log(data);
+
     try {
         const { error } = urlSchemaUpdate.validate(data);
         if (error) {

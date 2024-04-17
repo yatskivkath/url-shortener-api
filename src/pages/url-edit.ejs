@@ -7,6 +7,122 @@
     <link href="/stylesheets/main.css" rel="stylesheet">
 </head>
 <body>
-    <%= JSON.stringify(url) %>
+    <div class="flex min-h-full flex-col justify-start px-6 py-12 lg:px-8">
+        <h2 class="text-base text-center font-semibold leading-7 text-gray-900">Edit your Short URL</h2>
+        <div class="mt-10 lg:mx-auto lg:w-full lg:max-w-md xl:max-w-xl">
+            <form id="edit-url-form" action="/api/urls/<%= url.id %>" method="PUT" class="space-y-6">
+                <div class="mt-2 w-full">
+                    <span class="inline-block text-sm font-medium leading-6 text-gray-900">Your long URL:</label>
+                    <a href="<%= url.url %>" target="_blank" class="text-indigo-600 underline"><%= url.url %></a>
+                </div>
+
+                <div>
+                    <label for="alias" class="block text-sm font-medium leading-6 text-gray-900">Alias name:</label>
+                    <div class="mt-2 w-full">
+                        <input id="alias" name="name" type="text" value="<%= url.name %>" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="type" class="block text-sm font-medium leading-6 text-gray-900">Type:</label>
+                    <select name="type" id="urlType" value="<%= url.type %>" onchange="selectType()" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <option value="P" selected>Permanent</option>
+                        <option value="T">Temporary</option>
+                        <% if(url.visits < 1) { %>
+                            <option value="OT">One-time</option>
+                        <% } %>
+                      </select>
+                </div>
+
+                <div id="expirationDate__container" class="hidden">
+                    <label for="expirationDate" class="block text-sm font-medium leading-6 text-gray-900">Expiration date:</label>
+                    <input id="expirationDate" name="expirationDate" type="date" value="<%= url.expirationDate %>" min="<%= new Date().toISOString().split("T")[0]   %>" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" disabled>
+                </div>
+
+                <div id="code__container">
+                    <label for="code" class="block text-sm font-medium leading-6 text-gray-900">Code:</label>
+                    <input id="code" name="code" type="text" value="<%= url.code %>" minlength="5" maxlength="15" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                </div>
+   
+                <div class="flex flex-col sm:flex-row justify-between gap-2">
+                    <button type="submit" class="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent hover:bg-indigo-700">
+                        Update
+                    </button>
+                    <button type="button" onclick="redirectBack()" class="w-full full px-4 py-2 border border-indigo-600 text-indigo-600 font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent hover:text-white hover:border hover:border-indigo-700 hover:bg-indigo-700">
+                        Back
+                    </button>
+                </div>
+            </form>    
+        </div>
+    </div>
+    <script>
+        selectType();
+
+        function selectType() {
+            const type = document.getElementById('urlType').value;
+            const expirationDate = document.getElementById('expirationDate');
+            const expirationDateContainer = document.getElementById('expirationDate__container');
+
+            switch (type) {
+                case 'P':
+                    expirationDate.disabled = true;
+                    expirationDate.required = false;
+                    expirationDateContainer.classList.add("hidden");
+                    break;
+                case 'T':
+                    expirationDate.disabled = false;
+                    expirationDate.required = true;
+                    expirationDateContainer.classList.remove("hidden");
+                    break;
+                case 'OT':
+                    expirationDate.disabled = true;
+                    expirationDate.required = false;
+                    expirationDateContainer.classList.add("hidden");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function redirectBack() {
+            window.location = '/';
+        }
+
+        const form = document.getElementById('edit-url-form');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const alias = document.getElementById('alias').value;
+            const type = document.getElementById('urlType').value;
+            const expirationDate = document.getElementById('expirationDate').value;
+            const code = document.getElementById('code').value;
+            
+            const body = {
+                name: alias,
+                type,
+                code,
+            };
+            
+            if(type === 'T') {
+                body.expirationDate = expirationDate;
+            }
+
+            const response = await fetch('/api/urls/<%= url.id %>', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body),
+            });
+
+            if (response.ok) {
+                // window.location = '/';
+            } else {
+                const data = await response.json();
+                alert(data.message);
+            }
+        });
+    </script>
 </body>
 </html>

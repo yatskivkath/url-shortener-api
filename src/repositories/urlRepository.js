@@ -45,7 +45,7 @@ async function getAllUrlsByUserId(userId, scope = scopes.url.default) {
 }
 
 async function updateUrl(url) {
-    await models.url.update(
+    const rows = await models.url.update(
         {
             code: url.code,
             url: url.url,
@@ -53,6 +53,7 @@ async function updateUrl(url) {
             enabled: url.enabled,
             expirationDate: url.expirationDate,
             type: url.type,
+            name: url.name,
         },
         {
             where: {
@@ -60,6 +61,8 @@ async function updateUrl(url) {
             },
         }
     );
+
+    console.log(rows);
 }
 
 async function deleteUrl(id) {

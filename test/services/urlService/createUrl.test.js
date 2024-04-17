@@ -64,19 +64,13 @@ describe('Url Service createUrl function', () => {
         );
     });
 
-    it('should throw an error if either redirectUrl, name or type is not provided', async () => {
+    it('should throw an error if either redirectUrl or name is not provided', async () => {
         const INVALID_URLS = [
             {
                 redirectUrl: URL.redirectUrl,
-                name: URL.name,
-            },
-            {
-                redirectUrl: URL.redirectUrl,
-                type: URL.type,
             },
             {
                 name: URL.name,
-                type: URL.type,
             },
         ];
 

@@ -21,6 +21,7 @@ const urlSchemaUpdate = Joi.object({
     expirationDate: Joi.date().min('now'),
     type: Joi.string().valid(...Object.values(URL_TYPES)),
     enabled: Joi.boolean(),
+    code: Joi.string().alphanum().min(5).max(15),
 });
 
 module.exports = {

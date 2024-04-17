@@ -12,6 +12,7 @@ const {
     NotFound,
     ValidationError,
     BadRequest,
+    UnprocessableContent,
 } = require('../errors/errors.js');
 
 /**
@@ -149,7 +150,7 @@ async function visitUrl(code) {
  * @throws {Error} if expiration date is provided for permanent urls
  */
 async function updateUrl(data, userId) {
-    const { id, name, enabled, expirationDate, type } = data;
+    const { id, name, enabled, expirationDate, type, code } = data;
 
     if (type === URL_TYPES.TEMPORARY && !expirationDate) {
         throw new ValidationError();
@@ -169,12 +170,21 @@ async function updateUrl(data, userId) {
         subjects.URL
     );
 
+    if (code && url.code !== code) {
+        const isCodeExist = await urlRepository.findUrlByCode(code);
+
+        if (isCodeExist) {
+            throw new UnprocessableContent('Code already exists');
+        }
+    }
+
     await urlRepository.updateUrl({
         id,
         expirationDate,
         enabled,
         type,
         name,
+        code,
     });
 }
 
