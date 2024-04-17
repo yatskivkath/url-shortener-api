@@ -19,17 +19,7 @@ async function createUrl(req, res, next) {
 
         const userId = req.session.userId;
 
-        const newUrl = await urlService.createUrl(
-            {
-                redirectUrl: data.redirectUrl,
-                name: data.name,
-                code: data.code,
-                expirationDate: data.expirationDate,
-                type: data.type,
-                codeLength: data.codeLength,
-            },
-            userId
-        );
+        const newUrl = await urlService.createUrl(data, userId);
 
         res.status(201).json({
             status: 'success',
@@ -70,10 +60,11 @@ async function getAllUrlsByUserId(req, res, next) {
 }
 
 async function deleteUrl(req, res, next) {
+    const userId = req.session.userId;
     const { id } = req.params;
 
     try {
-        await urlService.deleteUrl(id);
+        await urlService.deleteUrl(id, userId);
 
         res.status(204).end();
     } catch (error) {
@@ -85,8 +76,6 @@ async function updateUrl(req, res, next) {
     const { id } = req.params;
     const userId = req.session.userId;
     const data = req.body;
-
-    console.log(data);
 
     try {
         const { error } = urlSchemaUpdate.validate(data);

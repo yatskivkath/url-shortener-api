@@ -130,6 +130,54 @@
         function redirectBack() {
             window.location = '/';
         }
+
+        const form = document.getElementById('new-url-form');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const url = document.getElementById('url').value;
+            const alias = document.getElementById('alias').value;
+            const type = document.getElementById('urlType').value;
+            const expirationDate = document.getElementById('expirationDate').value;
+            const codeChoiceCode = document.getElementById('codeChoiceCode');
+            const codeChoiceLength = document.getElementById('codeChoiceLength');
+            const code = document.getElementById('code').value;
+            const codeLength = document.getElementById('codeLength').value;
+
+            const body = {
+                redirectUrl: url,
+                name: alias,
+                type,
+            };
+            
+            if (type === 'T') {
+                body.expirationDate = expirationDate;
+            }
+
+            if(codeChoiceCode.checked && code) {
+                body.code = code;
+            }
+
+            if(codeChoiceLength.checked && codeLength) {
+                body.codeLength = codeLength;
+            }
+
+            const response = await fetch('/api/urls', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body),
+            });
+
+            if (response.ok) {
+                window.location = '/';
+            } else {
+                alert('Failed to create URL');
+            }
+        });
     </script>
 </body>
 </html>

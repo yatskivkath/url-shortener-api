@@ -150,6 +150,33 @@
         async function editUrl(urlId) {
             window.location = `/url/edit/${urlId}`;
         }
+
+        const form = document.getElementById('new-url-form');
+        
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const url = document.getElementById('url').value;
+            const alias = document.getElementById('alias').value;
+
+            const response = await fetch('/api/urls', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    redirectUrl: url, 
+                    name: alias 
+                }),
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Failed to create URL');
+            }
+        });
     </script>
 </body>
 </html>
