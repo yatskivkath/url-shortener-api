@@ -71,7 +71,14 @@
                                 <div class="pl-4">
                                     <% if(url.active) {%>
                                         <span class="text-gray-300 italic">
-                                            active
+                                            active<%= (function() {
+                                                if(url.expirationDate !== null) {
+                                                    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+                                                    const dateFormatted =  new Date(url.expirationDate).toLocaleDateString('en-US', options);
+                                                    return ` till ${dateFormatted}`;
+                                                }
+                                                
+                                            })()  %>
                                         </span>
                                     <% } else {%>
                                         <span class="text-gray-300 italic">
