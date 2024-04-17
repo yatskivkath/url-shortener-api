@@ -25,11 +25,11 @@
 
                 <div>
                     <label for="type" class="block text-sm font-medium leading-6 text-gray-900">Type:</label>
-                    <select name="type" id="urlType" onchange="selectType()" class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    <select name="type" id="urlType" onchange="selectType()" <%= url.type === "OT" ? "disabled" : "" %> class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                         <option value="P" <%= url.type === "P" ? "selected" : "" %>>Permanent</option>
-                        <option value="T" <%= url.type === "T" ? "selected" : "" %> >Temporary</option>
-                        <% if(url.visits < 1) { %>
-                            <option value="OT">One-time</option>
+                        <option value="T" <%= url.type === "T" ? "selected" : "" %>>Temporary</option>
+                        <% if(url.visits < 1 || url.type === "OT") { %>
+                            <option value="OT" <%= url.type === "OT" ? "selected" : "" %>>One-time</option>
                         <% } %>
                       </select>
                 </div>

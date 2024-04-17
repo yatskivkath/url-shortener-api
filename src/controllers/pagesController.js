@@ -11,8 +11,12 @@ async function homePage(req, res) {
     res.render('home', { urls });
 }
 
-async function loginPage(req, res) {
-    res.render('login');
+async function signInPage(req, res) {
+    res.render('sign-in');
+}
+
+async function signUpPage(req, res) {
+    res.render('sign-up');
 }
 
 async function registerPage(req, res) {
@@ -44,7 +48,8 @@ async function urlEditPage(req, res) {
 
 module.exports = {
     homePage,
-    loginPage,
+    signInPage,
+    signUpPage,
     registerPage,
     dashboardPage,
     adminPage,

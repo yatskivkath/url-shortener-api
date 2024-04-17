@@ -21,7 +21,7 @@ async function login(req, res) {
 
         res.redirect(302, '/');
     } else {
-        res.redirect(302, '/login');
+        res.redirect(302, '/sign-in');
     }
 }
 

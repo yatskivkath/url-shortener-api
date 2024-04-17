@@ -10,7 +10,9 @@ const { USER_ROLES } = require('../constants/databaseConstants.js');
 
 const pagesRouter = express.Router();
 
-pagesRouter.get('/login', pagesController.loginPage);
+pagesRouter.get('/sign-in', pagesController.signInPage);
+
+pagesRouter.get('/sign-up', pagesController.signUpPage);
 
 pagesRouter.get('/register', pagesController.registerPage);
 
