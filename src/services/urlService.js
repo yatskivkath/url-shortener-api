@@ -180,7 +180,7 @@ async function updateUrl(data, userId) {
 
     await urlRepository.updateUrl({
         id,
-        expirationDate,
+        expirationDate: type === URL_TYPES.TEMPORARY ? expirationDate : null,
         enabled,
         type,
         name,
