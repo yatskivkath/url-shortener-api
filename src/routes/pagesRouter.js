@@ -28,6 +28,12 @@ pagesRouter.get(
     pagesController.adminPage
 );
 
+pagesRouter.get(
+    '/admin/users',
+    roleMiddleware(USER_ROLES.ADMIN),
+    pagesController.adminCreateUserPage
+);
+
 pagesRouter.get('/url/customize', pagesController.urlCustomizePage);
 
 pagesRouter.get('/url/edit/:id', pagesController.urlEditPage);

@@ -44,9 +44,16 @@
             });
 
             if (!response.ok) {
-                alert('Failed to delete User');
+                const { error } = await response.json()
+                alert(`Failed to delete User: ${error}`);
             }
         }
+
+        const newUserBtn = document.getElementById('new-user-btn');
+
+        newUserBtn.addEventListener('click', () => {
+            window.location.href = '/admin/users';
+        });
     </script>
 </body>
 </html>

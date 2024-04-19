@@ -46,6 +46,10 @@ async function urlEditPage(req, res) {
     res.render('url-edit', { url });
 }
 
+async function adminCreateUserPage(req, res) {
+    res.render('admin-create');
+}
+
 module.exports = {
     homePage,
     signInPage,
@@ -55,4 +59,5 @@ module.exports = {
     adminPage,
     urlCustomizePage,
     urlEditPage,
+    adminCreateUserPage,
 };
