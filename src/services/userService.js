@@ -9,6 +9,8 @@ const {
     BadRequest,
     NotFound,
 } = require('../errors/errors.js');
+const permissionsService = require('./permissionsService.js');
+const { actions, subjects } = require('../constants/permissionsConstants.js');
 
 /**
  * Create a new user
@@ -113,10 +115,31 @@ async function getUserById(userId) {
     return user;
 }
 
+/**
+ * Delete a user
+ * @param {uuid} id deleted user id
+ * @param {uuid} userId logged in user id
+ */
+async function deleteUser(id, userId) {
+    console.log(id, userId);
+    const deletedUser = await getUserById(id);
+    const loggedInUser = await getUserById(userId);
+
+    permissionsService.checkPermissions(
+        loggedInUser,
+        deletedUser,
+        actions.DELETE,
+        subjects.USER
+    );
+
+    await userRepository.deleteUser(id);
+}
+
 module.exports = {
     createUser,
     getUserByEmail,
     getUsersPublic,
     checkPassword,
     getUserById,
+    deleteUser,
 };

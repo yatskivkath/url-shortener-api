@@ -100,7 +100,7 @@ urlRouter.get('/', urlController.getAllUrlsByUserId);
 /**
  * @swagger
  * /api/urls:
- *  post:
+ *  put:
  *   tags:
  *   - Url
  *   summary: Update URL
@@ -148,7 +148,7 @@ urlRouter.put('/:id', urlController.updateUrl);
 /**
  * @swagger
  * '/api/urls/{id}':
- *  get:
+ *  delete:
  *     tags:
  *     - Url
  *     summary: Delete URL

@@ -71,4 +71,28 @@ userRouter.use(authenticationMiddleware);
  */
 userRouter.get('/', userController.getAllUsers);
 
+/**
+ * @swagger
+ * '/api/users/{id}':
+ * delete:
+ *    tags:
+ *    - User
+ *    summary: Delete a user
+ *    parameters:
+ *    - name: id
+ *      in: path
+ *      description: The user ID
+ *      required: true
+ *    responses:
+ *      204:
+ *        description: Deleted Successfully
+ *      403:
+ *        description: No Access
+ *      404:
+ *        description: Not Found
+ *      500:
+ *        description: Server Error
+ */
+userRouter.delete('/:id', userController.deleteUser);
+
 module.exports = userRouter;

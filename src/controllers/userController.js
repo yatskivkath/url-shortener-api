@@ -3,7 +3,7 @@
 
 const userService = require('../services/userService.js');
 const userSchema = require('../validators/userSchema.js');
-const { ValidationError } = require('../errors/errors.js');
+const { ValidationError, BadRequest } = require('../errors/errors.js');
 
 async function createUser(req, res, next) {
     try {
@@ -35,7 +35,25 @@ async function getAllUsers(req, res, next) {
     }
 }
 
+async function deleteUser(req, res, next) {
+    try {
+        const userId = req.session.userId;
+        const id = req.params.id;
+
+        if (userId === id) {
+            throw new BadRequest('You cannot delete yourself');
+        }
+
+        await userService.deleteUser(id, userId);
+
+        res.status(204).end();
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     createUser,
     getAllUsers,
+    deleteUser,
 };

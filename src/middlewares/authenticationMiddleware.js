@@ -8,7 +8,7 @@ async function sessionCookieMiddleware(req, res, next) {
         if (req.originalUrl.startsWith('/api')) {
             return next(new Unauthorized());
         } else {
-            res.redirect(302, '/login');
+            res.redirect(302, '/sign-in');
         }
     } else {
         return next();

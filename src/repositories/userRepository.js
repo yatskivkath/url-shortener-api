@@ -40,9 +40,18 @@ async function getAllUsers(scope = 'defaultScope') {
     return users?.map((u) => u.toJSON()) ?? [];
 }
 
+async function deleteUser(id) {
+    await models.user.destroy({
+        where: {
+            id,
+        },
+    });
+}
+
 module.exports = {
     saveUser,
     findUserById,
     findUserByEmail,
     getAllUsers,
+    deleteUser,
 };
