@@ -125,6 +125,7 @@ module.exports = (sequelize, DataTypes) => {
             'enabled',
             'expirationDate',
             'active',
+            'userId',
         ],
     });
 
