@@ -17,6 +17,21 @@ async function getAllRateLimits(req, res, next) {
     }
 }
 
+async function getAllRateLimitByUser(req, res, next) {
+    try {
+        const userId = req.session.userId;
+        const { key } = req.params;
+
+        const rateLimit = await rateLimitService.getRateLimit(userId, key);
+
+        res.json({
+            rateLimit,
+        });
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     getAllRateLimits,
 };

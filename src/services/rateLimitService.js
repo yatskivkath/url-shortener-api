@@ -5,6 +5,7 @@ const redisClient = require('../redis/redisClient.js');
 const config = require('../config/config.js')[process.env.NODE_ENV];
 const permissionsService = require('./permissionsService.js');
 const userService = require('./userService.js');
+const urlService = require('./urlService.js');
 const { actions, subjects } = require('../constants/permissionsConstants.js');
 
 /**
@@ -110,9 +111,31 @@ async function getAllRateLimits(userId) {
     return rateLimits;
 }
 
+async function geAllRateLimitsByUserCodes(userId) {
+    const urls = await urlService.getUrlsByUserPublic(userId);
+    const codes = urls.map((url) => url.code);
+
+    const rateLimits = {};
+    for (const c of codes) {
+        const key = `rl:code:${c}`;
+        const value = await redisClient.get(key);
+        const ttl = await redisClient.ttl(key);
+
+        console.log(`Rate limit for code ${key}: ${value} (ttl: ${ttl})`);
+
+        rateLimits[key] = {
+            value,
+            ttl,
+        };
+    }
+
+    return rateLimits;
+}
+
 module.exports = {
     checkRateLimitCode,
     checkRateLimitUser,
     checkRateLimitIP,
     getAllRateLimits,
+    geAllRateLimitsByUserCodes,
 };
