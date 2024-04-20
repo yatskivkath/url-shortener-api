@@ -11,30 +11,65 @@
 </head>
 <body class="h-full">
     <div class="flex min-h-full flex-col justify-start px-6 py-12 lg:px-8">
-        <div class="flex justify-between">
-            <h2 class="text-xl font-semibold leading-7 text-gray-900">List of Users</h2>
-            <button id="new-user-btn" type="button" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-semibold rounded-md text-white bg-indigo-500 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Create a new user
-            </button>
+        <div>
+            <div class="flex justify-between">
+                <h2 class="text-xl font-semibold leading-7 text-gray-900">List of Users</h2>
+                <button id="new-user-btn" type="button" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-semibold rounded-md text-white bg-indigo-500 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Create a new user
+                </button>
+            </div>
+            
+            <ul role="list" class="divide-y divide-grey-100 mt-5">
+                <% for (const user of users){%>
+                    <li class="flex justify-between gap-x-6 py-5">
+                        <div class="flex min-w-0 gap-x-4">
+                          <div class="min-w-0 flex-auto">
+                            <p class="text-sm font-semibold leading-6 text-gray-900"><%= user.firstName %> <%= user.lastName %></p>
+                            <p class="mt-1 truncate text-xs leading-5 text-gray-500"><%= user.email %> </p>
+                          </div>
+                        </div>
+                        <div class="shrink-0 flex flex-col items-end">
+                            <button id="delete-user-btn" onclick="deleteUser('<%= user.id %>')" type="button" title="Delete a user" class="material-symbols-outlined inline-flex items-center px-3 py-1.5 border border-transparent text-xs rounded-md text-red-600 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                close
+                            </button>
+                        </div>
+            
+                    </li>
+                 <% }%>
+            </ul>
+        </div>
+
+        <div class="mt-10">
+            <h2 class="text-xl font-semibold leading-7 text-gray-900">List of Rate Limits</h2>
+
+            <% const raetLimitsArr = Object.entries(rateLimits) %>
+            <% if (raetLimitsArr.length > 0) { %>
+                <ul role="list" class="divide-y divide-grey-100 mt-5">
+                    <% for (const [key, value] of raetLimitsArr){%>
+                        <li class="flex justify-between gap-x-6 py-5">
+                            <div class="flex min-w-0 gap-x-4">
+                            <div class="min-w-0 flex-auto">
+                                <% const t = new Date(); %>
+                                <% t.setSeconds(t.getSeconds() + value.ttl); %>
+                                <p class="text-sm font-semibold leading-6 text-gray-900"><%= key %></p>
+                                <p class="mt-1 truncate text-xs leading-5 text-gray-500">rate: <%= value.value %>, ttl: <%= value.ttl %>s</p>
+                                <p class="mt-1 truncate text-xs leading-5 text-gray-500">Expires on <%= t %></p>
+                            </div>
+                            </div>
+                            <div class="shrink-0 flex flex-col items-end">
+                                <button id="delete-user-btn" onclick="deleteRateLimit('<%= key %>')" type="button" title="Delete a user" class="material-symbols-outlined inline-flex items-center px-3 py-1.5 border border-transparent text-xs rounded-md text-red-600 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                    close
+                                </button>
+                            </div>
+                
+                        </li>
+                    <% }%>
+                </ul>
+            <% } else { %>
+                <p class="mt-5 truncate text-xs leading-5 text-gray-500"> No active rate limits </p>
+            <% } %>
         </div>
         
-        <ul role="list" class="divide-y divide-grey-100 mt-5">
-            <% for (let user of users){%>
-                <li class="flex justify-between gap-x-6 py-5">
-                    <div class="flex min-w-0 gap-x-4">
-                      <div class="min-w-0 flex-auto">
-                        <p class="text-sm font-semibold leading-6 text-gray-900"><%= user.firstName %> <%= user.lastName %></p>
-                        <p class="mt-1 truncate text-xs leading-5 text-gray-500"><%= user.email %> </p>
-                      </div>
-                    </div>
-                    <div class="shrink-0 flex flex-col items-end">
-                        <button id="delete-user-btn" onclick="deleteUser('<%= user.id %>')" type="button" title="Delete a user" class="material-symbols-outlined inline-flex items-center px-3 py-1.5 border border-transparent text-xs rounded-md text-red-600 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                            close
-                        </button>
-                    </div>
-                  </li>
-             <% }%>
-        </ul>
     </div> 
     <script>
         async function  deleteUser(userTd) {
@@ -43,7 +78,23 @@
             });
 
             if (!response.ok) {
-                const { error } = await response.json()
+                const { error } = await response.json();
+                alert(`Failed to delete User: ${error}`);
+            }
+        }
+
+        async function deleteRateLimit(key) {
+            const response = await fetch('/api/rateLimit', {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ key }),
+            });
+
+            if (!response.ok) {
+                const { error } = await response.json();
                 alert(`Failed to delete User: ${error}`);
             }
         }

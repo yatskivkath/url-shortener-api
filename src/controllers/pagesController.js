@@ -3,6 +3,7 @@
 
 const urlService = require('../services/urlService.js');
 const userService = require('../services/userService.js');
+const rateLimitService = require('../services/rateLimitService.js');
 
 async function homePage(req, res) {
     const userId = req.session.userId;
@@ -28,9 +29,12 @@ async function dashboardPage(req, res) {
 }
 
 async function adminPage(req, res) {
-    const users = await userService.getUsersPublic();
+    const userId = req.session.userId;
 
-    res.render('admin', { users });
+    const users = await userService.getUsersPublic();
+    const rateLimits = await rateLimitService.getAllRateLimits(userId);
+
+    res.render('admin', { users, rateLimits });
 }
 
 async function urlCustomizePage(req, res) {

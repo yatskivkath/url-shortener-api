@@ -7,6 +7,8 @@ const permissionsService = require('./permissionsService.js');
 const userService = require('./userService.js');
 const urlService = require('./urlService.js');
 const { actions, subjects } = require('../constants/permissionsConstants.js');
+const { string } = require('joi');
+const { ValidationError } = require('../errors/errors.js');
 
 /**
  * Check the rate limit
@@ -97,20 +99,28 @@ async function getAllRateLimits(userId) {
         keys = keys.concat(response.keys);
     } while (cursor !== 0);
 
-    const values = await redisClient.mGet(keys);
-
     let rateLimits = {};
-    for (let i = 0; i < keys.length; i++) {
-        const ttl = await redisClient.ttl(keys[i]);
-        rateLimits[keys[i]] = {
-            value: values[i],
-            ttl,
-        };
+
+    if (keys.length > 0) {
+        const values = await redisClient.mGet(keys);
+
+        for (let i = 0; i < keys.length; i++) {
+            const ttl = await redisClient.ttl(keys[i]);
+            rateLimits[keys[i]] = {
+                value: values[i],
+                ttl,
+            };
+        }
     }
 
     return rateLimits;
 }
 
+/**
+ * Get all rate limits for logged in user
+ * @param {uuid} userId logged in user id
+ * @returns {Promise<object | {}>} rate limits
+ */
 async function geAllRateLimitsByUserCodes(userId) {
     const urls = await urlService.getUrlsByUserPublic(userId);
     const codes = urls.map((url) => url.code);
@@ -132,10 +142,34 @@ async function geAllRateLimitsByUserCodes(userId) {
     return rateLimits;
 }
 
+/**
+ * Delete a passed rate limit key
+ * @param {uuid} userId logged in user id
+ * @param {string} key key to delete
+ * @throws {Error} if code is invalid
+ */
+async function deleteRateLimit(userId, key) {
+    const user = await userService.getUserById(userId);
+
+    if (typeof key !== 'string' || !key.startsWith('rl:')) {
+        throw new ValidationError();
+    }
+
+    permissionsService.checkPermissions(
+        user,
+        {},
+        actions.DELETE,
+        subjects.RATE_LIMIT
+    );
+
+    await redisClient.del(key);
+}
+
 module.exports = {
     checkRateLimitCode,
     checkRateLimitUser,
     checkRateLimitIP,
     getAllRateLimits,
     geAllRateLimitsByUserCodes,
+    deleteRateLimit,
 };
