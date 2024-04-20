@@ -3,6 +3,9 @@
 
 const redisClient = require('../redis/redisClient.js');
 const config = require('../config/config.js')[process.env.NODE_ENV];
+const permissionsService = require('./permissionsService.js');
+const userService = require('./userService.js');
+const { actions, subjects } = require('../constants/permissionsConstants.js');
 
 /**
  * Check the rate limit
@@ -69,8 +72,47 @@ async function checkRateLimitIP(ipAddress) {
     );
 }
 
+/**
+ * Get all rate limits
+ * @param {string} userId logged user id
+ * @returns {Promise<{}>} rate limits
+ */
+async function getAllRateLimits(userId) {
+    let cursor = 0;
+    let keys = [];
+
+    const user = await userService.getUserById(userId);
+
+    permissionsService.checkPermissions(
+        user,
+        {},
+        actions.READ,
+        subjects.RATE_LIMIT
+    );
+
+    do {
+        const response = await redisClient.scan(cursor, { MATCH: 'rl:*' });
+        cursor = response.cursor;
+        keys = keys.concat(response.keys);
+    } while (cursor !== 0);
+
+    const values = await redisClient.mGet(keys);
+
+    let rateLimits = {};
+    for (let i = 0; i < keys.length; i++) {
+        const ttl = await redisClient.ttl(keys[i]);
+        rateLimits[keys[i]] = {
+            value: values[i],
+            ttl,
+        };
+    }
+
+    return rateLimits;
+}
+
 module.exports = {
     checkRateLimitCode,
     checkRateLimitUser,
     checkRateLimitIP,
+    getAllRateLimits,
 };

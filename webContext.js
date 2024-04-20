@@ -16,6 +16,7 @@ const urlRouter = require('./src/routes/urlRouter.js');
 const codeRouter = require('./src/routes/codeRouter.js');
 const pagesRouter = require('./src/routes/pagesRouter.js');
 const authRouter = require('./src/routes/authRouter.js');
+const rateLimitRouter = require('./src/routes/rateLimitRouter.js');
 
 // Initialize middlewares
 function initMiddlewares(app) {
@@ -48,6 +49,7 @@ function initControllers(app) {
     app.use('/api/urls', urlRouter);
     app.use('/redirect', codeRouter);
     app.use('/api/auth', authRouter);
+    app.use('/api/rateLimit', rateLimitRouter);
     app.use('/', pagesRouter);
 }
 

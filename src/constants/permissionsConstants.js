@@ -9,6 +9,7 @@ const actions = {
 const subjects = {
     USER: 'User',
     URL: 'Url',
+    RATE_LIMIT: 'RateLimit',
     ALL: 'all',
 };
 

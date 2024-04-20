@@ -121,7 +121,6 @@ async function getUserById(userId) {
  * @param {uuid} userId logged in user id
  */
 async function deleteUser(id, userId) {
-    console.log(id, userId);
     const deletedUser = await getUserById(id);
     const loggedInUser = await getUserById(userId);
 
