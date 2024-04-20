@@ -81,6 +81,14 @@ async function getUrl(id) {
     return url?.toJSON();
 }
 
+async function deleteUrlsByUser(userId) {
+    await models.url.destroy({
+        where: {
+            userId,
+        },
+    });
+}
+
 module.exports = {
     saveUrl,
     findUrlByCode,
@@ -89,4 +97,5 @@ module.exports = {
     updateUrl,
     deleteUrl,
     getUrl,
+    deleteUrlsByUser,
 };

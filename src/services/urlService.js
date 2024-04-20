@@ -212,6 +212,24 @@ async function deleteUrl(urlId, userId) {
     await urlRepository.deleteUrl(urlId);
 }
 
+/**
+ * Delete all urls owned by a user
+ * @param {id} id user id to deleet url from
+ * @param {uuid} userId logged in user id
+ */
+async function deleteAllUsersUrl(id, userId) {
+    const user = await userService.getUserById(userId);
+
+    permissionsService.checkPermissions(
+        user,
+        { userId: id },
+        actions.DELETE,
+        subjects.URL
+    );
+
+    await urlRepository.deleteUrlsByUser(id);
+}
+
 module.exports = {
     createUrl,
     getUrlById,
@@ -220,4 +238,5 @@ module.exports = {
     visitUrl,
     updateUrl,
     deleteUrl,
+    deleteAllUsersUrl,
 };

@@ -11,6 +11,7 @@ const {
 } = require('../errors/errors.js');
 const permissionsService = require('./permissionsService.js');
 const { actions, subjects } = require('../constants/permissionsConstants.js');
+const urlService = require('./urlService.js');
 
 /**
  * Create a new user
@@ -132,6 +133,7 @@ async function deleteUser(id, userId) {
     );
 
     await userRepository.deleteUser(id);
+    await urlService.deleteAllUrlsByUserId(id);
 }
 
 module.exports = {

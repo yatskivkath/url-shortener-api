@@ -34,4 +34,5 @@ async function getAllRateLimitByUser(req, res, next) {
 
 module.exports = {
     getAllRateLimits,
+    getAllRateLimitByUser,
 };
