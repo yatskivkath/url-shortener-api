@@ -92,9 +92,9 @@ function initStaticAssets(app) {
 
 module.exports = function webContext(app) {
     initStaticAssets(app);
+    initDocs(app);
     initMiddlewares(app);
     initControllers(app);
-    initDocs(app);
     initPages(app);
     initErrorHandling(app);
 };
