@@ -11,7 +11,6 @@ module.exports = {
         database: 'url_shortener',
         host: 'localhost',
         port: 5432,
-        // url: process.env.DATABASE_URL,
         logging: false,
         dialect: 'postgres',
         pool: {
