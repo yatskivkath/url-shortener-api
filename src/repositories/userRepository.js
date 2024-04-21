@@ -48,10 +48,19 @@ async function deleteUser(id) {
     });
 }
 
+async function updateUser(id, userData) {
+    await models.user.update(userData, {
+        where: {
+            id,
+        },
+    });
+}
+
 module.exports = {
     saveUser,
     findUserById,
     findUserByEmail,
     getAllUsers,
     deleteUser,
+    updateUser,
 };

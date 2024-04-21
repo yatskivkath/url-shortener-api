@@ -136,6 +136,31 @@ async function deleteUser(id, userId) {
     await urlService.deleteAllUrlsByUserId(id);
 }
 
+/**
+ * Update a user
+ * @param {uuid} userId logged in user
+ * @param {object} userData user data to update
+ */
+async function updateUser(userId, userData) {
+    const { id, role } = userData;
+
+    if (!id || !role) {
+        throw new ValidationError();
+    }
+
+    const updatedUser = await getUserById(id);
+    const loggedInUser = await getUserById(userId);
+
+    permissionsService.checkPermissions(
+        loggedInUser,
+        updatedUser,
+        actions.UPDATE,
+        subjects.USER
+    );
+
+    await userRepository.updateUser(id, { role });
+}
+
 module.exports = {
     createUser,
     getUserByEmail,
@@ -143,4 +168,5 @@ module.exports = {
     checkPassword,
     getUserById,
     deleteUser,
+    updateUser,
 };

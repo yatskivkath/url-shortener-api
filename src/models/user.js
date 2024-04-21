@@ -63,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
     );
 
     User.addScope('publicScope', {
-        attributes: ['id', 'firstName', 'lastName', 'email'],
+        attributes: ['id', 'firstName', 'lastName', 'email', 'role'],
     });
 
     User.afterCreate(async (user) => {

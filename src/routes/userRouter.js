@@ -95,4 +95,6 @@ userRouter.get('/', userController.getAllUsers);
  */
 userRouter.delete('/:id', userController.deleteUser);
 
+userRouter.put('/:id', userController.updateUser);
+
 module.exports = userRouter;

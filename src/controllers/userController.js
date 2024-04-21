@@ -2,14 +2,17 @@
 // Implementation of the User controller
 
 const userService = require('../services/userService.js');
-const userSchema = require('../validators/userSchema.js');
+const {
+    userSchemaCreate,
+    userSchemaUpdate,
+} = require('../validators/userSchema.js');
 const { ValidationError, BadRequest } = require('../errors/errors.js');
 
 async function createUser(req, res, next) {
     try {
         const data = req.body;
 
-        const { error } = userSchema.validate(data);
+        const { error } = userSchemaCreate.validate(data);
         if (error) {
             throw new ValidationError(error.message);
         }
@@ -52,8 +55,30 @@ async function deleteUser(req, res, next) {
     }
 }
 
+async function updateUser(req, res, next) {
+    try {
+        const userId = req.session.userId;
+        const id = req.params.id;
+        const data = req.body;
+
+        data.id = id;
+
+        const { error } = userSchemaUpdate.validate(data);
+        if (error) {
+            throw new ValidationError(error.message);
+        }
+
+        await userService.updateUser(userId, data);
+
+        res.status(203).end();
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     createUser,
     getAllUsers,
     deleteUser,
+    updateUser,
 };

@@ -824,6 +824,9 @@ select {
 .place-items-center {
   place-items: center;
 }
+.items-start {
+  align-items: flex-start;
+}
 .items-end {
   align-items: flex-end;
 }
@@ -1038,6 +1041,9 @@ select {
 }
 .font-semibold {
   font-weight: 600;
+}
+.capitalize {
+  text-transform: capitalize;
 }
 .italic {
   font-style: italic;

@@ -25,10 +25,20 @@
                         <div class="flex min-w-0 gap-x-4">
                           <div class="min-w-0 flex-auto">
                             <p class="text-sm font-semibold leading-6 text-gray-900"><%= user.firstName %> <%= user.lastName %></p>
+                            <p class="capitalize text-sm leading-6 text-gray-900"><%= user.role %></p>
                             <p class="mt-1 truncate text-xs leading-5 text-gray-500"><%= user.email %> </p>
                           </div>
                         </div>
-                        <div class="shrink-0 flex flex-col items-end">
+                        <div class="flex gap-2 items-start">
+                            <% if (user.role === 'admin') { %>
+                                <button id="change-role-btn" onclick="changeUserRole('<%= user.id %>', 'user')" type="button" title="Change role" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs rounded-md text-indigo-600 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    Remove Admin rights
+                                </button>
+                            <% } else { %>
+                                <button id="change-role-btn" onclick="changeUserRole('<%= user.id %>', 'admin')" type="button" title="Change role" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs rounded-md text-indigo-600 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    Set Admin rights
+                                </button>
+                            <% } %>
                             <button id="delete-user-btn" onclick="deleteUser('<%= user.id %>')" type="button" title="Delete a user" class="material-symbols-outlined inline-flex items-center px-3 py-1.5 border border-transparent text-xs rounded-md text-red-600 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                                 close
                             </button>
@@ -96,6 +106,25 @@
             if (!response.ok) {
                 const { error } = await response.json();
                 alert(`Failed to delete User: ${error}`);
+                
+            }
+        }
+
+        async function changeUserRole(userId, role) {
+            console.log(userId, role);
+            const response = await fetch(`/api/users/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ role }),
+            });
+
+            if (!response.ok) {
+                const { error } = await response.json();
+                alert(`Failed to delete User: ${error}`);
+                
             }
         }
 
