@@ -13,7 +13,18 @@ const sequelize = new Sequelize(
     config.database,
     config.username,
     config.password,
-    config
+    {
+        dialect: config.dialect,
+        logging: config.logging,
+        pool: config.pool,
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false,
+            },
+        },
+        ssl: true,
+    }
 );
 
 fs.readdirSync(__dirname)

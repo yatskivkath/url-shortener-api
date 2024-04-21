@@ -6,11 +6,12 @@ require('dotenv').config();
 module.exports = {
     development: {
         // Database configuration for development environment
-        username: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_DATABASE,
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT,
+        username: 'admin',
+        password: 'admin',
+        database: 'url_shortener',
+        host: 'localhost',
+        port: 5432,
+        // url: process.env.DATABASE_URL,
         logging: false,
         dialect: 'postgres',
         pool: {
@@ -22,7 +23,7 @@ module.exports = {
 
         // Server configuration for development environment
         server: {
-            port: 8080,
+            port: process.env.PORT || 3001,
         },
 
         // Redis configuration for development environment
@@ -41,15 +42,28 @@ module.exports = {
     },
     production: {
         // Database configuration for production environment
-        host: 'localhost',
-        port: 5432,
-        username: 'your_prod_username',
-        password: 'your_prod_password',
-        database: 'your_prod_database_name',
+        username: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE,
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        dialect: 'postgres',
+        pool: {
+            max: 5,
+            min: 0,
+            acquire: 30000,
+            idle: 10000,
+        },
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false,
+            },
+        },
 
         // Server configuration for production environment
         server: {
-            port: 8080,
+            port: process.env.PORT,
         },
 
         // Redis configuration for production environment
