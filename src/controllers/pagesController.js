@@ -25,7 +25,29 @@ async function registerPage(req, res) {
 }
 
 async function dashboardPage(req, res) {
-    res.render('dashboard');
+    const userId = req.session.userId;
+
+    const topUrls = await urlService.getTopUrls(5);
+    const topUserUrls = await urlService.getTopUrls(5, userId);
+    const allUserUrls = await urlService.getUrlsByUserPublic(userId);
+
+    const totalUserUrls = allUserUrls.length;
+    const totalUserVisits = allUserUrls.reduce(
+        (prev, cur) => (prev += cur.visits),
+        0
+    );
+
+    const rateLimitsUser =
+        await rateLimitService.geAllRateLimitsByUserCodes(userId);
+
+    console.log(rateLimitsUser);
+
+    res.render('dashboard', {
+        topUrls,
+        topUserUrls,
+        totalUserUrls,
+        totalUserVisits,
+    });
 }
 
 async function adminPage(req, res) {

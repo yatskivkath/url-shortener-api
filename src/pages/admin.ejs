@@ -111,7 +111,6 @@
         }
 
         async function changeUserRole(userId, role) {
-            console.log(userId, role);
             const response = await fetch(`/api/users/${userId}`, {
                 method: 'PUT',
                 headers: {

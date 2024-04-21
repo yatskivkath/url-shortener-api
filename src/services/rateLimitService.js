@@ -131,9 +131,8 @@ async function geAllRateLimitsByUserCodes(userId) {
         const value = await redisClient.get(key);
         const ttl = await redisClient.ttl(key);
 
-        console.log(`Rate limit for code ${key}: ${value} (ttl: ${ttl})`);
-
-        rateLimits[key] = {
+        rateLimits[c] = {
+            key,
             value,
             ttl,
         };

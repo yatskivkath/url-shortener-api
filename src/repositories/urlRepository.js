@@ -89,6 +89,12 @@ async function deleteUrlsByUser(userId) {
     });
 }
 
+async function getUrls(options, scope = scopes.url.default) {
+    const urls = await models.url.scope(scope).findAll(options);
+
+    return urls?.map((u) => u.toJSON());
+}
+
 module.exports = {
     saveUrl,
     findUrlByCode,
@@ -98,4 +104,5 @@ module.exports = {
     deleteUrl,
     getUrl,
     deleteUrlsByUser,
+    getUrls,
 };

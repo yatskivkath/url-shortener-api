@@ -230,6 +230,23 @@ async function deleteAllUsersUrl(id, userId) {
     await urlRepository.deleteUrlsByUser(id);
 }
 
+async function getTopUrls(limit = 5, userId = undefined) {
+    const options = {
+        order: [['visits', 'DESC']],
+        limit,
+    };
+
+    if (userId) {
+        options.where = {
+            userId,
+        };
+    }
+
+    const urls = await urlRepository.getUrls(options, scopes.public);
+
+    return urls.filter((url) => url.active);
+}
+
 module.exports = {
     createUrl,
     getUrlById,
@@ -239,4 +256,5 @@ module.exports = {
     updateUrl,
     deleteUrl,
     deleteAllUsersUrl,
+    getTopUrls,
 };

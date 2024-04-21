@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html class="h-full bg-white" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URLs Page</title>
+    <link href="/stylesheets/main.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body class="h-full">
+    <div class="flex min-h-full flex-col justify-start px-6 py-12 lg:px-8">
+        <h1 class="text-2xl">You have <span class="text-indigo-600 font-bold"><%= totalUserUrls %> URLs</span>  and <span class="text-indigo-600 font-bold"><%= totalUserVisits %> visits</span></h1>
+        
+        <div class="grid grid-rows-2 lg:grid-cols-2 gap-10 mt-6">
+            <div class="flex flex-col min bg-indigo-100 p-6 rounded-xl">
+                <h2 class="text-xl font-semibold leading-7 text-indigo-600">Top <%= topUserUrls.length %> Your URLs</h2>
+                <ol role="list" class="divide-y divide-gray-100 list-decimal">
+                    <% for (const url of topUserUrls) { %>
+                        <li class="flex justify-between gap-x-6 py-5">
+                        <div class="flex flex-col gap-x-4 ">
+                            <a href="<%= url.shortUrl %>" target="_blank" class="text-sm break-allfont-semibold leading-6 text-gray-900 hover:text-indigo-700"><%= url.shortUrl %></a>
+                            <p class="mt-1 break-all text-xs leading-5 text-gray-500"><%= url.name %></p>
+                            <p class="mt-1 break-all text-xs leading-5 text-gray-500"><%= url.url %></p>
+                        </div>
+                        <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                            <p class="flex items-center gap-1 text-sm leading-6 text-gray-900">
+                                <span class="material-icons text-gray-500">
+                                    visibility
+                                </span> <%= url.visits %></p>
+                            <p class="mt-1 text-xs leading-5 text-gray-500">Last seen <time datetime="2023-01-23T13:23Z">3h ago</time></p>
+                        </div>
+                        </li>
+                    <% } %>
+                </ol>
+            </div>
+
+            <div class="flex flex-col min p-6 rounded-xl border-indigo-500 border">
+                <h2 class="text-xl font-semibold leading-7 text-indigo-600">Top <%= topUrls.length %> Website URLs</h2>
+                <ol role="list" class="divide-y divide-gray-100 list-decimal">
+                    <% for (const url of topUrls) { %>
+                        <li class="flex justify-between gap-x-6 py-5">
+                        <div class="flex flex-col gap-x-4 ">
+                            <a href="<%= url.shortUrl %>" target="_blank" class="text-sm break-allfont-semibold leading-6 text-gray-900 hover:text-indigo-700"><%= url.shortUrl %></a>
+                            <p class="mt-1 break-all text-xs leading-5 text-gray-500"><%= url.name %></p>
+                            <p class="mt-1 break-all text-xs leading-5 text-gray-500"><%= url.url %></p>
+                        </div>
+                        <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                            <p class="flex items-center gap-1 text-sm leading-6 text-gray-900">
+                                <span class="material-icons text-gray-300">
+                                    visibility
+                                </span> <%= url.visits %></p>
+                            <p class="mt-1 text-xs leading-5 text-gray-500">Last seen <time datetime="2023-01-23T13:23Z">3h ago</time></p>
+                        </div>
+                        </li>
+                    <% } %>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <script >
+    </script>
+</body>
+</html>

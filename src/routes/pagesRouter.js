@@ -20,7 +20,7 @@ pagesRouter.use(authenticationMiddleware);
 
 pagesRouter.get('/', pagesController.homePage);
 
-pagesRouter.get('/dasboard', pagesController.dashboardPage);
+pagesRouter.get('/dashboard', pagesController.dashboardPage);
 
 pagesRouter.get(
     '/admin',
