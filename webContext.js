@@ -7,6 +7,7 @@ const session = require('express-session');
 const RedisStore = require('connect-redis').default;
 const swaggerUI = require('swagger-ui-express');
 const path = require('path');
+const logger = require('./logger.js');
 
 const swaggerSpec = require('./swagger.js');
 const redisClient = require('./src/redis/redisClient.js');
@@ -63,7 +64,12 @@ function initPages(app) {
 
 function initErrorHandling(app) {
     app.use((error, req, res, next) => {
-        console.error(error);
+        logger.log({
+            level: 'error',
+            message: error.message,
+            stack: error.stack,
+        });
+
         res.status(error.statusCode).json({ error: error.message }).end();
     });
 }
