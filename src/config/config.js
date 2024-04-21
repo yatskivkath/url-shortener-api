@@ -66,6 +66,8 @@ module.exports = {
             port: process.env.PORT,
         },
 
+        domain: process.env.DOMAIN,
+
         // Redis configuration for production environment
         redis: {
             url: process.env.REDIS_URL,
