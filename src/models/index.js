@@ -14,6 +14,7 @@ const sequelize = new Sequelize(
     config.username,
     config.password,
     {
+        host: config.host,
         dialect: config.dialect,
         logging: config.logging,
         pool: config.pool,
