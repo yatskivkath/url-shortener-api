@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html class="h-full bg-white" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URLs Page</title>
+    <link href="/stylesheets/main.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body class="h-full">
+    <header>
+        <%- include('./partials/header'); %>
+    </header>
+    <div class="flex min-h-full flex-col justify-start px-6 py-12 lg:px-8">
+            <h2 class="text-xl text-center font-semibold leading-7 text-gray-900"><%= user.firstName %> <%= user.lastName %><%= urls.length > 0 ? '' : ' has no urls'  %></h2>
+            <div id="urls_list" class="mt-10 grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+                <% for (const url of urls) {%>
+                    <div class="flex flex-col justify-between gap-3 bg-white shadow-md shadow-indigo-200 hover:shadow-indigo-300 hover:shadow-lg rounded-lg p-4">
+                        <div class="flex flex-col gap-0.5">
+                            <div class="flex justify-between">
+                                <div class="flex justify-center w-20 bg-gray-500 rounded-md px-1 py-0.5 mb-2">
+                                    <span class="text-white font-semibold text-xs">
+                                        <%= url.typeParsed.toLowerCase() %>
+                                    </span>
+                                </div>
+                            </div>
+                        
+                            <p class="break-all text-gray-500">
+                                <%= url.name %>
+                            </p>
+                            <a href="<%= url.shortUrl %>" class="break-all text-indigo-600 font-semibold mb-2" target="_blank" title="Open in new tab">
+                                <%= url.shortUrl %>
+                            </a>
+                        </div>
+    
+                        <div class="flex justify-between">
+                            <div class="flex gap-4 divide-x-2 divide-gray-300">
+                                <div class="flex gap-2">
+                                    <span class="material-icons text-gray-300">
+                                        visibility
+                                    </span>
+                                    <span class="text-gray-500">
+                                        <%= url.visits %>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-end gap-2">
+                                <button onclick="copyUrl('<%= url.shortUrl %>')" class="material-icons text-gray-300 hover:text-indigo-600 cursor-pointer">
+                                    content_copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                 <% }%>
+            </div>
+    </div>
+    
+
+   
+    <script >
+
+
+        async function copyUrl(shortUrl) {
+            try {
+                await navigator.clipboard.writeText(shortUrl);
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+            }
+        }
+            event.preventDefault();
+
+            const url = document.getElementById('url').value;
+            const alias = document.getElementById('alias').value;
+
+            const response = await fetch('/api/urls', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    redirectUrl: url, 
+                    name: alias 
+                }),
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                const data = await response.json();
+                alert(data.message);
+            }
+        });
+    </script>
+</body>
+</html>

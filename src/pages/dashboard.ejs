@@ -14,9 +14,9 @@
     </header>
     
     <div class="flex min-h-full flex-col justify-start px-6 py-12 lg:px-8">
-        <h1 class="text-2xl">You have <span class="text-indigo-600 font-bold"><%= totalUserUrls %> URLs</span>  and <span class="text-indigo-600 font-bold"><%= totalUserVisits %> visits</span></h1>
+        <h2 class="text-xl text-center font-semibold leading-7 text-gray-900">You have <span class="text-indigo-600 font-bold"><%= totalUserUrls %> URLs</span>  and <span class="text-indigo-600 font-bold"><%= totalUserVisits %> visits</span></h2>
 
-        <div class="grid grid-rows-2 lg:grid-cols-2 gap-10 mt-6">
+        <div class="grid grid-rows-2 lg:grid-cols-2 gap-10 mt-10">
             <div class="flex flex-col min bg-indigo-100 p-6 rounded-xl">
                 <h2 class="text-xl font-semibold leading-7 text-indigo-600">Top <%= topUserUrls.length %> Your URLs</h2>
                 <ol role="list" class="divide-y divide-gray-100 list-decimal">

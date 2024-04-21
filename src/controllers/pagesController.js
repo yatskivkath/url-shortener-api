@@ -124,6 +124,35 @@ async function adminCreateUserPage(req, res, next) {
     }
 }
 
+async function usersPage(req, res, next) {
+    try {
+        const users = await userService.getUsersPublic();
+
+        res.render('users', { users });
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function userPage(req, res, next) {
+    try {
+        const { id } = req.params;
+
+        const user = await userService.getUserById(id);
+        const urls = (await urlService.getUrlsByUserPublic(id)).map((url) => {
+            delete url.expirationDate;
+            delete url.active;
+            delete url.expired;
+
+            return url;
+        });
+
+        res.render('user', { user, urls });
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     homePage,
     signInPage,
@@ -134,4 +163,6 @@ module.exports = {
     urlCustomizePage,
     urlEditPage,
     adminCreateUserPage,
+    usersPage,
+    userPage,
 };

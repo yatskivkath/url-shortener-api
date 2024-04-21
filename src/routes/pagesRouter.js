@@ -34,6 +34,10 @@ pagesRouter.get(
     pagesController.adminCreateUserPage
 );
 
+pagesRouter.get('/users', pagesController.usersPage);
+
+pagesRouter.get('/users/:id', pagesController.userPage);
+
 pagesRouter.get('/url/customize', pagesController.urlCustomizePage);
 
 pagesRouter.get('/url/edit/:id', pagesController.urlEditPage);
