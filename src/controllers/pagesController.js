@@ -29,7 +29,7 @@ async function registerPage(req, res) {
 async function dashboardPage(req, res) {
     const userId = req.session.userId;
 
-    const topUrls = await urlService.getTopUrls(5);
+    const topUrls = await urlService.getTopUrls();
     const allUserUrls = await urlService.getUrlsByUserPublic(userId);
 
     const totalUserUrls = allUserUrls.length;
@@ -48,9 +48,6 @@ async function dashboardPage(req, res) {
 
         return url;
     });
-
-    topUserUrls.sort((url1, url2) => url2.visits - url1.visits);
-    topUrls.sort((url1, url2) => url2.visits - url1.visits);
 
     res.render('dashboard', {
         topUrls,

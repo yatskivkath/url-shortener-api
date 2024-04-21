@@ -25,6 +25,17 @@ async function login(req, res) {
     }
 }
 
+async function logout(req, res, next) {
+    req.session.destroy((err) => {
+        if (err) {
+            next(err);
+        }
+
+        res.redirect(302, '/sign-in');
+    });
+}
+
 module.exports = {
     login,
+    logout,
 };

@@ -38,4 +38,6 @@ const authRouter = new express.Router();
  */
 authRouter.post('/login', authenticationController.login);
 
+authRouter.post('/logout', authenticationController.logout);
+
 module.exports = authRouter;

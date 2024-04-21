@@ -2,7 +2,9 @@
 // Implementation of the Url repository
 
 const models = require('../models/index.js');
+const { sequelize } = require('../models/index.js');
 const { URL_TYPES } = require('../constants/databaseConstants.js');
+const { WEB_DOMAIN } = require('../constants/domain.js');
 const scopes = require('../constants/scopes.js');
 
 async function saveUrl(url) {
@@ -89,10 +91,54 @@ async function deleteUrlsByUser(userId) {
     });
 }
 
-async function getUrls(options, scope = scopes.url.default) {
-    const urls = await models.url.scope(scope).findAll(options);
+async function getUrls(options) {
+    const urls = await sequelize.query(
+        'SELECT * FROM urls ORDER BY visits DESC LIMIT :limit',
+        {
+            replacements: { limit: options.limit },
+            type: sequelize.QueryTypes.SELECT,
+        }
+    );
 
-    return urls?.map((u) => u.toJSON());
+    return urls.map((u) => {
+        return {
+            id: u.id,
+            code: u.code,
+            url: u.url,
+            visits: u.visits,
+            enabled: u.enabled,
+            expirationDate: u.expiration_date,
+            shortUrl: `${WEB_DOMAIN}/redirect/${u.code}`,
+            type: u.type,
+            name: u.name,
+            userId: u.user_id,
+        };
+    });
+}
+
+async function getUrlsByUser(options) {
+    const urls = await sequelize.query(
+        'SELECT * FROM urls WHERE user_id = :userId ORDER BY visits DESC LIMIT :limit',
+        {
+            replacements: { userId: options.userId, limit: options.limit },
+            type: sequelize.QueryTypes.SELECT,
+        }
+    );
+
+    return urls.map((u) => {
+        return {
+            id: u.id,
+            code: u.code,
+            url: u.url,
+            visits: u.visits,
+            enabled: u.enabled,
+            expirationDate: u.expiration_date,
+            shortUrl: `${WEB_DOMAIN}/redirect/${u.code}`,
+            type: u.type,
+            name: u.name,
+            userId: u.user_id,
+        };
+    });
 }
 
 module.exports = {
@@ -105,4 +151,5 @@ module.exports = {
     getUrl,
     deleteUrlsByUser,
     getUrls,
+    getUrlsByUser,
 };

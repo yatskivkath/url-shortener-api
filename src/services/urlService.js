@@ -6,8 +6,9 @@ const { generateHash } = require('../utils/hashFunctions.js');
 const scopes = require('../constants/scopes.js');
 const { URL_TYPES } = require('../constants/databaseConstants.js');
 const { actions, subjects } = require('../constants/permissionsConstants.js');
-const permissionsService = require('./permissionsService.js');
 const userService = require('./userService.js');
+const permissionsService = require('./permissionsService.js');
+
 const {
     NotFound,
     ValidationError,
@@ -160,8 +161,8 @@ async function updateUrl(data, userId) {
         throw new ValidationError();
     }
 
-    const user = await userService.getUserById(userId);
     const url = await urlRepository.getUrl(id);
+    const user = await userService.getUserById(userId);
 
     permissionsService.checkPermissions(
         user,
@@ -212,24 +213,6 @@ async function deleteUrl(urlId, userId) {
     await urlRepository.deleteUrl(urlId);
 }
 
-/**
- * Delete all urls owned by a user
- * @param {id} id user id to deleet url from
- * @param {uuid} userId logged in user id
- */
-async function deleteAllUsersUrl(id, userId) {
-    const user = await userService.getUserById(userId);
-
-    permissionsService.checkPermissions(
-        user,
-        { userId: id },
-        actions.DELETE,
-        subjects.URL
-    );
-
-    await urlRepository.deleteUrlsByUser(id);
-}
-
 async function getTopUrls(limit = 5, userId = undefined) {
     const options = {
         order: [['visits', 'DESC']],
@@ -237,14 +220,15 @@ async function getTopUrls(limit = 5, userId = undefined) {
     };
 
     if (userId) {
-        options.where = {
-            userId,
-        };
+        options.userId = userId;
+        const urls = await urlRepository.getUrlsByUser(options);
+
+        return urls;
+    } else {
+        const urls = await urlRepository.getUrls(options);
+
+        return urls;
     }
-
-    const urls = await urlRepository.getUrls(options, scopes.public);
-
-    return urls.filter((url) => url.active);
 }
 
 module.exports = {
@@ -255,6 +239,5 @@ module.exports = {
     visitUrl,
     updateUrl,
     deleteUrl,
-    deleteAllUsersUrl,
     getTopUrls,
 };

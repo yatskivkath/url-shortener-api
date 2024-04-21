@@ -2,6 +2,7 @@
 // Implementation of the User service
 
 const userRepository = require('../repositories/userRepository.js');
+const urlRepository = require('../repositories/urlRepository.js');
 const authenticationService = require('./authenticationService.js');
 const scopes = require('../constants/scopes.js');
 const {
@@ -11,7 +12,6 @@ const {
 } = require('../errors/errors.js');
 const permissionsService = require('./permissionsService.js');
 const { actions, subjects } = require('../constants/permissionsConstants.js');
-const urlService = require('./urlService.js');
 
 /**
  * Create a new user
@@ -132,8 +132,15 @@ async function deleteUser(id, userId) {
         subjects.USER
     );
 
+    permissionsService.checkPermissions(
+        loggedInUser,
+        { userId: id },
+        actions.DELETE,
+        subjects.URL
+    );
+
     await userRepository.deleteUser(id);
-    await urlService.deleteAllUrlsByUserId(id);
+    await urlRepository.deleteUrlsByUser(id);
 }
 
 /**
@@ -163,10 +170,10 @@ async function updateUser(userId, userData) {
 
 module.exports = {
     createUser,
+    updateUser,
     getUserByEmail,
     getUsersPublic,
     checkPassword,
     getUserById,
     deleteUser,
-    updateUser,
 };
