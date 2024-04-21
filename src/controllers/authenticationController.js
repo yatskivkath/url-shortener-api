@@ -11,6 +11,8 @@ async function login(req, res, next) {
     try {
         const data = req.body;
 
+        delete data.csrfToken;
+
         const { error } = loginSchema.validate(data);
         if (error) {
             throw new ValidationError(error.message);
