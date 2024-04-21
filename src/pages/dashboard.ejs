@@ -17,14 +17,14 @@
                 <h2 class="text-xl font-semibold leading-7 text-indigo-600">Top <%= topUserUrls.length %> Your URLs</h2>
                 <ol role="list" class="divide-y divide-gray-100 list-decimal">
                     <% for (const url of topUserUrls) { %>
-                        <li class="flex flex-col gap-5 sm:gap-0 sm:flex-row justify-between gap-x-6 py-5">
+                        <li class="flex flex-col gap-5 sm:gap-20 sm:flex-row justify-between gap-x-6 py-5">
                             <div class="flex flex-col gap-x-4 ">
                                 <a href="<%= url.shortUrl %>" target="_blank" class="text-sm break-all font-semibold leading-6 text-gray-900 hover:text-indigo-700"><%= url.shortUrl %></a>
                                 <p class="mt-1 break-all text-xs leading-5 text-gray-500"><%= url.name %></p>
                                 <p class="mt-1 break-all text-xs leading-5 text-gray-500"><%= url.url %></p>
                             </div>
 
-                            <div class="flex flex-row gap-2 sm:gap-1 items-center sm:flex-col sm:items-end">
+                            <div class="min-w-16 flex flex-row gap-2 sm:gap-1 items-center sm:flex-col sm:items-end">
                                 <p class="flex items-center gap-1 text-sm leading-6 text-gray-900">
                                     <span class="material-icons text-gray-500">
                                         visibility
@@ -34,10 +34,9 @@
                                     Rate: <%= url.rateLimit.value %>/<%= maxRateLimit %>
                                 </p>
 
-                                <% const t = new Date(); %>
-                                <% const options = { year: 'numeric', month: 'short', day: 'numeric' }; %>
-                                <% t.setSeconds(t.getSeconds() + url.rateLimit.ttl); %>
-                                <p class="text-xs leading-5 text-gray-500">TTL: <time datetime="2023-01-23T13:23"> <%= t.toLocaleDateString('en-US', options) %> <%= t.getHours() %>:<%= t.getMinutes() %>
+                                <% if(url.rateLimit.value > 0) { %>
+                                    <p class="text-xs leading-5 text-gray-500">TTL: <%=  url.rateLimit.ttl %>s</p>
+                                <% } %>
                             </div>
                         </li>
                     <% } %>
@@ -48,18 +47,17 @@
                 <h2 class="text-xl font-semibold leading-7 text-indigo-600">Top <%= topUrls.length %> Website URLs</h2>
                 <ol role="list" class="divide-y divide-gray-100 list-decimal">
                     <% for (const url of topUrls) { %>
-                        <li class="flex justify-between gap-x-6 py-5">
-                        <div class="flex flex-col gap-x-4 ">
+                        <li class="flex flex-col gap-5 sm:gap-2s0 sm:flex-row justify-between gap-x-6 py-5">
+                        <div class="flex flex-col gap-x-4">
                             <a href="<%= url.shortUrl %>" target="_blank" class="text-sm break-all font-semibold leading-6 text-gray-900 hover:text-indigo-700"><%= url.shortUrl %></a>
                             <p class="mt-1 break-all text-xs leading-5 text-gray-500"><%= url.name %></p>
                             <p class="mt-1 break-all text-xs leading-5 text-gray-500"><%= url.url %></p>
                         </div>
-                        <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                        <div class="min-w-16 flex justify-start sm:justify-end items-start">
                             <p class="flex items-center gap-1 text-sm leading-6 text-gray-900">
                                 <span class="material-icons text-gray-300">
                                     visibility
                                 </span> <%= url.visits %></p>
-                            <p class="mt-1 text-xs leading-5 text-gray-500">Last seen <time datetime="2023-01-23T13:23Z">3h ago</time></p>
                         </div>
                         </li>
                     <% } %>

@@ -49,7 +49,8 @@ async function dashboardPage(req, res) {
         return url;
     });
 
-    console.log(topUserUrls);
+    topUserUrls.sort((url1, url2) => url2.visits - url1.visits);
+    topUrls.sort((url1, url2) => url2.visits - url1.visits);
 
     res.render('dashboard', {
         topUrls,
@@ -66,7 +67,9 @@ async function adminPage(req, res) {
     const users = await userService.getUsersPublic();
     const rateLimits = await rateLimitService.getAllRateLimits(userId);
 
-    res.render('admin', { users, rateLimits });
+    const maxRateLimit = config.rateLimit.requestsLimitPerCode;
+
+    res.render('admin', { users, rateLimits, maxRateLimit });
 }
 
 async function urlCustomizePage(req, res) {
