@@ -4,6 +4,8 @@
 const urlService = require('../services/urlService.js');
 const userService = require('../services/userService.js');
 const rateLimitService = require('../services/rateLimitService.js');
+const env = process.env.NODE_ENV || 'development';
+const config = require('../config/config.js')[env];
 
 async function homePage(req, res) {
     const userId = req.session.userId;
@@ -28,7 +30,6 @@ async function dashboardPage(req, res) {
     const userId = req.session.userId;
 
     const topUrls = await urlService.getTopUrls(5);
-    const topUserUrls = await urlService.getTopUrls(5, userId);
     const allUserUrls = await urlService.getUrlsByUserPublic(userId);
 
     const totalUserUrls = allUserUrls.length;
@@ -39,14 +40,23 @@ async function dashboardPage(req, res) {
 
     const rateLimitsUser =
         await rateLimitService.geAllRateLimitsByUserCodes(userId);
+    const maxRateLimit = config.rateLimit.requestsLimitPerCode;
 
-    console.log(rateLimitsUser);
+    const topUserUrls = (await urlService.getTopUrls(5, userId)).map((url) => {
+        url.rateLimit = rateLimitsUser[url.code];
+        url.rateLimit.value = parseInt(url.rateLimit.value ?? 0);
+
+        return url;
+    });
+
+    console.log(topUserUrls);
 
     res.render('dashboard', {
         topUrls,
         topUserUrls,
         totalUserUrls,
         totalUserVisits,
+        maxRateLimit,
     });
 }
 

@@ -11,25 +11,34 @@
 <body class="h-full">
     <div class="flex min-h-full flex-col justify-start px-6 py-12 lg:px-8">
         <h1 class="text-2xl">You have <span class="text-indigo-600 font-bold"><%= totalUserUrls %> URLs</span>  and <span class="text-indigo-600 font-bold"><%= totalUserVisits %> visits</span></h1>
-        
+
         <div class="grid grid-rows-2 lg:grid-cols-2 gap-10 mt-6">
             <div class="flex flex-col min bg-indigo-100 p-6 rounded-xl">
                 <h2 class="text-xl font-semibold leading-7 text-indigo-600">Top <%= topUserUrls.length %> Your URLs</h2>
                 <ol role="list" class="divide-y divide-gray-100 list-decimal">
                     <% for (const url of topUserUrls) { %>
-                        <li class="flex justify-between gap-x-6 py-5">
-                        <div class="flex flex-col gap-x-4 ">
-                            <a href="<%= url.shortUrl %>" target="_blank" class="text-sm break-allfont-semibold leading-6 text-gray-900 hover:text-indigo-700"><%= url.shortUrl %></a>
-                            <p class="mt-1 break-all text-xs leading-5 text-gray-500"><%= url.name %></p>
-                            <p class="mt-1 break-all text-xs leading-5 text-gray-500"><%= url.url %></p>
-                        </div>
-                        <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                            <p class="flex items-center gap-1 text-sm leading-6 text-gray-900">
-                                <span class="material-icons text-gray-500">
-                                    visibility
-                                </span> <%= url.visits %></p>
-                            <p class="mt-1 text-xs leading-5 text-gray-500">Last seen <time datetime="2023-01-23T13:23Z">3h ago</time></p>
-                        </div>
+                        <li class="flex flex-col gap-5 sm:gap-0 sm:flex-row justify-between gap-x-6 py-5">
+                            <div class="flex flex-col gap-x-4 ">
+                                <a href="<%= url.shortUrl %>" target="_blank" class="text-sm break-all font-semibold leading-6 text-gray-900 hover:text-indigo-700"><%= url.shortUrl %></a>
+                                <p class="mt-1 break-all text-xs leading-5 text-gray-500"><%= url.name %></p>
+                                <p class="mt-1 break-all text-xs leading-5 text-gray-500"><%= url.url %></p>
+                            </div>
+
+                            <div class="flex flex-row gap-2 sm:gap-1 items-center sm:flex-col sm:items-end">
+                                <p class="flex items-center gap-1 text-sm leading-6 text-gray-900">
+                                    <span class="material-icons text-gray-500">
+                                        visibility
+                                    </span> <%= url.visits %></p>
+
+                                <p class="text-xs leading-5 text-gray-500">
+                                    Rate: <%= url.rateLimit.value %>/<%= maxRateLimit %>
+                                </p>
+
+                                <% const t = new Date(); %>
+                                <% const options = { year: 'numeric', month: 'short', day: 'numeric' }; %>
+                                <% t.setSeconds(t.getSeconds() + url.rateLimit.ttl); %>
+                                <p class="text-xs leading-5 text-gray-500">TTL: <time datetime="2023-01-23T13:23"> <%= t.toLocaleDateString('en-US', options) %> <%= t.getHours() %>:<%= t.getMinutes() %>
+                            </div>
                         </li>
                     <% } %>
                 </ol>
@@ -41,7 +50,7 @@
                     <% for (const url of topUrls) { %>
                         <li class="flex justify-between gap-x-6 py-5">
                         <div class="flex flex-col gap-x-4 ">
-                            <a href="<%= url.shortUrl %>" target="_blank" class="text-sm break-allfont-semibold leading-6 text-gray-900 hover:text-indigo-700"><%= url.shortUrl %></a>
+                            <a href="<%= url.shortUrl %>" target="_blank" class="text-sm break-all font-semibold leading-6 text-gray-900 hover:text-indigo-700"><%= url.shortUrl %></a>
                             <p class="mt-1 break-all text-xs leading-5 text-gray-500"><%= url.name %></p>
                             <p class="mt-1 break-all text-xs leading-5 text-gray-500"><%= url.url %></p>
                         </div>
