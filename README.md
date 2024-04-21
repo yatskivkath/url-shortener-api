@@ -29,16 +29,16 @@ To run this project locally, follow these steps:
    ```
    npm install
    ```
-3. Start postgres locally
+3. Start postgres locally, e.g.:
    ```
    brew services start postgresql
    ```
-4. Start Redis locally
+4. Start Redis locally, e.g.:
     ```
     brew services start redis
     ```
 5. Set up .env file
-6. Run sequelize migrations and seeders
+6. Run sequelize migrations and seeders:
    ```
    npx sequelize-cli db:migrate
    npx sequelize-cli db:seed:all
