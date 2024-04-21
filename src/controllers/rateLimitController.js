@@ -2,6 +2,7 @@
 // Implement the rate limit controller.
 
 const rateLimitService = require('../services/rateLimitService.js');
+const logger = require('../../logger.js');
 
 async function getAllRateLimits(req, res, next) {
     try {
@@ -41,6 +42,14 @@ async function deleteRateLimit(req, res, next) {
         const { key } = req.body;
 
         await rateLimitService.deleteRateLimit(userId, key);
+
+        logger.log({
+            level: 'info',
+            message: 'Rate limit deleted',
+            params: {
+                key,
+            },
+        });
 
         res.status(204).end();
     } catch (err) {

@@ -7,6 +7,7 @@ const {
     userSchemaUpdate,
 } = require('../validators/userSchema.js');
 const { ValidationError, BadRequest } = require('../errors/errors.js');
+const logger = require('../../logger.js');
 
 async function createUser(req, res, next) {
     try {
@@ -18,6 +19,14 @@ async function createUser(req, res, next) {
         }
 
         const newUser = await userService.createUser(data);
+
+        logger.log({
+            level: 'info',
+            message: 'User created',
+            params: {
+                user: newUser,
+            },
+        });
 
         res.status(201).json({
             status: 'success',
@@ -49,6 +58,14 @@ async function deleteUser(req, res, next) {
 
         await userService.deleteUser(id, userId);
 
+        logger.log({
+            level: 'info',
+            message: 'User deleted',
+            params: {
+                id,
+            },
+        });
+
         res.status(204).end();
     } catch (error) {
         next(error);
@@ -70,7 +87,16 @@ async function updateUser(req, res, next) {
 
         await userService.updateUser(userId, data);
 
-        res.status(203).end();
+        logger.log({
+            level: 'info',
+            message: 'User updated',
+            params: {
+                id,
+                data,
+            },
+        });
+
+        res.status(204).end();
     } catch (error) {
         next(error);
     }

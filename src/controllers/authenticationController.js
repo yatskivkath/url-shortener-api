@@ -3,6 +3,7 @@
 
 const userService = require('../services/userService.js');
 const authenticationService = require('../services/authenticationService.js');
+const logger = require('../../logger.js');
 
 async function login(req, res, next) {
     try {
@@ -20,8 +21,24 @@ async function login(req, res, next) {
             req.session.userId = user.id;
             req.session.user = user;
 
+            logger.log({
+                level: 'info',
+                message: 'User logged in',
+                params: {
+                    email,
+                },
+            });
+
             res.redirect(302, '/');
         } else {
+            logger.log({
+                level: 'warn',
+                message: 'User login failed',
+                params: {
+                    email,
+                },
+            });
+
             res.redirect(302, '/sign-in');
         }
     } catch (error) {

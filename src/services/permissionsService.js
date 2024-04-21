@@ -2,9 +2,10 @@
 // Implementation of the permissions service
 
 const { ForbiddenError, subject } = require('@casl/ability');
-const { Forbidden } = require('../errors/errors.js');
 
+const { Forbidden } = require('../errors/errors.js');
 const defineAbilityFor = require('../permissions/index.js');
+const logger = require('../../logger.js');
 
 /**
  * Check if the user has permissions to perform the action on the subject
@@ -21,6 +22,17 @@ function checkPermissions(
     subjectType
 ) {
     const ability = defineAbilityFor(userToCheck);
+
+    logger.log({
+        level: 'debug',
+        message: 'Checking permissions for user',
+        params: {
+            user: userToCheck,
+            subject: subjectToCheck,
+            action: actionType,
+            subjectType: subjectType,
+        },
+    });
 
     try {
         ForbiddenError.from(ability).throwUnlessCan(

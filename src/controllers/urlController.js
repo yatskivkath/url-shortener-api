@@ -7,6 +7,7 @@ const {
     urlSchemaCreate,
     urlSchemaUpdate,
 } = require('../validators/urlSchema.js');
+const logger = require('../../logger.js');
 
 async function createUrl(req, res, next) {
     try {
@@ -20,6 +21,14 @@ async function createUrl(req, res, next) {
         const userId = req.session.userId;
 
         const newUrl = await urlService.createUrl(data, userId);
+
+        logger.log({
+            level: 'info',
+            message: 'Url created',
+            params: {
+                url: newUrl,
+            },
+        });
 
         res.status(201).json({
             status: 'success',
@@ -66,6 +75,14 @@ async function deleteUrl(req, res, next) {
 
         await urlService.deleteUrl(id, userId);
 
+        logger.log({
+            level: 'info',
+            message: 'Url deleted',
+            params: {
+                id,
+            },
+        });
+
         res.status(204).end();
     } catch (error) {
         next(error);
@@ -86,6 +103,15 @@ async function updateUrl(req, res, next) {
         data.id = id;
 
         await urlService.updateUrl(data, userId);
+
+        logger.log({
+            level: 'info',
+            message: 'Url updated',
+            params: {
+                id,
+                data,
+            },
+        });
 
         res.status(204).end();
     } catch (error) {

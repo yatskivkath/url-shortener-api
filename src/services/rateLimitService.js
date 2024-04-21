@@ -7,7 +7,7 @@ const permissionsService = require('./permissionsService.js');
 const userService = require('./userService.js');
 const urlService = require('./urlService.js');
 const { actions, subjects } = require('../constants/permissionsConstants.js');
-const { string } = require('joi');
+const logger = require('../../logger.js');
 const { ValidationError } = require('../errors/errors.js');
 
 /**
@@ -40,6 +40,15 @@ async function checkRateLimit(key, limit, expires) {
  */
 async function checkRateLimitCode(code) {
     const key = `rl:code:${code}`;
+
+    logger.log({
+        level: 'debug',
+        message: 'Checking rate limit for code',
+        params: {
+            code,
+        },
+    });
+
     return await checkRateLimit(
         key,
         config.rateLimit.requestsLimitPerCode,
@@ -54,6 +63,15 @@ async function checkRateLimitCode(code) {
  */
 async function checkRateLimitUser(userId) {
     const key = `rl:user:${userId}`;
+
+    logger.log({
+        level: 'debug',
+        message: 'Checking rate limit for user',
+        params: {
+            userId,
+        },
+    });
+
     return await checkRateLimit(
         key,
         config.rateLimit.requestsLimitPerUser,
@@ -68,6 +86,15 @@ async function checkRateLimitUser(userId) {
  */
 async function checkRateLimitIP(ipAddress) {
     const key = `rl:ip:${ipAddress}`;
+
+    logger.log({
+        level: 'debug',
+        message: 'Checking rate limit for IP',
+        params: {
+            ipAddress,
+        },
+    });
+
     return await checkRateLimit(
         key,
         config.rateLimit.requestsLimitPerIP,
