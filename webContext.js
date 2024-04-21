@@ -46,7 +46,6 @@ function initMiddlewares(app) {
     );
 
     app.use(initCsrfTokenMiddleware);
-    console.log('initCsrfTokenMiddleware');
 }
 
 // Initialize controllers
