@@ -8,6 +8,7 @@
 </head>
 <body class="h-full">
     <div class="flex min-h-full flex-col justify-start px-6 py-12 lg:px-8">
+        <input type="hidden" id="__csrfToken" value="<%= csrfToken %>">
         <h2 class="text-base text-center font-semibold leading-7 text-gray-900">Create a Custom Short URL</h2>
         <div class="mt-10 lg:mx-auto lg:w-full lg:max-w-md xl:max-w-xl">
             <form id="new-url-form" action="/api/urls" method="POST" class="space-y-6">
@@ -75,6 +76,8 @@
         if (alias) {
             document.getElementById('alias').value = alias;
         }
+
+        const csrfToken = document.getElementById('__csrfToken').value;
 
         selectType();
 
@@ -149,6 +152,7 @@
                 redirectUrl: url,
                 name: alias,
                 type,
+                csrfToken,
             };
             
             if (type === 'T') {
@@ -175,7 +179,8 @@
             if (response.ok) {
                 window.location = '/';
             } else {
-                alert('Failed to create URL');
+                const { error } = await response.json();
+                alert(`Failed to create URL: ${error}` );
             }
         });
     </script>

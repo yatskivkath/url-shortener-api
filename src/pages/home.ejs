@@ -13,6 +13,7 @@
         <%- include('./partials/header'); %>
     </header>
     <div class="flex min-h-full flex-col justify-start px-6 py-12 lg:px-8">
+        <input type="hidden" id="__csrfToken" value="<%= csrfToken %>">
         <div class="flex flex-col justify-center gap-4">
             <h2 class="text-xl text-center font-semibold leading-7 text-gray-900">Create a Short URL</h2>
             <form id="new-url-form" action="/api/urls" method="POST" class="mt-4 w-full">
@@ -112,6 +113,8 @@
 
    
     <script >
+        const csrfToken = document.getElementById('__csrfToken').value;
+
         async function customizeUrl() {
             const url = document.getElementById('url').value;
             const alias = document.getElementById('alias').value;
@@ -126,17 +129,23 @@
             try {
                 await navigator.clipboard.writeText(shortUrl);
             } catch (err) {
-                console.error('Failed to copy: ', err);
+                alert('Failed to copy URL.');
             }
         }
 
         async function deleteUrl(urlId) {
             const response = await fetch(`/api/urls/${urlId}`, {
                 method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ csrfToken }),
             });
 
             if (!response.ok) {
-                alert('Failed to delete URL');
+                const {error} = await response.json();
+                alert(`Failed to delete URL: ${error}`);
             }
         }
 
@@ -147,13 +156,15 @@
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ enabled }),
+                body: JSON.stringify({ enabled, csrfToken }),
             });
 
             if (!response.ok) {
                 const checkbox = document.getElementById('enabledCheckbox');
                 checkbox.checked = !enabled;
-                alert('Failed to enable URL');
+
+                const {error} = await response.json();
+                alert(`Failed to ${enabled ? 'disable' : 'enable'} URL: ${error}`);
             }
         }
 
@@ -177,15 +188,16 @@
                 },
                 body: JSON.stringify({ 
                     redirectUrl: url, 
-                    name: alias 
+                    name: alias,
+                    csrfToken,
                 }),
             });
 
             if (response.ok) {
                 window.location.reload();
             } else {
-                const data = await response.json();
-                alert(data.message);
+                const {error} = await response.json();
+                alert(`Failed to create URL: ${error}`);
             }
         });
     </script>

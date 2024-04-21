@@ -13,6 +13,8 @@
     <header>
         <%- include('./partials/header'); %>
     </header>
+
+    <input type="hidden" id="__csrfToken" value="<%= csrfToken %>">
     
     <div class="flex min-h-full flex-col justify-start px-6 py-12 lg:px-8">
         <div>
@@ -86,9 +88,16 @@
         
     </div> 
     <script>
+        const csrfToken = document.getElementById('__csrfToken').value;
+
         async function  deleteUser(userTd) {
             const response = await fetch(`/api/users/${userTd}`, {
                 method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ csrfToken }),
             });
 
             if (!response.ok) {
@@ -104,7 +113,7 @@
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ key }),
+                body: JSON.stringify({ key, csrfToken }),
             });
 
             if (!response.ok) {
@@ -121,7 +130,7 @@
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ role }),
+                body: JSON.stringify({ role, csrfToken }),
             });
 
             if (!response.ok) {

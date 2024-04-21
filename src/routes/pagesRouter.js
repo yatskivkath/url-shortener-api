@@ -7,14 +7,17 @@ const pagesController = require('../controllers/pagesController.js');
 const authenticationMiddleware = require('../middlewares/authenticationMiddleware.js');
 const roleMiddleware = require('../middlewares/roleMiddleware.js');
 const { USER_ROLES } = require('../constants/databaseConstants.js');
+const { initCsrfTokenMiddleware } = require('../middlewares/csrfMiddleware.js');
 
 const pagesRouter = express.Router();
 
-pagesRouter.get('/sign-in', pagesController.signInPage);
+pagesRouter.get(
+    '/sign-in',
+    initCsrfTokenMiddleware,
+    pagesController.signInPage
+);
 
 pagesRouter.get('/sign-up', pagesController.signUpPage);
-
-pagesRouter.get('/register', pagesController.registerPage);
 
 pagesRouter.use(authenticationMiddleware);
 

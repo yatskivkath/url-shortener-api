@@ -13,6 +13,8 @@ async function createUrl(req, res, next) {
     try {
         const data = req.body;
 
+        delete data.csrfToken;
+
         const { error } = urlSchemaCreate.validate(data);
         if (error) {
             throw new ValidationError(error.message);
@@ -94,6 +96,8 @@ async function updateUrl(req, res, next) {
         const { id } = req.params;
         const userId = req.session.userId;
         const data = req.body;
+
+        delete data.csrfToken;
 
         const { error } = urlSchemaUpdate.validate(data);
         if (error) {

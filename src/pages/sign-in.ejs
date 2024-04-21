@@ -7,12 +7,13 @@
     <link href="/stylesheets/main.css" rel="stylesheet">
 </head>
 <body class="h-full">
+    <input id="__csrfToken" type="hidden" value="<%= csrfToken %>">
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
       </div>
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form class="space-y-6" action="/api/auth/login" method="POST">
+          <form id="sign-in-form" class="space-y-6" action="/api/auth/login" method="POST">
             <div>
               <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
               <div class="mt-2">
@@ -40,5 +41,30 @@
           </p>
         </div>
     </div>
+    <script>
+      const csrfToken = document.getElementById('__csrfToken').value;
+      const form = document.getElementById('sign-in-form');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        const response = await fetch(form.action, {
+          method: form.method,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password, csrfToken})
+        });
+        if (response.ok) {
+          window.location.href = '/';
+        } else {
+          const {error} = await response.json();
+          alert(`Failed to sign in: ${error}. Please try refreshing the page and signing in again.`);
+        }
+      });
+    </script>
 </body>
 </html>

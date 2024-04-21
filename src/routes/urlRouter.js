@@ -4,6 +4,9 @@
 const express = require('express');
 const urlController = require('../controllers/urlController.js');
 const authenticationMiddleware = require('../middlewares/authenticationMiddleware.js');
+const {
+    checkCsrfTokenMiddleware,
+} = require('../middlewares/csrfMiddleware.js');
 
 const urlRouter = express.Router();
 
@@ -56,7 +59,7 @@ urlRouter.use(authenticationMiddleware);
  *      500:
  *        description: Server Error
  */
-urlRouter.post('/', urlController.createUrl);
+urlRouter.post('/', checkCsrfTokenMiddleware, urlController.createUrl);
 
 /**
  * @swagger
@@ -148,7 +151,7 @@ urlRouter.get('/', urlController.getAllUrlsByUserId);
  *      500:
  *        description: Server Error
  */
-urlRouter.put('/:id', urlController.updateUrl);
+urlRouter.put('/:id', checkCsrfTokenMiddleware, urlController.updateUrl);
 
 /**
  * @swagger
@@ -170,6 +173,6 @@ urlRouter.put('/:id', urlController.updateUrl);
  *      500:
  *        description: Server Error
  */
-urlRouter.delete('/:id', urlController.deleteUrl);
+urlRouter.delete('/:id', checkCsrfTokenMiddleware, urlController.deleteUrl);
 
 module.exports = urlRouter;

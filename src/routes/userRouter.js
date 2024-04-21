@@ -4,6 +4,9 @@
 const express = require('express');
 const userController = require('../controllers/userController.js');
 const authenticationMiddleware = require('../middlewares/authenticationMiddleware.js');
+const {
+    checkCsrfTokenMiddleware,
+} = require('../middlewares/csrfMiddleware.js');
 
 const userRouter = express.Router();
 
@@ -50,7 +53,7 @@ const userRouter = express.Router();
  *      500:
  *        description: Server Error
  */
-userRouter.post('/', userController.createUser);
+userRouter.post('/', checkCsrfTokenMiddleware, userController.createUser);
 
 userRouter.use(authenticationMiddleware);
 
@@ -95,7 +98,7 @@ userRouter.get('/', userController.getAllUsers);
  *      500:
  *        description: Server Error
  */
-userRouter.delete('/:id', userController.deleteUser);
+userRouter.delete('/:id', checkCsrfTokenMiddleware, userController.deleteUser);
 
 /**
  * @swagger
@@ -132,6 +135,6 @@ userRouter.delete('/:id', userController.deleteUser);
  *      500:
  *        description: Server Error
  */
-userRouter.put('/:id', userController.updateUser);
+userRouter.put('/:id', checkCsrfTokenMiddleware, userController.updateUser);
 
 module.exports = userRouter;

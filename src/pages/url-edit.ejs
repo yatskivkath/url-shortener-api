@@ -7,6 +7,7 @@
     <link href="/stylesheets/main.css" rel="stylesheet">
 </head>
 <body>
+    <input type="hidden" id="__csrfToken" value="<%= csrfToken %>">
     <div class="flex min-h-full flex-col justify-start px-6 py-12 lg:px-8">
         <h2 class="text-base text-center font-semibold leading-7 text-gray-900">Edit your Short URL</h2>
         <div class="mt-10 lg:mx-auto lg:w-full lg:max-w-md xl:max-w-xl">
@@ -62,6 +63,8 @@
         </div>
     </div>
     <script>
+        const csrfToken = document.getElementById('__csrfToken').value;
+
         selectType();
 
         function selectType() {
@@ -108,6 +111,7 @@
                 name: alias,
                 type,
                 code,
+                csrfToken
             };
             
             if(type === 'T') {
@@ -125,8 +129,8 @@
             if (response.ok) {
                 window.location = '/';
             } else {
-                const data = await response.json();
-                alert(data.message);
+                const { error } = await response.json();
+                alert(`Failed to update URL: ${error}`);
             }
         });
     </script>

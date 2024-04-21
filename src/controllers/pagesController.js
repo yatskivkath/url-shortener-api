@@ -10,9 +10,11 @@ const config = require('../config/config.js')[env];
 async function homePage(req, res, next) {
     try {
         const userId = req.session.userId;
+        const csrfToken = req.session.csrfToken;
+
         const urls = await urlService.getUrlsByUserPublic(userId);
 
-        res.render('home', { urls });
+        res.render('home', { urls, csrfToken });
     } catch (error) {
         next(error);
     }
@@ -20,7 +22,9 @@ async function homePage(req, res, next) {
 
 async function signInPage(req, res, next) {
     try {
-        res.render('sign-in');
+        const csrfToken = req.session.csrfToken;
+
+        res.render('sign-in', { csrfToken });
     } catch (error) {
         next(error);
     }
@@ -28,15 +32,8 @@ async function signInPage(req, res, next) {
 
 async function signUpPage(req, res, next) {
     try {
-        res.render('sign-up');
-    } catch (error) {
-        next(error);
-    }
-}
-
-async function registerPage(req, res, next) {
-    try {
-        res.render('register');
+        const csrfToken = req.session.csrfToken;
+        res.render('sign-up', { csrfToken });
     } catch (error) {
         next(error);
     }
@@ -83,13 +80,14 @@ async function dashboardPage(req, res, next) {
 async function adminPage(req, res, next) {
     try {
         const userId = req.session.userId;
+        const csrfToken = req.session.csrfToken;
 
         const users = await userService.getUsersPublic();
         const rateLimits = await rateLimitService.getAllRateLimits(userId);
 
         const maxRateLimit = config.rateLimit.requestsLimitPerCode;
 
-        res.render('admin', { users, rateLimits, maxRateLimit });
+        res.render('admin', { users, rateLimits, maxRateLimit, csrfToken });
     } catch (error) {
         next(error);
     }
@@ -97,7 +95,8 @@ async function adminPage(req, res, next) {
 
 async function urlCustomizePage(req, res, next) {
     try {
-        res.render('url-customize');
+        const csrfToken = req.session.csrfToken;
+        res.render('url-customize', { csrfToken });
     } catch (error) {
         next(error);
     }
@@ -107,10 +106,11 @@ async function urlEditPage(req, res, next) {
     try {
         const { id } = req.params;
         const userId = req.session.userId;
+        const csrfToken = req.session.csrfToken;
 
         const url = await urlService.getUrlById(id, userId);
 
-        res.render('url-edit', { url });
+        res.render('url-edit', { url, csrfToken });
     } catch (error) {
         next(error);
     }
@@ -118,7 +118,9 @@ async function urlEditPage(req, res, next) {
 
 async function adminCreateUserPage(req, res, next) {
     try {
-        res.render('admin-create');
+        const csrfToken = req.session.csrfToken;
+
+        res.render('admin-create', { csrfToken });
     } catch (error) {
         next(error);
     }
@@ -157,7 +159,6 @@ module.exports = {
     homePage,
     signInPage,
     signUpPage,
-    registerPage,
     dashboardPage,
     adminPage,
     urlCustomizePage,

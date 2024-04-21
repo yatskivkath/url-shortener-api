@@ -7,10 +7,13 @@ const session = require('express-session');
 const RedisStore = require('connect-redis').default;
 const swaggerUI = require('swagger-ui-express');
 const path = require('path');
-const logger = require('./logger.js');
 
+const logger = require('./logger.js');
 const swaggerSpec = require('./swagger.js');
 const redisClient = require('./src/redis/redisClient.js');
+const {
+    initCsrfTokenMiddleware,
+} = require('./src/middlewares/csrfMiddleware.js');
 
 const userRouter = require('./src/routes/userRouter.js');
 const urlRouter = require('./src/routes/urlRouter.js');
@@ -41,6 +44,9 @@ function initMiddlewares(app) {
             },
         })
     );
+
+    app.use(initCsrfTokenMiddleware);
+    console.log('initCsrfTokenMiddleware');
 }
 
 // Initialize controllers

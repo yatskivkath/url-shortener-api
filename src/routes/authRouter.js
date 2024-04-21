@@ -4,6 +4,9 @@
 const express = require('express');
 
 const authenticationController = require('../controllers/authenticationController.js');
+const {
+    checkCsrfTokenMiddleware,
+} = require('../middlewares/csrfMiddleware.js');
 
 const authRouter = new express.Router();
 
@@ -36,7 +39,11 @@ const authRouter = new express.Router();
  *      500:
  *        description: Server Error
  */
-authRouter.post('/login', authenticationController.login);
+authRouter.post(
+    '/login',
+    checkCsrfTokenMiddleware,
+    authenticationController.login
+);
 
 /**
  * @swagger

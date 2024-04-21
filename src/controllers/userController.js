@@ -13,6 +13,8 @@ async function createUser(req, res, next) {
     try {
         const data = req.body;
 
+        delete data.csrfToken;
+
         const { error } = userSchemaCreate.validate(data);
         if (error) {
             throw new ValidationError(error.message);
@@ -79,6 +81,7 @@ async function updateUser(req, res, next) {
         const data = req.body;
 
         data.id = id;
+        delete data.csrfToken;
 
         const { error } = userSchemaUpdate.validate(data);
         if (error) {

@@ -8,12 +8,14 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body class="h-full">
+    <input id="__csrfToken" type="hidden" value="<%= csrfToken %>">
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Create a new account</h2>
       </div>
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form id="new-user-form" class="space-y-6" action="/api/users" method="POST">
+
             <div>
               <label for="firstName" class="block text-sm font-medium leading-6 text-gray-900">First name</label>
               <div class="mt-2">
@@ -79,6 +81,7 @@
         const lastName = document.getElementById('lastName').value;
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
+        const csrfToken = document.getElementById('__csrfToken').value;
 
         const response = await fetch(form.action, {
           method: form.method,
@@ -90,14 +93,16 @@
             firstName,
             lastName,
             email,
-            password
+            password,
+            csrfToken
           })
         });
 
         if (response.ok) {
           window.location = '/sign-in';
         } else {
-          alert('Failed to create Userß');
+          const { error } = await response.json();
+          alert(`Failed to create user: ${error}`);
         }
       });
     </script>

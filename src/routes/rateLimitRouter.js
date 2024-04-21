@@ -6,6 +6,9 @@ const rateLimitController = require('../controllers/rateLimitController.js');
 const authenticationMiddleware = require('../middlewares/authenticationMiddleware.js');
 const roleMiddleware = require('../middlewares/roleMiddleware.js');
 const { USER_ROLES } = require('../constants//databaseConstants.js');
+const {
+    checkCsrfTokenMiddleware,
+} = require('../middlewares/csrfMiddleware.js');
 
 const rateLimitRouter = express.Router();
 
@@ -22,6 +25,7 @@ rateLimitRouter.get(
 rateLimitRouter.delete(
     '/',
     roleMiddleware(USER_ROLES.ADMIN),
+    checkCsrfTokenMiddleware,
     rateLimitController.deleteRateLimit
 );
 
