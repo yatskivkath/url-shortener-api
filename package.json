@@ -13,8 +13,6 @@
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "lint:check": "eslint .",
-    "lint:fix": "eslint --fix .",
-    "prepare": "husky",
     "test": "jest",
     "test:cover": "jest --coverage",
     "tailwind": "postcss public/stylesheets/tailwind.css -o public/stylesheets/main.css",
