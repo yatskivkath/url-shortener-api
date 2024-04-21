@@ -69,30 +69,6 @@
                 console.error('Failed to copy: ', err);
             }
         }
-            event.preventDefault();
-
-            const url = document.getElementById('url').value;
-            const alias = document.getElementById('alias').value;
-
-            const response = await fetch('/api/urls', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    redirectUrl: url, 
-                    name: alias 
-                }),
-            });
-
-            if (response.ok) {
-                window.location.reload();
-            } else {
-                const data = await response.json();
-                alert(data.message);
-            }
-        });
     </script>
 </body>
 </html>
