@@ -5,6 +5,7 @@ const userService = require('../services/userService.js');
 const {
     userSchemaCreate,
     userSchemaUpdate,
+    userSchemaDelete,
 } = require('../validators/userSchema.js');
 const { ValidationError, BadRequest } = require('../errors/errors.js');
 const logger = require('../../logger.js');
@@ -54,6 +55,11 @@ async function deleteUser(req, res, next) {
         const userId = req.session.userId;
         const id = req.params.id;
 
+        const { error } = userSchemaDelete.validate({ id });
+        if (error) {
+            throw new ValidationError(error.message);
+        }
+
         if (userId === id) {
             throw new BadRequest('You cannot delete yourself');
         }
@@ -86,6 +92,10 @@ async function updateUser(req, res, next) {
         const { error } = userSchemaUpdate.validate(data);
         if (error) {
             throw new ValidationError(error.message);
+        }
+
+        if (userId === id && data.role) {
+            throw new BadRequest('You cannot change your own role');
         }
 
         await userService.updateUser(userId, data);

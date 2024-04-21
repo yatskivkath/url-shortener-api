@@ -24,7 +24,17 @@ const urlSchemaUpdate = Joi.object({
     code: Joi.string().alphanum().min(5).max(15),
 });
 
+const urlSchemaGet = Joi.object({
+    code: Joi.string().alphanum().min(5).max(15).required(),
+});
+
+const urlSchemaDelete = Joi.object({
+    id: Joi.string().required(),
+});
+
 module.exports = {
     urlSchemaCreate,
     urlSchemaUpdate,
+    urlSchemaGet,
+    urlSchemaDelete,
 };

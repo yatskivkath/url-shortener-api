@@ -16,7 +16,12 @@ const userSchemaUpdate = Joi.object({
     role: Joi.string().valid(...Object.values(USER_ROLES)),
 });
 
+const userSchemaDelete = Joi.object({
+    id: Joi.string().uuid().required(),
+});
+
 module.exports = {
     userSchemaCreate,
     userSchemaUpdate,
+    userSchemaDelete,
 };

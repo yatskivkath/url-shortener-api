@@ -4,10 +4,19 @@
 const userService = require('../services/userService.js');
 const authenticationService = require('../services/authenticationService.js');
 const logger = require('../../logger.js');
+const { loginSchema } = require('../validators/authenticateSchema.js');
+const { ValidationError } = require('../errors/errors.js');
 
 async function login(req, res, next) {
     try {
-        const { email, password } = req.body;
+        const data = req.body;
+
+        const { error } = loginSchema.validate(data);
+        if (error) {
+            throw new ValidationError(error.message);
+        }
+
+        const { email, password } = data;
 
         const user = await userService.getUserByEmail(email);
 

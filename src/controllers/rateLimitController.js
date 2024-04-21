@@ -21,12 +21,9 @@ async function getAllRateLimits(req, res, next) {
 async function getAllRateLimitByUser(req, res, next) {
     try {
         const userId = req.session.userId;
-        const { key } = req.params;
 
-        const rateLimit = await rateLimitService.geAllRateLimitsByUserCodes(
-            userId,
-            key
-        );
+        const rateLimit =
+            await rateLimitService.geAllRateLimitsByUserCodes(userId);
 
         res.json({
             rateLimit,

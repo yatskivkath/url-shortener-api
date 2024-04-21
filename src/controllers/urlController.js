@@ -6,6 +6,8 @@ const urlService = require('../services/urlService.js');
 const {
     urlSchemaCreate,
     urlSchemaUpdate,
+    urlSchemaGet,
+    urlSchemaDelete,
 } = require('../validators/urlSchema.js');
 const logger = require('../../logger.js');
 
@@ -46,6 +48,11 @@ async function getUrl(req, res, next) {
         const { code } = req.params;
         const userId = req.session.userId;
 
+        const { error } = urlSchemaGet.validate({ code });
+        if (error) {
+            throw new ValidationError(error.message);
+        }
+
         const url = await urlService.getUrlByCodePublic(code, userId);
 
         if (!url) {
@@ -74,6 +81,11 @@ async function deleteUrl(req, res, next) {
     try {
         const userId = req.session.userId;
         const { id } = req.params;
+
+        const { error } = urlSchemaDelete.validate({ id });
+        if (error) {
+            throw new ValidationError(error.message);
+        }
 
         await urlService.deleteUrl(id, userId);
 
