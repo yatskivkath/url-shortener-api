@@ -70,7 +70,14 @@ function initErrorHandling(app) {
             stack: error.stack,
         });
 
-        res.status(error.statusCode).json({ error: error.message }).end();
+        if (req.originalUrl.startsWith('/api')) {
+            return res
+                .status(error.statusCode)
+                .json({ error: error.message })
+                .end();
+        }
+
+        return res.render('404');
     });
 }
 
