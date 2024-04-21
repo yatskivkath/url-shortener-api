@@ -17,6 +17,7 @@ module.exports = {
                 id: crypto.randomUUID(),
                 createdAt: new Date(),
                 updatedAt: new Date(),
+                role: 'admin',
             },
         ]);
     },
