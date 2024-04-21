@@ -37,7 +37,7 @@ function initMiddlewares(app) {
             name: 'sessionId',
             cookie: {
                 httpOnly: true,
-                domain: 'localhost',
+                domain: process.env.DOMAIN,
             },
         })
     );
