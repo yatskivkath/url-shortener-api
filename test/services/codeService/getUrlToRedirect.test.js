@@ -3,7 +3,7 @@ const {
     Forbidden,
     BadRequest,
 } = require('../../../src/errors/errors.js');
-const { faker, fa, ur } = require('@faker-js/faker');
+const { faker, ur } = require('@faker-js/faker');
 
 jest.mock('../../../src/models/user.js', () => {
     const USER = require('../../__mocks__/user.json');
@@ -132,8 +132,6 @@ describe('Code Service getUrlToRedirect function', () => {
             type: 'OT',
         };
 
-        const userId = '3b365a11-97a3-4d44-8137-b944cade14da';
-
         url.$queueResult(
             url.build({
                 code: URL.code,
@@ -146,7 +144,6 @@ describe('Code Service getUrlToRedirect function', () => {
             })
         );
 
-        await urlService.createUrl(URL, userId);
         urlService.visitUrl(URL.code);
 
         const result = await codeService.getUrlToRedirect(URL.code);
