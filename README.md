@@ -8,7 +8,7 @@
 
 This is a simple URL shortener API built with [Node.js](https://nodejs.org/) and [Express](https://expressjs.com/). It allows users to shorten long URLs into concise, easy-to-share links. Service also provide user registration, URL managment and analitics.
 
-[Shorten your URLs!]([https://expressjs.com/](https://url-shortener-api-wruy.onrender.com).
+[Shorten your URLs!](https://url-shortener-api-wruy.onrender.com).
 
 ## Features
 
