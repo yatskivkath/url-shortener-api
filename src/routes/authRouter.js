@@ -12,8 +12,8 @@ const authRouter = new express.Router();
  * /api/auth/login:
  *  post:
  *   tags:
- *   - Url
- *   summary: Create a new short URL
+ *   - Authentication
+ *   summary: Log in a user
  *   requestBody:
  *     required: true
  *     content:
@@ -38,6 +38,21 @@ const authRouter = new express.Router();
  */
 authRouter.post('/login', authenticationController.login);
 
+/**
+ * @swagger
+ * /api/auth/logout:
+ *  post:
+ *   tags:
+ *   - Authentication
+ *   summary: Log out a user
+ *   requestBody:
+ *     required: true
+ *   responses:
+ *      302:
+ *        description: Redirect
+ *      500:
+ *        description: Server Error
+ */
 authRouter.post('/logout', authenticationController.logout);
 
 module.exports = authRouter;

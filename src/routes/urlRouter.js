@@ -39,6 +39,9 @@ urlRouter.use(authenticationMiddleware);
  *             code:
  *               type: string
  *               example: google-short
+ *             codeLength:
+ *               type: number
+ *               example: 5
  *             expirationDate:
  *               type: string
  *               format: date
@@ -136,8 +139,10 @@ urlRouter.get('/', urlController.getAllUrlsByUserId);
  *   responses:
  *      201:
  *        description: Created
+ *      400:
+ *        description: Bad Request
  *      403:
- *        description: Not Access
+ *        description: Not Found
  *      422:
  *       description: Unprocessable Entity
  *      500:

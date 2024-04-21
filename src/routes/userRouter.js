@@ -41,10 +41,12 @@ const userRouter = express.Router();
  *     responses:
  *      201:
  *        description: Created
- *      409:
- *        description: Conflict
+ *      400:
+ *        description: Bad Request
  *      404:
  *        description: Not Found
+ *      422:
+ *        description: Unprocessable Entity
  *      500:
  *        description: Server Error
  */
@@ -74,7 +76,7 @@ userRouter.get('/', userController.getAllUsers);
 /**
  * @swagger
  * '/api/users/{id}':
- * delete:
+ *  delete:
  *    tags:
  *    - User
  *    summary: Delete a user
@@ -95,6 +97,41 @@ userRouter.get('/', userController.getAllUsers);
  */
 userRouter.delete('/:id', userController.deleteUser);
 
+/**
+ * @swagger
+ * '/api/users/{id}':
+ *  put:
+ *     tags:
+ *     - User
+ *     summary: Update a user
+ *     parameters:
+ *     - name: id
+ *       in: path
+ *       description: The user ID
+ *       required: true
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *            type: object
+ *            required:
+ *              - role
+ *            properties:
+ *              role:
+ *                type: string
+ *                enum: [user, admin]
+ *                example: user
+ *     responses:
+ *      204:
+ *        description: Updated Successfully
+ *      403:
+ *        description: No Access
+ *      400:
+ *        description: Bad Request
+ *      500:
+ *        description: Server Error
+ */
 userRouter.put('/:id', userController.updateUser);
 
 module.exports = userRouter;

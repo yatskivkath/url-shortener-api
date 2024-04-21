@@ -45,6 +45,14 @@ async function createUrl(url, userId) {
         throw new ValidationError();
     }
 
+    if (code) {
+        const isCodeExist = await urlRepository.findUrlByCode(code);
+
+        if (isCodeExist) {
+            throw new UnprocessableContent('Code already exists');
+        }
+    }
+
     const user = await userService.getUserById(userId);
 
     if (!user) {

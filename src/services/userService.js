@@ -9,6 +9,7 @@ const {
     ValidationError,
     BadRequest,
     NotFound,
+    UnprocessableContent,
 } = require('../errors/errors.js');
 const permissionsService = require('./permissionsService.js');
 const { actions, subjects } = require('../constants/permissionsConstants.js');
@@ -27,6 +28,11 @@ async function createUser(user) {
 
     if (!firstName || !lastName || !email || !password) {
         throw new BadRequest();
+    }
+
+    const userExists = await userRepository.findUserByEmail(email);
+    if (userExists) {
+        throw new UnprocessableContent('User already exists');
     }
 
     const hashedPassword = await authenticationService.hashPassword(password);
