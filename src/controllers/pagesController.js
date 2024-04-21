@@ -7,83 +7,121 @@ const rateLimitService = require('../services/rateLimitService.js');
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config.js')[env];
 
-async function homePage(req, res) {
-    const userId = req.session.userId;
-    const urls = await urlService.getUrlsByUserPublic(userId);
+async function homePage(req, res, next) {
+    try {
+        const userId = req.session.userId;
+        const urls = await urlService.getUrlsByUserPublic(userId);
 
-    res.render('home', { urls });
+        res.render('home', { urls });
+    } catch (error) {
+        next(error);
+    }
 }
 
-async function signInPage(req, res) {
-    res.render('sign-in');
+async function signInPage(req, res, next) {
+    try {
+        res.render('sign-in');
+    } catch (error) {
+        next(error);
+    }
 }
 
-async function signUpPage(req, res) {
-    res.render('sign-up');
+async function signUpPage(req, res, next) {
+    try {
+        res.render('sign-up');
+    } catch (error) {
+        next(error);
+    }
 }
 
-async function registerPage(req, res) {
-    res.render('register');
+async function registerPage(req, res, next) {
+    try {
+        res.render('register');
+    } catch (error) {
+        next(error);
+    }
 }
 
-async function dashboardPage(req, res) {
-    const userId = req.session.userId;
+async function dashboardPage(req, res, next) {
+    try {
+        const userId = req.session.userId;
 
-    const topUrls = await urlService.getTopUrls();
-    const allUserUrls = await urlService.getUrlsByUserPublic(userId);
+        const topUrls = await urlService.getTopUrls();
+        const allUserUrls = await urlService.getUrlsByUserPublic(userId);
 
-    const totalUserUrls = allUserUrls.length;
-    const totalUserVisits = allUserUrls.reduce(
-        (prev, cur) => (prev += cur.visits),
-        0
-    );
+        const totalUserUrls = allUserUrls.length;
+        const totalUserVisits = allUserUrls.reduce(
+            (prev, cur) => (prev += cur.visits),
+            0
+        );
 
-    const rateLimitsUser =
-        await rateLimitService.geAllRateLimitsByUserCodes(userId);
-    const maxRateLimit = config.rateLimit.requestsLimitPerCode;
+        const rateLimitsUser =
+            await rateLimitService.geAllRateLimitsByUserCodes(userId);
+        const maxRateLimit = config.rateLimit.requestsLimitPerCode;
 
-    const topUserUrls = (await urlService.getTopUrls(5, userId)).map((url) => {
-        url.rateLimit = rateLimitsUser[url.code];
-        url.rateLimit.value = parseInt(url.rateLimit.value ?? 0);
+        const topUserUrls = (await urlService.getTopUrls(5, userId)).map(
+            (url) => {
+                url.rateLimit = rateLimitsUser[url.code];
+                url.rateLimit.value = parseInt(url.rateLimit.value ?? 0);
 
-        return url;
-    });
+                return url;
+            }
+        );
 
-    res.render('dashboard', {
-        topUrls,
-        topUserUrls,
-        totalUserUrls,
-        totalUserVisits,
-        maxRateLimit,
-    });
+        res.render('dashboard', {
+            topUrls,
+            topUserUrls,
+            totalUserUrls,
+            totalUserVisits,
+            maxRateLimit,
+        });
+    } catch (error) {
+        next(error);
+    }
 }
 
-async function adminPage(req, res) {
-    const userId = req.session.userId;
+async function adminPage(req, res, next) {
+    try {
+        const userId = req.session.userId;
 
-    const users = await userService.getUsersPublic();
-    const rateLimits = await rateLimitService.getAllRateLimits(userId);
+        const users = await userService.getUsersPublic();
+        const rateLimits = await rateLimitService.getAllRateLimits(userId);
 
-    const maxRateLimit = config.rateLimit.requestsLimitPerCode;
+        const maxRateLimit = config.rateLimit.requestsLimitPerCode;
 
-    res.render('admin', { users, rateLimits, maxRateLimit });
+        res.render('admin', { users, rateLimits, maxRateLimit });
+    } catch (error) {
+        next(error);
+    }
 }
 
-async function urlCustomizePage(req, res) {
-    res.render('url-customize');
+async function urlCustomizePage(req, res, next) {
+    try {
+        res.render('url-customize');
+    } catch (error) {
+        next(error);
+    }
 }
 
-async function urlEditPage(req, res) {
-    const { id } = req.params;
-    const userId = req.session.userId;
+async function urlEditPage(req, res, next) {
+    try {
+        const { id } = req.params;
+        const userId = req.session.userId;
 
-    const url = await urlService.getUrlById(id, userId);
+        const url = await urlService.getUrlById(id, userId);
 
-    res.render('url-edit', { url });
+        res.render('url-edit', { url });
+    } catch (error) {
+        next(error);
+    }
 }
 
-async function adminCreateUserPage(req, res) {
-    res.render('admin-create');
+async function adminCreateUserPage(req, res, next) {
+    try {
+        res.render('admin-create');
+    } catch (error) {
+        next(error);
+    }
 }
 
 module.exports = {

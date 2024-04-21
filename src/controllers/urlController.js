@@ -9,9 +9,9 @@ const {
 } = require('../validators/urlSchema.js');
 
 async function createUrl(req, res, next) {
-    const data = req.body;
-
     try {
+        const data = req.body;
+
         const { error } = urlSchemaCreate.validate(data);
         if (error) {
             throw new ValidationError(error.message);
@@ -31,10 +31,10 @@ async function createUrl(req, res, next) {
 }
 
 async function getUrl(req, res, next) {
-    const { code } = req.params;
-    const userId = req.session.userId;
-
     try {
+        const { code } = req.params;
+        const userId = req.session.userId;
+
         const url = await urlService.getUrlByCodePublic(code, userId);
 
         if (!url) {
@@ -48,9 +48,9 @@ async function getUrl(req, res, next) {
 }
 
 async function getAllUrlsByUserId(req, res, next) {
-    const userId = req.session.userId;
-
     try {
+        const userId = req.session.userId;
+
         const urls = await urlService.getUrlsByUserPublic(userId);
 
         res.status(200).json(urls);
@@ -60,10 +60,10 @@ async function getAllUrlsByUserId(req, res, next) {
 }
 
 async function deleteUrl(req, res, next) {
-    const userId = req.session.userId;
-    const { id } = req.params;
-
     try {
+        const userId = req.session.userId;
+        const { id } = req.params;
+
         await urlService.deleteUrl(id, userId);
 
         res.status(204).end();
@@ -73,11 +73,11 @@ async function deleteUrl(req, res, next) {
 }
 
 async function updateUrl(req, res, next) {
-    const { id } = req.params;
-    const userId = req.session.userId;
-    const data = req.body;
-
     try {
+        const { id } = req.params;
+        const userId = req.session.userId;
+        const data = req.body;
+
         const { error } = urlSchemaUpdate.validate(data);
         if (error) {
             throw new ValidationError(error.message);
